@@ -10,7 +10,7 @@ class ChessDotComUser(models.Model):
 	@classmethod
 	def find_user_by_username(cls, username, create_if_not_found=False):
 		try:
-			cls.objects.get(username=username)
+			return cls.objects.get(username=username)
 		except cls.DoesNotExist:
 			if create_if_not_found:
 				user = cls(username=username)

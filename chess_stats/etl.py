@@ -20,7 +20,7 @@ class Transformer(object):
 		extracted_to_argument_name_map=None,
 		return_name_map=None
 	):
-		self.return_name_map = None
+		self.return_name_map = return_name_map
 		if extracted_to_argument_name_map:
 			self.extracted_to_argument_name_map = extracted_to_argument_name_map
 		else:
@@ -85,7 +85,7 @@ class Loader(object):
 				continue
 		raise AttributeError()
 
-	def load_objects(self):
+	def load(self):
 		raise NotImplemented()
 
 	def execute(self, raw_data):
@@ -104,7 +104,20 @@ class Loader(object):
 				)
 			)
 
-		self.load_objects()
+		return self.load()
+
+
+class ModelLoader(Loader):
+
+	model_class = None
+
+	def load(self):
+		model_creation_argumnets = {
+			field_name: getattr(self, field_name)
+			for field_name in self.model_class._meta.get_all_field_names()
+			if field_name != 'id'
+		}
+		return self.model_class(**model_creation_argumnets)
 
 
 class DateTransformer(SingleElementTransformer):
@@ -131,5 +144,5 @@ class IntegerTransformer(SingleElementTransformer):
 	transform_arguments = set(['string'])
 	return_names = set(['int'])
 
-	def transform(self, string=None):
-		return [self.get_return_name('int'), int(string)]
+	def _transform(self, string=None):
+		return int(string)

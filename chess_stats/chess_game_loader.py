@@ -99,7 +99,7 @@ class ChessDotComUserTransformer(etl.SingleElementTransformer):
 		)
 
 
-class ChessDotComGameLoader(etl.Loader):
+class ChessDotComGameLoader(etl.ModelLoader):
 
 	extractors = {
 		'moves': MovesExtractor(),
@@ -127,8 +127,7 @@ class ChessDotComGameLoader(etl.Loader):
 		)
 	]
 
-	def load_objects(self):
-		import ipdb; ipdb.set_trace()
+	model_class = models.ChessDotComGame
 
 
 if __name__ == '__main__':

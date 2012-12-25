@@ -6,13 +6,15 @@ class JSONField(models.TextField):
 
 	__metaclass__ = models.SubfieldBase
 
-	dumps = simplejson.dumps
-	loads = simplejson.loads
+	_dumps = staticmethod(simplejson.dumps)
+	loads = staticmethod(simplejson.loads)
 
 	def to_python(self, value):
 		if isinstance(value, basestring):
 			# TODO: Add log if this fails.
 			return self.loads(value)
+		return value
 
 	def get_prep_value(self, value):
-		self.dumps(value)
+		import ipdb; ipdb.set_trace()
+		return self._dumps(value)

@@ -37,9 +37,9 @@ class ChessComScraper(object):
 		self.log_function = log_function
 
 	def scrape(self, member, stop_at_id=None):
-		"""Scrape the chess.com games of member. Inserts the member name into self.game_ids
-		before all the ids associated with a member.
-		This means that scrape can be executed multiple times on different member names,
+		"""Scrape the chess.com games of member. Inserts the member name into
+		self.game_ids before all the ids associated with a member. This means
+		that scrape can be executed multiple times on different member names,
 		and we can pass the member id on to the pgn parser tools.
 		"""
 
