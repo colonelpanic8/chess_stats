@@ -16,5 +16,4 @@ class JSONField(models.TextField):
 		return value
 
 	def get_prep_value(self, value):
-		import ipdb; ipdb.set_trace()
 		return self._dumps(value)

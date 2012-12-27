@@ -35,7 +35,7 @@ class MetaDataExtractor(etl.Extractor):
 	def extract(self, pgn_string):
 		match = re.search(self.match_string, pgn_string)
 		if match:
-			return match.group(1)
+ 			return match.group(1)
 		raise DataError()
 
 
@@ -129,10 +129,7 @@ class ChessDotComGameLoader(etl.ModelLoader):
 
 	model_class = models.ChessDotComGame
 
-
-if __name__ == '__main__':
-	from . import scraper
-	s = scraper.ChessComScraper(scraper.ChessComScraper.GAME_TYPE_LIVE)
-	s.scrape('IvanMalison')
-	pgns = s.get_pgns()
-	import ipdb; ipdb.set_trace()
+	def execute(self, raw_data):
+		"""Accepts a (game_id, pgn) tuple."""
+		self.chess_dot_com_id = raw_data[0]
+		return super(ChessDotComGameLoader, self).execute(raw_data[1])

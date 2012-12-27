@@ -16,16 +16,33 @@ class ChessDotComUser(models.Model):
 				user = cls(username=username)
 				user.save()
 				return user
+			raise
+
+	@classmethod
+	def load_games_by_username(cls, username):
+		"""Return games stored associated with `username`."""
+		user = cls.objects.get(username=username)
+		return user.white_games.all() + user.black_games.all()
 
 
 class ChessDotComGame(models.Model):
 
+	chess_dot_com_id = models.PositiveIntegerField(unique=True)
 	date_played = models.DateField()
 
 	white_elo = models.PositiveIntegerField()
-	black_elo = models.PositiveIntegerField()
-
 	white_user = models.ForeignKey(ChessDotComUser, related_name='white_games')
+
+	black_elo = models.PositiveIntegerField()
 	black_user = models.ForeignKey(ChessDotComUser, related_name='black_games')
 
 	moves = fields.JSONField()
+
+	@property
+	def black_username(self):
+		return self.black_user.username
+
+	@property
+	def white_username(self):
+		return self.white_user.username
+

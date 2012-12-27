@@ -1,10 +1,13 @@
 from django.conf.urls import patterns, include, url
+import chess_stats.views
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+	'',
+	url(r'chess_stats/.*', chess_stats.views.UserGameView.as_view())
     # Examples:
     # url(r'^$', 'imalison.views.home', name='home'),
     # url(r'^imalison/', include('imalison.foo.urls')),

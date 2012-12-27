@@ -1,12 +1,14 @@
-from contextlib import closing
-from urllib import urlopen
+import itertools
+import glob
 import os
 import re
+from contextlib import closing
+from urllib import urlopen
 
 from BeautifulSoup import BeautifulSoup
 
 
-class ChessComScraper(object):
+class ChessDotComScraper(object):
 
 	ARCHIVE_BASE_PAGE_FORMAT = "home/game_archive?member={member}&show={game_type}"
 	BASE_URL = "http://www.chess.com/"
@@ -27,7 +29,8 @@ class ChessComScraper(object):
 
 	def __init__(self, game_type, log_function=None):
 
-		self.game_ids = []
+		# This means that this object does not support concurrency
+		self.game_ids = None
 		self.soup = None
 		self.game_type = game_type
 		if log_function is None:
@@ -37,12 +40,8 @@ class ChessComScraper(object):
 		self.log_function = log_function
 
 	def scrape(self, member, stop_at_id=None):
-		"""Scrape the chess.com games of member. Inserts the member name into
-		self.game_ids before all the ids associated with a member. This means
-		that scrape can be executed multiple times on different member names,
-		and we can pass the member id on to the pgn parser tools.
-		"""
 
+		self.game_ids = []
 		with closing(urlopen(
 			self.BASE_URL + self.ARCHIVE_BASE_PAGE_FORMAT.format(
 				member=member,
@@ -51,16 +50,14 @@ class ChessComScraper(object):
 		)) as html:
 			self.soup = BeautifulSoup(html.read())
 
-		self.game_ids.append(member)
-
 		while self.parse_page(stop_at_id=stop_at_id) and self.find_next_page():
-			pass
+			return self.game_ids
 
 	def parse_page(self, stop_at_id=None):
-		"""Parse a single page of a game archive from chess.com."""
+		"""Parse a single page of a game archive from chess.com. Returns true if
+		stop_at_id was encounter."""
 
-		row = 0
-		while True:
+		for row in itertools.count():
 			game_id = self.get_game_id(row)
 			if game_id is None:
 				self.log_function("No more games found on page.")
@@ -69,14 +66,16 @@ class ChessComScraper(object):
 				return False
 			else:
 				self.game_ids.append(game_id)
-			row += 1
 
 	def find_next_page(self):
-		"""Find the next page from the html of the current page.
-		Returns True on success and False on failure.
+		"""Find the next page from the html of the current page. Returns True on
+		success and False on failure.
 		"""
 
-		pagination_find = self.soup.find(name = "ul", attrs={"class" : "pagination"})
+		pagination_find = self.soup.find(
+			name="ul",
+			attrs={"class" : "pagination"}
+		)
 		if pagination_find:
 			links = pagination_find.findAll(name = "a")
 			for link in links:
@@ -118,23 +117,15 @@ class ChessComScraper(object):
 		return game_id
 
 	def get_pgns(self):
-		"""Return a generator which yields pgns together with its associated game_id and member"""
-
-		# The first item in game_ids should always be a member string. If not the member variable
-		# will not be defined when we yield the first item
-		assert isinstance(self.game_ids[0], str)
+		"""Yields (game_id, pgn_string) pairs."""
 
 		for game_id in self.game_ids:
-			if isinstance(game_id, str):
-				member = game_id
-			else:
-				yield (game_id, member, self.get_pgn_string(game_id))
+			yield (game_id, self.get_pgn_string(game_id))
 
 	def get_pgn_string(self, game_id):
 		"""Download the pgn associated with game_id from chess.com"""
 
-		# I don't know why, but it seems that chess.com always uses echess in this case,
-		# even for live games
+		# It seems that chess.com always uses echess here, even for live games.
 		url = self.PGN_LINK_FORMAT.format(
 			base_url=self.BASE_URL,
 			game_type='echess',
