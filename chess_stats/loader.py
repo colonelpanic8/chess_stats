@@ -132,4 +132,13 @@ class ChessDotComGameLoader(etl.ModelLoader):
 	def execute(self, raw_data):
 		"""Accepts a (game_id, pgn) tuple."""
 		self.chess_dot_com_id = raw_data[0]
-		return super(ChessDotComGameLoader, self).execute(raw_data[1])
+		try:
+			game = models.ChessDotComGame.objects.get(
+				chess_dot_com_id=self.chess_dot_com_id
+			)
+		except models.ChessDotComGame.DoesNotExist:
+			# The game doesn't exist so we need to load it.
+			return super(ChessDotComGameLoader, self).execute(raw_data[1])
+		else:
+			# The game already exists; just return it.
+			return game

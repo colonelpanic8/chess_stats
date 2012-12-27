@@ -1,4 +1,4 @@
-{% for game in params.games %}
-{{ game.date_played }} - {{ game.black_username }} vs {{ game.white_username }}
-
+{% for game in games %}
+({{game.white_elo}}) <a href='{{game.white_username}}'>{{game.white_username}}</a> vs ({{game.black_elo}}) <a href='{{game.black_username}}'>{{game.black_username}}</a> {{game.date_played}}
+<br />
 {% endfor %}

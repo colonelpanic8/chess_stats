@@ -12,16 +12,7 @@ class UserGameView(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super(UserGameView, self).get_context_data(**kwargs)
-		context['params']['games'] = [
-			game for game in logic.fetch_games_for_user('AlexMalison')
-		]
+		# This is a dirty way to do this. Consider using re instead.
+		username = self.request.path[13:]
+		context['games'] = logic.fetch_games_for_user(username)
 		return context
-
-	def prepare_game(self, game):
-		game_dict =  {
-			attr: getattr(game, attr)
-			for attr in game.__class__._meta.get_all_field_names()
-		}
-		game_dict['black_username'] = game.black_username
-		game_dict['white_username'] = game.white_username
-		return game_dict
