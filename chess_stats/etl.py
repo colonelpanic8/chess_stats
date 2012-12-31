@@ -135,8 +135,8 @@ class DateTransformer(SingleElementTransformer):
 		else:
 			self.date_format = self.DEFAULT_DATE_FORMAT
 
-	def transform(self, date_string=None):
-		return [(self.get_return_name('date'), datetime.strptime(date_string, self.date_format))]
+	def _transform(self, date_string=None):
+		return datetime.strptime(date_string, self.date_format).date()
 
 
 class IntegerTransformer(SingleElementTransformer):

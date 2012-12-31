@@ -44,25 +44,24 @@ class MovesTransformer(etl.SingleElementTransformer):
 	transform_arguments = set(['moves_string'])
 	return_names = set(['moves'])
 
+	moves_matcher = re.compile(
+		"[0-9]*?\.(.*?) (.*?) (.*)",
+		flags=re.DOTALL|re.MULTILINE
+	)
+
 	def _transform(self, moves_string=None):
 		moves_string = moves_string.replace('\r\n', '')
 
 		moves = []
-		move_match = re.match(
-			"[0-9]*?\.(.*?) (.*?) (.*)",
-			moves_string,
-			flags=re.DOTALL | re.MULTILINE
-		)
+		move_match = self.moves_matcher.match(moves_string)
 		while move_match:
 			moves.extend([move_match.group(1), move_match.group(2)])
 			moves_string = move_match.group(3)
-			move_match = re.match(
-				"[0-9]*?\.(.*?) (.*?) (.*)",
-				moves_string,
-				flags=re.DOTALL | re.MULTILINE
-			)
-		# We need to do one last match with a slightly different re to handle the
-		# case where White won (We need to add only Whites move).
+			move_match = self.moves_matcher.match(moves_string)
+
+		# We need to do one last match with a slightly different RE to handle the
+		# case where White won while it was blacks turn. This happens when white
+		# wins by checkmate or when black resigns during his own turn.
 		move_match = re.match(
 			"[0-9]*?\.(.*?) 1-0.*",
 			moves_string,
@@ -99,6 +98,23 @@ class ChessDotComUserTransformer(etl.SingleElementTransformer):
 		)
 
 
+class ResultTransformer(etl.SingleElementTransformer):
+
+	transform_arguments = set(['result'])
+	return_names = set(['victor_was_white'])
+
+	result_matcher = re.compile('(.*?)-.*?')
+
+	def _transform(self, result=None):
+		white_points = self.result_matcher.match(result).group(1)
+		if white_points == '1':
+			return True
+		elif white_points == '0':
+			return False
+		else:
+			return None
+
+
 class ChessDotComGameLoader(etl.ModelLoader):
 
 	extractors = {
@@ -108,12 +124,17 @@ class ChessDotComGameLoader(etl.ModelLoader):
 		'white_elo': MetaDataExtractor('WhiteElo'),
 		'black_elo': MetaDataExtractor('BlackElo'),
 		'date_played': MetaDataExtractor('Date'),
-		'time_control': MetaDataExtractor('TimeControl')
+		'time_control': MetaDataExtractor('TimeControl'),
+		'result': MetaDataExtractor('Result')
 	}
 
 	transformers = [
 		MovesTransformer(element_name='moves'),
 		TimeControlTransformer(element_name='time_control'),
+		ResultTransformer(
+			input_name='result',
+			output_name='victor_was_white'
+		),
 		etl.DateTransformer(element_name='date_played'),
 		etl.IntegerTransformer(element_name='white_elo'),
 		etl.IntegerTransformer(element_name='black_elo'),

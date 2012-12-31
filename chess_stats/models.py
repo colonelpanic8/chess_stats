@@ -58,6 +58,7 @@ class ChessDotComGame(models.Model):
 	black_user = models.ForeignKey(ChessDotComUser, related_name='black_games')
 
 	moves = fields.JSONField()
+	victor_was_white = models.NullBooleanField(null=True)
 
 	def __unicode__(self):
 		return ' '.join(
@@ -67,7 +68,7 @@ class ChessDotComGame(models.Model):
 				self.black_username,
 				'-',
 				str(self.date_played),
-				str(self.chess_dot_com_id)
+				str(self.chess_dot_com_id),
 			]
 		)
 
@@ -78,3 +79,9 @@ class ChessDotComGame(models.Model):
 	@property
 	def white_username(self):
 		return self.white_user.username
+
+	def matches_moves(self, moves):
+		for game_move, match_move in zip(self.moves, moves):
+			if game_move != match_move:
+				return False
+		return True

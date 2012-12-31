@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 import chess_stats.views
 
 # Uncomment the next two lines to enable the admin:
@@ -7,7 +7,9 @@ import chess_stats.views
 
 urlpatterns = patterns(
 	'',
-	url(r'chess_stats/.*', chess_stats.views.UserGameView.as_view())
+	url(r'chess_stats/browse_games/.*', chess_stats.views.UserGameBrowserView.as_view()),
+	url(r'chess_stats/browse_moves/.*', chess_stats.views.UserMoveBrowserView.as_view()),
+	url(r'chess_stats/get_stats/.*', chess_stats.views.get_game_stats)
     # Examples:
     # url(r'^$', 'imalison.views.home', name='home'),
     # url(r'^imalison/', include('imalison.foo.urls')),
