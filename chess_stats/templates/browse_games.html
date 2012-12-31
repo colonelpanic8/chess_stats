@@ -1,0 +1,38 @@
+{% load custom_filters %}
+<table>
+  <tr>
+	<th>White Elo</th>
+	<th>White Username</th>
+	<th>Black Elo</th>
+	<th>Black Username</th>
+	<th>Date Played</th>
+	<th>Game ID</th>
+  </tr>
+  {% for game in games %}
+  <tr>
+	<td>{{game.white_elo}}</td>
+	<td>
+	  <a href='{{game.white_username}}'>
+		{% if game.victor_was_white %}
+		<b>{% endif %}
+		  {{game.white_username}}
+		  {% if game.victor_was_white %}
+		</b>{% endif %}
+	  </a>
+	</td>
+	<td>{{game.black_elo}}</td>
+	<td>
+	  <a href='{{game.black_username}}'>
+		{% if game.victor_was_white|is_false %}
+		<b>{% endif %}
+		  {{game.black_username}}
+		  {% if game.victor_was_white|is_false %}
+		</b>{% endif %}
+	  </a>
+	</td>
+
+	<td>{{game.date_played}}</td>
+	<td>{{game.chess_dot_com_game_id}}</td>
+  </tr>
+{% endfor %}
+</table>

@@ -21,10 +21,12 @@ def fetch_games_for_user(username, stop_at_latest_id=True, stop_at_id=None):
 	scraper = ChessDotComScraper(ChessDotComScraper.GAME_TYPE_LIVE)
 	loader = ChessDotComGameLoader()
 
-	scraper.scrape(username, stop_at_id=stop_at_id)
-
-	games = [loader.execute(raw_data) for raw_data in scraper.get_pgns()]
-	save_games(games)
+	try:
+		scraper.scrape(username, stop_at_id=stop_at_id)
+		games = [loader.execute(raw_data) for raw_data in scraper.get_pgns()]
+		save_games(games)
+	except IOError:
+		pass
 
 	user = models.ChessDotComUser.find_user_by_username(username)
 	user.last_scanned_chess_dot_com_game_id = \
@@ -107,9 +109,10 @@ def build_sorted_game_stats_for_moves(games, moves):
 	)
 
 
-def build_sorted_game_stats_for_moves_by_username(username, moves):
-	val = build_sorted_game_stats_for_moves(
-		models.ChessDotComUser.find_user_by_username(username).white_games.all(),
+def build_sorted_game_stats_for_moves_by_username(username, moves, white=True):
+	user = models.ChessDotComUser.find_user_by_username(username)
+	games = user.white_games if white else user.black_games
+	return build_sorted_game_stats_for_moves(
+		games.all(),
 		moves
 	)
-	return val
