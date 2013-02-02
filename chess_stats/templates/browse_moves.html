@@ -1,7 +1,23 @@
-<head>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">
-  </script>
-  <script>
-	{% include 'load_stats.js' %}
-  </script>
-</head>
+<html ng-app="myApp">
+  <head>
+
+	<script src='js/lib/angular/angular.js'></script>
+	<script src='js/lib/angular/angular-resource.js'></script>
+	<script src='js/app.js'></script>
+	<script src='js/services.js'></script>
+	<script src='js/controllers.js'></script>
+	<script src='js/filters.js'></script>
+	<script src='js/directives.js'></script>
+
+  </head>
+  <body>
+	<h1> CHESSSS </h1>
+	<div ng-controller='AppCtrl'>
+	  {{ name }}
+	</div>
+	<div ng-repeat="move_pair in moves">
+	  <div> {{move_pair[0]}} </div>
+	  <div> {{ move_pair[1] }} </div>
+	</div>
+  </body>
+</html>

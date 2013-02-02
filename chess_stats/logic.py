@@ -116,3 +116,10 @@ def build_sorted_game_stats_for_moves_by_username(username, moves, white=True):
 		games.all(),
 		moves
 	)
+
+
+def build_sorted_game_stats_for_moves_for_all_games(moves):
+	return build_sorted_game_stats_for_moves(
+		models.ChessDotComGame.objects.all(),
+		moves
+	)

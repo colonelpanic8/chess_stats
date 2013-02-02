@@ -7,16 +7,22 @@ import chess_stats.views
 
 urlpatterns = patterns(
 	'',
+	url(
+		r'^chess_stats/browse_moves/js/(?P<path>.*)$',
+		'django.views.static.serve',
+		{
+			'document_root': 'chess_stats/templates/js/',
+		}
+	),
+	url(
+		r'^chess_stats/browse_moves/views/(?P<path>.*)$',
+		'django.views.static.serve',
+		{
+			'document_root': 'chess_stats/templates/views/',
+		}
+	),
 	url(r'chess_stats/browse_games/.*', chess_stats.views.UserGameBrowserView.as_view()),
 	url(r'chess_stats/browse_moves/.*', chess_stats.views.UserMoveBrowserView.as_view()),
 	url(r'chess_stats/get_stats/.*', chess_stats.views.get_game_stats)
-    # Examples:
-    # url(r'^$', 'imalison.views.home', name='home'),
-    # url(r'^imalison/', include('imalison.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
 )
+

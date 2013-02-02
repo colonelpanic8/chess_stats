@@ -31,9 +31,13 @@ class UserMoveBrowserView(TemplateView):
 
 def get_game_stats(request):
 	username = request.GET['username']
-	moves = request.GET.getlist('moves[]')
-	return HttpResponse(
-		simplejson.dumps(
-			logic.build_sorted_game_stats_for_moves_by_username(username, moves)
-		)
+	moves = simplejson.loads(request.GET['moves'])
+	json = simplejson.dumps(
+		logic.build_sorted_game_stats_for_moves_for_all_games(moves)
+		#logic.build_sorted_game_stats_for_moves_by_username(username, moves)
 	)
+	print 'requested: ',
+	print moves
+	print 'returned: ',
+	print json
+	return HttpResponse(json)

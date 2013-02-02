@@ -1,0 +1,21 @@
+extends layout
+
+block body
+  div(ng-controller='AppCtrl')
+    h2 Hello {{name}}
+    ul.menu
+      li
+        a(href='chess') chess
+    div(ng-view)
+
+    div
+      | Angular seed app: v
+      span(app-version)
+
+<script src='js/lib/angular/angular.js'></script>
+<script src='js/lib/angular/angular-resource.js'></script>
+<script src='js/app.js'></script>
+<script src='js/services.js'></script>
+<script src='js/controllers.js'></script>
+<script src='js/filters.js'></script>
+<script src='js/directives.js'></script>
