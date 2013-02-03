@@ -22,24 +22,24 @@
 	    <th>Move #</th>
 	    <th>White</th>
 	    <th>Black</th>
-	    <tr ng-repeat="movePair in movePairs">
+	    <tr ng-repeat="movePair in moveControl.movePairs">
 	      <td>
 		{{ movePair.index/2 + 1 }}.
 	      </td>
 	      <td>
-		<a ng-click="truncateMovesTo(movePair.index)">
+		<a ng-click="moveControl.truncateMovesTo(movePair.index)">
 		  {{ movePair.whiteMove }}
 		</a>
 	      </td>
 	      <td>
-		<a ng-click="truncateMovesTo(movePair.index + 1)">
+		<a ng-click="moveControl.truncateMovesTo(movePair.index + 1)">
 		  {{ movePair.blackMove }}
 		</a>
 	      </td>
 	    <tr>
 	  </table>
 	  <table class="center">
-	    <th>Move <a ng-click="removeLastNMoves(1)">Back</a></th>
+	    <th>Move <a ng-click="moveControl.removeLastNMoves(1)">Back</a></th>
 	    <th>White Wins</th>
 	    <th>Black Wins</th>
 	    <th>Draws</th>
@@ -49,8 +49,12 @@
 	    <th>White Average Elo</th>
 	    <th>Black Average Elo</th>
 	    
-	    <tr ng-repeat="moveStats in moveStatsList">
-	      <td><a ng-click="addMove(moveStats.move)">{{ moveStats.move }}</a></td>
+	    <tr ng-repeat="moveStats in moveControl.moveStatsList">
+	      <td>
+			<a ng-click="moveControl.addMove(moveStats.move)">
+			  {{ moveStats.move }}
+			</a>
+		  </td>
 	      <td>{{ moveStats.white_wins }}</td>
 	      <td>{{ moveStats.black_wins }}</td>
 	      <td>{{ moveStats.draws }}</td>
