@@ -2,7 +2,7 @@
 
 function MoveStatsCtrl($scope, $http) { 
 	$scope.moves = [];
-	$scope.moveStatsPairs = [];
+	$scope.moveStatsList = [];
 	$scope.username = 'AlexMalison';
 
 	$scope.getMoves = function() {
@@ -17,7 +17,7 @@ function MoveStatsCtrl($scope, $http) {
 			}
 		).success(
 			function(newValue) {
-				$scope.moveStatsPairs = newValue;
+				$scope.moveStatsList = newValue;
 			}
 		);
 	}
@@ -32,6 +32,17 @@ function MoveStatsCtrl($scope, $http) {
 		$scope.moves = [];
 		$scope.getMoves();
 	}
+
+	$scope.removeLastNMoves = function(numMovesToRemove) {
+		console.log(numMovesToRemove)
+		$scope.moves = $scope.moves.slice(0, numMovesToRemove*-1);
+		$scope.getMoves();
+	}
+
+	$scope.colorElement = function($element) {
+		console.log($element)
+	}
+
 
 	$scope.getMoves()
 }

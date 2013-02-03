@@ -95,16 +95,22 @@ def build_stats_for_games(games):
 	)
 
 
+def build_stats_for_games_and_add_move(games, move):
+	stats = build_stats_for_games(games)
+	stats['move'] = move
+	return stats
+
+
 def build_sorted_game_stats_for_moves(games, moves):
 	return sorted(
 		(
-			(move, build_stats_for_games(game_list))
+			build_stats_for_games_and_add_move(game_list, move)
 			for move, game_list in build_next_move_map_for_moves(
 				games,
 				moves
 			).iteritems()
 		),
-		key=lambda item: item[1]['game_count'],
+		key=lambda item: item['game_count'],
 		reverse=True
 	)
 
