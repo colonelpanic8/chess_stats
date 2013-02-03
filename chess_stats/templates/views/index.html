@@ -17,9 +17,23 @@
 	</header>
 	
 	<div id="content">
-	  <p id="username"><input  type="text" ng-model="username"></p>
 	  <br>
-	  <p id="Moves"><b> Moves thus far: {{ moves }}</b></p>
+	  <table class="center">
+		<th>White</th>
+		<th>Black</th>
+		<tr ng-repeat="movePair in movePairs">
+		  <td>
+			<a ng-click="truncateMovesTo(movePair.index)">
+			  {{ movePair.whiteMove }}
+			</a>
+		  </td>
+		  <td>
+			<a ng-click="truncateMovesTo(movePair.index + 1)">
+			  {{ movePair.blackMove }}
+			</a>
+		  </td>
+		<tr>
+	  </table>
 	  <table class="center">
 	    <th>Move <a ng-click="removeLastNMoves(1)">Back</a></th>
 	    <th>White Wins</th>
