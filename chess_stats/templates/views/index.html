@@ -19,20 +19,24 @@
 	<div id="content">
 	  <br>
 	  <table class="center">
-		<th>White</th>
-		<th>Black</th>
-		<tr ng-repeat="movePair in movePairs">
-		  <td>
-			<a ng-click="truncateMovesTo(movePair.index)">
-			  {{ movePair.whiteMove }}
-			</a>
-		  </td>
-		  <td>
-			<a ng-click="truncateMovesTo(movePair.index + 1)">
-			  {{ movePair.blackMove }}
-			</a>
-		  </td>
-		<tr>
+	    <th>Move #</th>
+	    <th>White</th>
+	    <th>Black</th>
+	    <tr ng-repeat="movePair in movePairs">
+	      <td>
+		{{ movePair.index/2 + 1 }}.
+	      </td>
+	      <td>
+		<a ng-click="truncateMovesTo(movePair.index)">
+		  {{ movePair.whiteMove }}
+		</a>
+	      </td>
+	      <td>
+		<a ng-click="truncateMovesTo(movePair.index + 1)">
+		  {{ movePair.blackMove }}
+		</a>
+	      </td>
+	    <tr>
 	  </table>
 	  <table class="center">
 	    <th>Move <a ng-click="removeLastNMoves(1)">Back</a></th>
@@ -65,4 +69,4 @@
 
       </div><!--wrapper-->
   </body>
-</html>
+</
