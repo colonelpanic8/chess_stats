@@ -1,32 +1,42 @@
 'use strict';
 
-/* Controllers */
+function MoveStatsCtrl($scope, $http) { 
+	console.log('test')
+	$scope.moves = [];
+	$scope.moveStatsPairs = [];
+	$scope.username = 'AlexMalison';
 
-function AppCtrl($scope, $http) {
-	$scope.moves_list = [];
-	$scope.username = 'AlexMalison'
 	$scope.getMoves = function() {
-		var moves_json = JSON.stringify($scope.moves_list)
-		var moves_string = encodeURIComponent(moves_json)
 		$http.get(
-			'/chess_stats/get_stats?moves='+moves_string+'&username='+$scope.username
+			{
+				url: '/chess_stats/get_stats',
+				params: {
+					moves: JSON.stringify($scope.moves_list)
+					username: $scope.username
+				}
+			}
 		).success(
-				function(data) {
-					$scope.moves = data;
-				});
+			function(moveStatsPairs) {
+				$scope.moveStatsPairs = moveStatsPairs;
+			}
+		);
 	}
-	$scope.alterMoves = function($move) {
-		$scope.moves_list.push($move)
-		$scope.getMoves()
+
+	$scope.addMove = function(move) {
+		$scope.moves.push(move);
+		$scope.getMoves();
 	}
-	$scope.back = function() {
-		$scope.moves_list.pop()
-		$scope.getMoves()
+
+	$scope.removeLastNMoves(numMovesToRemove) = function() {
+		$scope.moves_list.slice(0, -1*numMovesToRemove);
+		$scope.getMoves();
 	}
+
 	$scope.setUsername = function(username) {
-		$scope.username = username
-		$scope.moves_list = []
-		$scope.getMoves()
+		$scope.username = username;
+		$scope.moves_list = [];
+		$scope.getMoves();
 	}
-	$scope.getMoves([]);
+
+	$scope.getMoves();
 }

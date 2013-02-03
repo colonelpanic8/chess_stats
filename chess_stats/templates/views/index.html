@@ -11,10 +11,10 @@
 
   </head>
   <body>
-	<div ng-controller='AppCtrl'>
+	<div ng-controller='MoveStatsCtrl'>
 	  <input type="text" ng-model="username">
 	  <br>
-	  Moves thus far: {{ moves_list }}
+	  Moves thus far: {{ moves }}
 	  <table>
 		<th>Move</th>
 		<th>White Wins</th>
@@ -26,37 +26,37 @@
 		<th>White Average Elo</th>
 		<th>Black Average Elo</th>
 		
-		<tr ng-repeat="move_pair in moves">
+		<tr ng-repeat="moveStatsPair in movesStatsPairs">
 		  <td style=style="text-align: center;">
-			<a ng-click="alterMoves(move_pair[0])">{{ move_pair[0] }}</a>
+			<a ng-click="addMove(moveStatsPair[0])">{{ moveStatsPair[0] }}</a>
 		  </td>
 		  <td style="text-align: center;">
-			{{ move_pair[1].white_wins }}
+			{{ moveStatsPair[1].white_wins }}
 		  </td>
 		  <td style="text-align: center;">
-			{{ move_pair[1].black_wins }}
+			{{ moveStatsPair[1].black_wins }}
 		  </td>
 		  <td style="text-align: center;">
-			{{ move_pair[1].draws }}
+			{{ moveStatsPair[1].draws }}
 		  </td>
 		  <td style="text-align: center;">
-			{{ move_pair[1].white_win_pct.toFixed(2) }}
+			{{ moveStatsPair[1].white_win_pct.toFixed(2) }}
 		  </td>
 		  <td style="text-align: center;">
-			{{ move_pair[1].black_win_pct.toFixed(2) }}
+			{{ moveStatsPair[1].black_win_pct.toFixed(2) }}
 		  </td>
 		  <td style="text-align: center;">
-			{{ move_pair[1].draw_pct.toFixed(2) }}
+			{{ moveStatsPair[1].draw_pct.toFixed(2) }}
 		  </td>
 		  <td style="text-align: center;">
-			{{ move_pair[1].white_average_elo }}
+			{{ moveStatsPair[1].white_average_elo }}
 		  </td>
 		  <td style="text-align: center;">
-			{{ move_pair[1].black_average_elo }}
+			{{ moveStatsPair[1].black_average_elo }}
 		  </td>
 		</tr> 
 	  </table>
-	  <a ng-click="back()">Back</a>
+	  <a ng-click="removeLastNMoves(1)">Back</a>
 	</div>
   </body>
 </html>
