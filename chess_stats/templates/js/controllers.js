@@ -42,7 +42,7 @@ function MoveStatsCtrl($scope, $http) {
 
 	$scope.truncateMovesTo = function(lastIndex) {
 		if(lastIndex >= $scope.moves.length) return
-		$scope.moves = $scope.moves.slice(0, lastIndex+1);
+		$scope.moves = $scope.moves.slice(0, lastIndex);
 		$scope.refreshMoveStatsList();
 	}
 
@@ -61,8 +61,7 @@ function MoveStatsCtrl($scope, $http) {
 				}
 			);
 		}
-		if($scope.moves.length % 2 == 1) {
-			
+		if($scope.moves.length & 0x1 == 1) {			
 			movePairs.push(
 				{
 					'index': $scope.moves.length - 1,
@@ -70,7 +69,15 @@ function MoveStatsCtrl($scope, $http) {
 					'blackMove': "..."
 				}
 			);
-		}
+		} else {
+			movePairs.push(
+				{
+					'index': $scope.moves.length,
+					'whiteMove': "...",
+					'blackMove': ""
+				}
+			);
+		};
 		return movePairs
 	}
 
