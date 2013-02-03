@@ -37,27 +37,35 @@ a:hover{
     margin-left: 15%;
 }
 
-#username {
-    margin-left: 15%;
+td.containing-td {
+    vertical-align: top;
 }
 
-table{
-    position: center;
+table {
+    margin-right: auto;
+    margin-left: auto;
     border-collapse: collapse;
 }
 
-table.center {
-    width: 70%;
-    margin-left: 15%; 
-    margin-right: 15%;
-  }
+table.containing-table {
+    width: 80%;
+}
+
+table.left {
+    vertical-align: top;
+    overflow: hidden;
+}
+
+table.right {
+    float: left;
+}
 
 table,th,td {
     border: 2px solid black;
 }
 
 th {
-    padding: 15px;
+    padding: 10px;
     background-color: #33332D;
     color: white;
 }
