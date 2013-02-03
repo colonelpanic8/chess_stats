@@ -1,78 +1,76 @@
 'use strict';
 
-function MoveStatsCtrl($scope, $http) { 
-	$scope.moves = [];
-	$scope.movePairs = []
-	$scope.moveStatsList = [];
-	$scope.username = 'AlexMalison';
+function MoveStatsCtrl($scope, $http) {
+	var moveControl = {
+		moves: [],
+		movePairs: [],
+		moveStatsList: [],
+		username: 'AlexMalison'
+	}
 
-	$scope.refreshMoveStatsList = function() {
+	moveControl.refreshMoveStatsList = function() {
 		$http(
 			{
 				'method': 'GET',
 				'url': '/chess_stats/get_stats',
 				'params': {
-					'moves': $scope.moves,
-					'username': $scope.username
+					'moves': this.moves,
+					'username': this.username
 				}
 			}
 		).success(
 			function(newValue) {
-				$scope.moveStatsList = newValue;
+				moveControl.moveStatsList = newValue;
 			}
 		);
-		$scope.movePairs = $scope.getMovePairs()
+		this.movePairs = this.getMovePairs()
 	}
 
-	$scope.addMove = function(move) {
-		$scope.moves.push(move);
-		$scope.refreshMoveStatsList();
+	moveControl.addMove = function(move) {
+		this.moves.push(move);
+		this.refreshMoveStatsList();
 	}
 
-	$scope.setUsername = function(username) {
-		$scope.username = username;
-		$scope.moves = [];
-		$scope.refreshMoveStatsList();
+	moveControl.setUsername = function(username) {
+		this.username = username;
+		this.moves = [];
+		this.refreshMoveStatsList();
 	}
 
-	$scope.removeLastNMoves = function(numMovesToRemove) {
-		$scope.moves = $scope.moves.slice(0, numMovesToRemove*-1);
-		$scope.refreshMoveStatsList();
+	moveControl.removeLastNMoves = function(numMovesToRemove) {
+		this.moves = this.moves.slice(0, numMovesToRemove*-1);
+		this.refreshMoveStatsList();
 	}
 
-	$scope.truncateMovesTo = function(lastIndex) {
-		if(lastIndex >= $scope.moves.length) return
-		$scope.moves = $scope.moves.slice(0, lastIndex);
-		$scope.refreshMoveStatsList();
+	moveControl.truncateMovesTo = function(lastIndex) {
+		if(lastIndex >= this.moves.length) return
+		this.moves = this.moves.slice(0, lastIndex);
+		this.refreshMoveStatsList();
 	}
 
-	$scope.colorElement = function($element) {
-		console.log($element)
-	}
-
-	$scope.getMovePairs = function() {
+	moveControl.getMovePairs = function() {
 		var movePairs = []
-		for(var i = 0; i < $scope.moves.length - 1; i += 2) {
+		for(var i = 0; i < this.moves.length - 1; i += 2) {
 			movePairs.push(
 				{
 					'index': i,
-					'whiteMove': $scope.moves[i],
-					'blackMove': $scope.moves[i+1],
+					'whiteMove': this.moves[i],
+					'blackMove': this.moves[i+1],
 				}
 			);
 		}
-		if($scope.moves.length & 0x1 == 1) {			
+		if(this.moves.length & 0x1 == 1) {			
 			movePairs.push(
 				{
-					'index': $scope.moves.length - 1,
-					'whiteMove': $scope.moves[$scope.moves.length - 1],
+					'index': this.moves.length - 1,
+					'whiteMove': this.moves[this.moves.length - 1],
 					'blackMove': "..."
 				}
 			);
 		} else {
 			movePairs.push(
 				{
-					'index': $scope.moves.length,
+					'index': this.moves.length,
 					'whiteMove': "...",
 					'blackMove': ""
 				}
@@ -81,5 +79,6 @@ function MoveStatsCtrl($scope, $http) {
 		return movePairs
 	}
 
-	$scope.refreshMoveStatsList()
+	moveControl.refreshMoveStatsList()
+	$scope.moveControl = moveControl
 }
