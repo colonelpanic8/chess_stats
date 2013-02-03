@@ -1,63 +1,55 @@
 <html ng-app="myApp">
   <head>
 
-	<script src='../js/lib/angular/angular.js'></script>
-	<script src='../js/lib/angular/angular-resource.js'></script>
-	<script src='../js/app.js'></script>
-	<script src='../js/services.js'></script>
-	<script src='../js/controllers.js'></script>
-	<script src='../js/filters.js'></script>
-	<script src='../js/directives.js'></script>
-
+    <script src="../js/lib/angular/angular.js"></script>
+    <script src="../js/lib/angular/angular-resource.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/services.js"></script>
+    <script src="../js/controllers.js"></script>
+    <script src="../js/filters.js"></script>
+    <script src="../js/directives.js"></script>
+    <link rel="stylesheet" href="../css/chess_styles.css" type="text/css">
   </head>
   <body>
-	<div ng-controller='AppCtrl'>
-	  <input type="text" ng-model="username">
-	  <button ng-click="">
+    <head>
+      <div id="wrapper"  ng-controller="AppCtrl">
+	<header>
+	  <h1>Chess Stats</h1>
+	</header>
+	
+	<div id="content">
+	  <p id="username"><input  type="text" ng-model="username"></p>
 	  <br>
-	  Moves thus far: {{ moves_list }}
-	  <table>
-		<th>Move</th>
-		<th>White Wins</th>
-		<th>Black Wins</th>
-		<th>Draws</th>
-		<th>White Win %</th>
-		<th>Black Win %</th>
-		<th>Draw %</th>
-		<th>White Average Elo</th>
-		<th>Black Average Elo</th>
-		
-		<tr ng-repeat="move_pair in moves">
-		  <td style=style="text-align: center;">
-			<a ng-click="alterMoves(move_pair[0])">{{ move_pair[0] }}</a>
-		  </td>
-		  <td style="text-align: center;">
-			{{ move_pair[1].white_wins }}
-		  </td>
-		  <td style="text-align: center;">
-			{{ move_pair[1].black_wins }}
-		  </td>
-		  <td style="text-align: center;">
-			{{ move_pair[1].draws }}
-		  </td>
-		  <td style="text-align: center;">
-			{{ move_pair[1].white_win_pct.toFixed(2) }}
-		  </td>
-		  <td style="text-align: center;">
-			{{ move_pair[1].black_win_pct.toFixed(2) }}
-		  </td>
-		  <td style="text-align: center;">
-			{{ move_pair[1].draw_pct.toFixed(2) }}
-		  </td>
-		  <td style="text-align: center;">
-			{{ move_pair[1].white_average_elo }}
-		  </td>
-		  <td style="text-align: center;">
-			{{ move_pair[1].black_average_elo }}
-		  </td>
-		</tr> 
+	  <p id="Moves"><b> Moves thus far: {{ moves_list }}</b></p>
+	  <table class="center">
+	    <th>Move <a ng-click="back()">Back</a></th>
+	    <th>White Wins</th>
+	    <th>Black Wins</th>
+	    <th>Draws</th>
+	    <th>White Win %</th>
+	    <th>Black Win %</th>
+	    <th>Draw %</th>
+	    <th>White Average Elo</th>
+	    <th>Black Average Elo</th>
+	    
+	    <tr ng-repeat="move_pair in moves">
+	      <td><a ng-click="alterMoves(move_pair[0])">{{ move_pair[0] }}</a></td>
+	      <td>{{ move_pair[1].white_wins }}</td>
+	      <td>{{ move_pair[1].black_wins }}</td>
+	      <td>{{ move_pair[1].draws }}</td>
+	      <td>{{ move_pair[1].white_win_pct.toFixed(2) }}</td>
+	      <td>{{ move_pair[1].black_win_pct.toFixed(2) }}</td>
+	      <td>{{ move_pair[1].draw_pct.toFixed(2) }}</td>
+	      <td>{{ move_pair[1].white_average_elo }}</td>
+	      <td>{{ move_pair[1].black_average_elo }}</td>
+	    </tr> 
 	  </table>
-	  <a ng-click="back()">Back</a>
-	</div>
+	  </div><!--content-->
+
+	<footer>
+	  <p>Copyright 2013</p>
+	</footer>
+
+      </div><!--wrapper-->
   </body>
 </html>

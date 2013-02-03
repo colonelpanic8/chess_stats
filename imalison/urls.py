@@ -14,6 +14,13 @@ urlpatterns = patterns(
 			'document_root': 'chess_stats/templates/js/',
 		}
 	),
+        url(
+		r'^chess_stats/browse_moves/css/(?P<path>.*)$',
+		'django.views.static.serve',
+		{
+			'document_root': 'chess_stats/templates/css/',
+		}
+	),
 	url(
 		r'^chess_stats/browse_moves/views/(?P<path>.*)$',
 		'django.views.static.serve',
