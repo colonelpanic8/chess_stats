@@ -18,6 +18,7 @@ class UserGameBrowserView(TemplateView):
 		context = super(UserGameBrowserView, self).get_context_data(**kwargs)
 		username = username_matcher.search(self.request.path).group(1)
 		context['games'] = logic.fetch_games_for_user(username)
+		context['username'] = username
 		return context
 
 
@@ -28,6 +29,15 @@ class UserMoveBrowserView(TemplateView):
 		context = super(UserMoveBrowserView, self).get_context_data(**kwargs)
 		username = username_matcher.search(self.request.path).group(1)
 		context['username'] = username
+		return context
+
+
+class CSSView(TemplateView):
+	template_name = (os.path.dirname(__file__) + '/css/move_browser_styles.css')
+
+	def get_context_data(self, **kwargs):
+		context = super(CSSView, self).get_context_data(**kwargs)
+		context.update(logic.get_color_dictionary())
 		return context
 
 

@@ -7,11 +7,19 @@ import chess_stats.views
 
 urlpatterns = patterns(
 	'',
+        url(r'^chess_stats/css/move_browser_styles.css', chess_stats.views.CSSView.as_view()),
 	url(
 		r'^chess_stats/js/(?P<path>.*)$',
 		'django.views.static.serve',
 		{
 			'document_root': 'chess_stats/js/',
+		}
+	),
+        url(
+		r'^chess_stats/img/(?P<path>.*)$',
+		'django.views.static.serve',
+		{
+			'document_root': 'chess_stats/img/',
 		}
 	),
         url(
