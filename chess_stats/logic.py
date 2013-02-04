@@ -1,3 +1,5 @@
+import simplejson
+
 import models
 from loader import ChessDotComGameLoader
 from scraper import ChessDotComScraper
@@ -129,3 +131,9 @@ def build_sorted_game_stats_for_moves_for_all_games(moves):
 		models.ChessDotComGame.objects.all(),
 		moves
 	)
+
+
+def get_color_dictionary():
+	with open('chess_stats/config/colors.json') as colors_file:
+		return simplejson.loads(colors_file.read())
+	
