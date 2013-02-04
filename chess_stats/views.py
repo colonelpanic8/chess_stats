@@ -18,6 +18,7 @@ class UserGameBrowserView(TemplateView):
 		context = super(UserGameBrowserView, self).get_context_data(**kwargs)
 		username = username_matcher.search(self.request.path).group(1)
 		context['games'] = logic.fetch_games_for_user(username)
+		context['username'] = username
 		return context
 
 
