@@ -8,28 +8,30 @@ import chess_stats.views
 urlpatterns = patterns(
 	'',
 	url(
-		r'^chess_stats/browse_moves/js/(?P<path>.*)$',
+		r'^chess_stats/js/(?P<path>.*)$',
 		'django.views.static.serve',
 		{
-			'document_root': 'chess_stats/templates/js/',
+			'document_root': 'chess_stats/js/',
 		}
 	),
         url(
-		r'^chess_stats/browse_moves/css/(?P<path>.*)$',
+		r'^chess_stats/css/(?P<path>.*)$',
 		'django.views.static.serve',
 		{
-			'document_root': 'chess_stats/templates/css/',
+			'document_root': 'chess_stats/css/',
 		}
 	),
 	url(
-		r'^chess_stats/browse_moves/views/(?P<path>.*)$',
-		'django.views.static.serve',
-		{
-			'document_root': 'chess_stats/templates/views/',
-		}
+		r'chess_stats/browse_games/.*',
+		chess_stats.views.UserGameBrowserView.as_view()
 	),
-	url(r'chess_stats/browse_games/.*', chess_stats.views.UserGameBrowserView.as_view()),
-	url(r'chess_stats/browse_moves/.*', chess_stats.views.UserMoveBrowserView.as_view()),
-	url(r'chess_stats/get_stats/.*', chess_stats.views.get_game_stats)
+	url(
+		r'chess_stats/browse_moves/.*',
+		chess_stats.views.UserMoveBrowserView.as_view()
+	),
+	url(
+		r'chess_stats/get_stats/.*',
+		chess_stats.views.get_game_stats
+	)
 )
 

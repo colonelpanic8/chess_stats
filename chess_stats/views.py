@@ -9,14 +9,11 @@ import logic
 
 
 class UserGameBrowserView(TemplateView):
-	template_name = (
-		os.path.dirname(__file__) + '/templates/browse_games.html'
-	)
+	template_name = (os.path.dirname(__file__) + '/templates/browse_games.html')
 
 	username_matcher = re.compile('([^/]*?)$')
 
 	def get_context_data(self, **kwargs):
-		print self.template_name
 		context = super(UserGameBrowserView, self).get_context_data(**kwargs)
 		username = self.username_matcher.search(self.request.path).group(1)
 		context['games'] = logic.fetch_games_for_user(username)
@@ -24,10 +21,7 @@ class UserGameBrowserView(TemplateView):
 
 
 class UserMoveBrowserView(TemplateView):
-	template_name = (
-		os.path.dirname(__file__) +
-		'templates/browse_moves.html'
-	)
+	template_name = (os.path.dirname(__file__) + '/templates/browse_moves.html')
 
 
 def get_game_stats(request):
