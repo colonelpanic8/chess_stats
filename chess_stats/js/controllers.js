@@ -5,7 +5,7 @@ function MoveStatsCtrl($scope, $http) {
 		moves: [],
 		movePairs: [],
 		moveStatsList: [],
-		username: 'AlexMalison'
+		username: ''
 	}
 
 	moveControl.refreshMoveStatsList = function() {
