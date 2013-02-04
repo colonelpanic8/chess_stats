@@ -1,23 +1,87 @@
+{% load verbatim %}
+
+{% verbatim %}
 <html ng-app="myApp">
   <head>
-
-	<script src='js/lib/angular/angular.js'></script>
-	<script src='js/lib/angular/angular-resource.js'></script>
-	<script src='js/app.js'></script>
-	<script src='js/services.js'></script>
-	<script src='js/controllers.js'></script>
-	<script src='js/filters.js'></script>
-	<script src='js/directives.js'></script>
-
+    <script src="../js/lib/angular/angular.js"></script>
+    <script src="../js/lib/angular/angular-resource.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/services.js"></script>
+    <script src="../js/controllers.js"></script>
+    <script src="../js/filters.js"></script>
+    <script src="../js/directives.js"></script>
+    <link rel="stylesheet" href="../css/chess_styles.css" type="text/css">
   </head>
   <body>
-	<h1> CHESSSS </h1>
-	<div ng-controller='AppCtrl'>
-	  {{ name }}
-	</div>
-	<div ng-repeat="move_pair in moves">
-	  <div> {{move_pair[0]}} </div>
-	  <div> {{ move_pair[1] }} </div>
-	</div>
+    <div id="wrapper"  ng-controller="MoveStatsCtrl">
+	  <header>
+		<h1>Chess Stats</h1>
+	  </header>
+	  
+	  <div id="content">
+		<br>
+		<table claqss="containing-table">
+		  <tr>
+			<td class="containing-td">
+			  <table class="left"> 
+				<th>Move #</th>
+				<th>White</th>
+				<th>Black</th>
+				<tr ng-repeat="movePair in moveControl.movePairs">
+				  <td>
+					{{ movePair.index/2 + 1 }}.
+				  </td>
+				  <td>
+					<a ng-click="moveControl.truncateMovesTo(movePair.index)">
+					  {{ movePair.whiteMove }}
+					</a>
+				  </td>
+				  <td>
+					<a ng-click="moveControl.truncateMovesTo(movePair.index + 1)">
+					  {{ movePair.blackMove }}
+					</a>
+				  </td>
+				</tr>
+			  </table>
+			</td>
+			<td class="containing-td">
+			  <table class="right">
+				<th>Move</th>
+				<th>White Wins</th>
+				<th>Black Wins</th>
+				<th>Draws</th>
+				<th>White Win %</th>
+				<th>Black Win %</th>
+				<th>Draw %</th>
+				<th>White Average Elo</th>
+				<th>Black Average Elo</th>
+				
+				<tr ng-repeat="moveStats in moveControl.moveStatsList">
+				  <td>
+					<a ng-click="moveControl.addMove(moveStats.move)">
+					  {{ moveStats.move }}
+					</a>
+				  </td>
+				  <td>{{ moveStats.white_wins }}</td>
+				  <td>{{ moveStats.black_wins }}</td>
+				  <td>{{ moveStats.draws }}</td>
+				  <td>{{ moveStats.white_win_pct.toFixed(2) }}</td>
+				  <td>{{ moveStats.black_win_pct.toFixed(2) }}</td>
+				  <td>{{ moveStats.draw_pct.toFixed(2) }}</td>
+				  <td>{{ moveStats.white_average_elo }}</td>
+				  <td>{{ moveStats.black_average_elo }}</td>
+				</tr> 
+			  </table>
+			</td>
+	      </tr><!--containing table-->
+		</table><!--containing table-->
+	  </div><!--content-->
+
+	  <footer>
+		<p>Copyright 2013</p>
+	  </footer>
+
+	</div><!--wrapper-->
   </body>
 </html>
+{% endverbatim %}
