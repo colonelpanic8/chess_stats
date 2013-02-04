@@ -31,6 +31,15 @@ class UserMoveBrowserView(TemplateView):
 		return context
 
 
+class CSSView(TemplateView):
+	template_name = (os.path.dirname(__file__) + '/css/move_browser_styles.css')
+
+	def get_context_data(self, **kwargs):
+		context = super(CSSView, self).get_context_data(**kwargs)
+		context.update(logic.get_color_dictionary())
+		return context
+
+
 def get_game_stats(request):
 	username = request.GET['username']
 	moves = simplejson.loads(request.GET['moves'])

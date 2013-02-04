@@ -1,5 +1,4 @@
 {% load verbatim %}
-
 {% verbatim %}
 <html ng-app="myApp">
   <head>
@@ -10,78 +9,80 @@
     <script src="../js/controllers.js"></script>
     <script src="../js/filters.js"></script>
     <script src="../js/directives.js"></script>
-    <link rel="stylesheet" href="../css/chess_styles.css" type="text/css">
+    <link rel="stylesheet" href="../css/move_browser_styles.css" type="text/css">
   </head>
   <body>
     <div id="wrapper"  ng-controller="MoveStatsCtrl">
-	  <header>
-		<h1>Chess Stats</h1>
-	  </header>
-	  
-	  <div id="content">
-		<br>
-		<table class="containing-table">
-		  <tr>
-			<td class="containing-td">
-			  <table class="left"> 
-				<th>Move #</th>
-				<th>White</th>
-				<th>Black</th>
-				<tr ng-repeat="movePair in moveControl.movePairs">
-				  <td>
-					{{ movePair.index/2 + 1 }}.
-				  </td>
-				  <td>
-					<a ng-click="moveControl.truncateMovesTo(movePair.index)">
-					  {{ movePair.whiteMove }}
-					</a>
-				  </td>
-				  <td>
-					<a ng-click="moveControl.truncateMovesTo(movePair.index + 1)">
-					  {{ movePair.blackMove }}
-					</a>
-				  </td>
-				</tr>
-			  </table>
-			</td>
-			<td class="containing-td">
-			  <table class="right">
-				<th>Move</th>
-				<th>White Wins</th>
-				<th>Black Wins</th>
-				<th>Draws</th>
-				<th>White Win %</th>
-				<th>Black Win %</th>
-				<th>Draw %</th>
-				<th>White Average Elo</th>
-				<th>Black Average Elo</th>
-				
-				<tr ng-repeat="moveStats in moveControl.moveStatsList">
-				  <td>
-					<a ng-click="moveControl.addMove(moveStats.move)">
-					  {{ moveStats.move }}
-					</a>
-				  </td>
-				  <td>{{ moveStats.white_wins }}</td>
-				  <td>{{ moveStats.black_wins }}</td>
-				  <td>{{ moveStats.draws }}</td>
-				  <td>{{ moveStats.white_win_pct.toFixed(2) }}</td>
-				  <td>{{ moveStats.black_win_pct.toFixed(2) }}</td>
-				  <td>{{ moveStats.draw_pct.toFixed(2) }}</td>
-				  <td>{{ moveStats.white_average_elo }}</td>
-				  <td>{{ moveStats.black_average_elo }}</td>
-				</tr> 
-			  </table>
-			</td>
-	      </tr><!--containing table-->
-		</table><!--containing table-->
-	  </div><!--content-->
+      <header>
+	<center><img src="../img/chess_logo.png" alt="Logo" width="40%"></center>
+      </header>
+      <div id="content">
+	<br>
+	<table class="containing-table">
+	  <tr>
+	    <td class="containing-td">
 
-	  <footer>
-		<p>Copyright 2013</p>
-	  </footer>
+	      <div class="moves-table">
+	      <table class="left"> 
+		<th class="movePair">#</th>
+		<th class="movePair">White</th>
+		<th class="movePair">Black</th>
+		<tr class="movePair"  ng-repeat="movePair in moveControl.movePairs">
+		  <td>
+		    {{ movePair.index/2 + 1 }}.
+		  </td>
+		  <td>
+		    <a ng-click="moveControl.truncateMovesTo(movePair.index)">
+		      {{ movePair.whiteMove }}
+		    </a>
+		  </td>
+		  <td>
+		    <a ng-click="moveControl.truncateMovesTo(movePair.index + 1)">
+		      {{ movePair.blackMove }}
+		    </a>
+		  </td>
+		</tr>
+	      </table>
+	   </div>
+	    </td>
+	    <td class="containing-td">
+	      <table class="right">
+		<th>Next Move</th>
+		<th>White Wins</th>
+		<th>Black Wins</th>
+		<th>Draws</th>
+		<th>White Win %</th>
+		<th>Black Win %</th>
+		<th>Draw %</th>
+		<th>White Average Elo</th>
+		<th>Black Average Elo</th>
+		
+		<tr class="row-stats"  ng-repeat="moveStats in moveControl.moveStatsList">
+		  <td>
+		    <a ng-click="moveControl.addMove(moveStats.move)">
+		      {{ moveStats.move }}
+		    </a>
+		  </td>
+		  <td>{{ moveStats.white_wins }}</td>
+		  <td>{{ moveStats.black_wins }}</td>
+		  <td>{{ moveStats.draws }}</td>
+		  <td>{{ moveStats.white_win_pct.toFixed(2) }}</td>
+		  <td>{{ moveStats.black_win_pct.toFixed(2) }}</td>
+		  <td>{{ moveStats.draw_pct.toFixed(2) }}</td>
+		  <td>{{ moveStats.white_average_elo }}</td>
+		  <td>{{ moveStats.black_average_elo }}</td>
+		</tr> 
+	      </table>
+	    </td>
+	  </tr><!--containing table-->
+	</table><!--containing table-->
+      </div><!--content-->
 
-	</div><!--wrapper-->
+      <footer>
+	<p>Copyright 2013</p>
+      </footer>
+
+    </div><!--wrapper-->
   </body>
 </html>
 {% endverbatim %}
