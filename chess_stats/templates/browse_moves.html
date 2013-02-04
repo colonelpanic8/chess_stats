@@ -1,6 +1,4 @@
 {% load verbatim %}
-
-{% verbatim %}
 <html ng-app="myApp">
   <head>
     <script src="../js/lib/angular/angular.js"></script>
@@ -13,9 +11,10 @@
     <link rel="stylesheet" href="../css/chess_styles.css" type="text/css">
   </head>
   <body>
-    <div id="wrapper"  ng-controller="MoveStatsCtrl">
+    <div id="angular"  ng-controller="MoveStatsCtrl" ng-init="init('{{username}}')">
+	  {% verbatim %}
 	  <header>
-		<h1>Chess Stats</h1>
+		<h1>Chess Stats: {{ moveControl.username }}</h1>
 	  </header>
 	  
 	  <div id="content">
@@ -75,13 +74,13 @@
 			</td>
 	      </tr><!--containing table-->
 		</table><!--containing table-->
+{% endverbatim %}
 	  </div><!--content-->
-
+	  
 	  <footer>
 		<p>Copyright 2013</p>
 	  </footer>
-
-	</div><!--wrapper-->
+	</div><!--angular-->
   </body>
 </html>
-{% endverbatim %}
+
