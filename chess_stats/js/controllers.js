@@ -5,31 +5,50 @@ function MoveStatsCtrl($scope, $http) {
 		moves: [],
 		movePairs: [],
 		moveStatsList: [],
-		username: ""
+		username: "",
+        refreshLock: false,
+        isWhite: false
 	}
 
 	moveControl.refreshMoveStatsList = function() {
+        var self = this
 		$http(
 			{
 				'method': 'GET',
 				'url': '/chess_stats/get_stats',
 				'params': {
 					'moves': this.moves,
-					'username': this.username
+					'username': this.username,
+                    'color': this.isWhite? 'white' : 'black'
 				}
 			}
 		).success(
 			function(newValue) {
 				moveControl.moveStatsList = newValue;
+                self.refreshLock = false
 			}
 		);
 		this.movePairs = this.getMovePairs()
 	}
 
 	moveControl.addMove = function(move) {
+        if(this.refreshLock) {
+            return
+        }
+        this.refreshLock = true
 		this.moves.push(move);
 		this.refreshMoveStatsList();
 	}
+
+    moveControl.setColor = function(isWhite) {
+        if(this.refreshLock) {
+            return
+        }
+        this.refreshLock = true
+        this.moves = []
+        this.isWhite = isWhite
+        this.refreshMoveStatsList();
+    }
 
 	moveControl.setUsername = function(username) {
 		this.username = username;
@@ -38,12 +57,20 @@ function MoveStatsCtrl($scope, $http) {
 	}
 
 	moveControl.removeLastNMoves = function(numMovesToRemove) {
+        if(this.refreshLock) {
+            return
+        }
+        this.refreshLock = true
 		this.moves = this.moves.slice(0, numMovesToRemove*-1);
 		this.refreshMoveStatsList();
 	}
 
 	moveControl.truncateMovesTo = function(lastIndex) {
 		if(lastIndex >= this.moves.length) return
+        if(this.refreshLock) {
+            return
+        }
+        this.refreshLock = true
 		this.moves = this.moves.slice(0, lastIndex);
 		this.refreshMoveStatsList();
 	}
