@@ -48,7 +48,7 @@ class ChessDotComUser(models.Model):
 
 class ChessDotComGame(models.Model):
 
-	chess_dot_com_id = models.PositiveIntegerField(unique=True)
+	chess_dot_com_id = models.PositiveIntegerField(null=True)
 	date_played = models.DateField()
 
 	white_elo = models.PositiveIntegerField()

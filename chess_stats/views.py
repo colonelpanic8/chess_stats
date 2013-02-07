@@ -43,11 +43,13 @@ class CSSView(TemplateView):
 
 def get_game_stats(request):
 	username = request.GET['username']
+	white = request.GET.get('color', 'white').lower() == 'white'
 	moves = simplejson.loads(request.GET['moves'])
 	if username:
 		move_stats = logic.build_sorted_game_stats_for_moves_by_username(
 			username,
-			moves
+			moves,
+			white=white
 		)
 	else:
 		move_stats = logic.build_sorted_game_stats_for_moves_for_all_games(moves)

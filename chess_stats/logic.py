@@ -1,8 +1,11 @@
+import os
+import re
 import simplejson
 
 import models
-from loader import ChessDotComGameLoader
-from scraper import ChessDotComScraper
+from chess_dot_com_etl import ChessDotComGameETL
+from legacy_etl import LegacyGameETL
+from scraper import ChessDotComScraper, ChessComPGNFileFinder
 
 
 def save_games(games):
@@ -20,21 +23,35 @@ def fetch_games_for_user(username, stop_at_latest_id=True, stop_at_id=None):
 		else:
 			stop_at_id = user.last_scanned_chess_dot_com_game_id
 
-	scraper = ChessDotComScraper(ChessDotComScraper.GAME_TYPE_LIVE)
-	loader = ChessDotComGameLoader()
+	scraper = ChessDotComScraper(ChessDotComScraper.GAME_TYPE_LIVE, username)
+	scraper.scrape(stop_at_id=stop_at_id)
 
-	try:
-		scraper.scrape(username, stop_at_id=stop_at_id)
-		games = [loader.execute(raw_data) for raw_data in scraper.get_pgns()]
-		save_games(games)
-	except IOError:
-		pass
+	games = [ChessDotComGameETL(game_id).execute() for game_id in scraper.game_ids]
+	save_games(games)
 
 	user = models.ChessDotComUser.find_user_by_username(username)
 	user.last_scanned_chess_dot_com_game_id = \
 		user.most_recently_played_game_in_records.chess_dot_com_id
 	user.save()
 	return user.all_games
+
+
+def load_games_from_legacy_files_in_directory(directory):
+	filename_matcher = re.compile('.*\.xml')
+	for directory_path, directory_names, filenames in os.walk(directory):
+		for filename in filenames:
+			if filename_matcher.match(filename):
+				load_games_from_legacy_xml(
+					os.path.join(directory_path, filename),
+					os.path.basename(directory_path)
+				)
+
+
+def load_games_from_legacy_xml(filename, username):
+	print 'loading %s for %s' % (filename, username)
+	games = LegacyGameETL(filename, username).execute()
+	save_games(games)
+	return games
 
 
 def filter_games_by_moves(games, moves):
@@ -136,4 +153,3 @@ def build_sorted_game_stats_for_moves_for_all_games(moves):
 def get_color_dictionary():
 	with open('chess_stats/config/colors.json') as colors_file:
 		return simplejson.loads(colors_file.read())
-	

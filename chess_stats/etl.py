@@ -1,148 +1,69 @@
-from datetime import datetime
-
-import util
-
-
 class Extractor(object):
 
-	def extract(self, raw_data):
-		"""Extract a data element from `raw_data`"""
+	def extract(self, identifier):
 		raise NotImplemented()
 
 
 class Transformer(object):
 
-	transform_arguments = None
-	return_names = None
-
-	def __init__(
-		self,
-		extracted_to_argument_name_map=None,
-		return_name_map=None
-	):
-		self.return_name_map = return_name_map
-		if extracted_to_argument_name_map:
-			self.extracted_to_argument_name_map = extracted_to_argument_name_map
-		else:
-			self.extracted_to_argument_name_map = {
-				argument: argument for argument in self.transform_arguments
-			}
-
-	def get_return_name(self, internal_name):
-		if self.return_name_map is None:
-			return internal_name
-		return self.return_name_map[internal_name]
-
-	def transform(self):
-		"""Transform the data that is passed to this function. Returns a list of
-		tuples of name, value pairs."""
+	def transform(self, raw_data):
 		raise NotImplemented()
-
-
-class SingleElementTransformer(Transformer):
-
-	def __init__(self, element_name=None, input_name=None, output_name=None):
-		if element_name:
-			input_name = element_name
-			output_name = element_name
-		argument_name = iter(self.transform_arguments).next()
-		return_name = iter(self.return_names).next()
-		super(SingleElementTransformer, self).__init__(
-			extracted_to_argument_name_map={input_name: argument_name},
-			return_name_map={return_name: output_name}
-		)
-
-	def transform(self, **kwargs):
-		return [(
-			self.get_return_name(iter(self.return_names).next()),
-			self._transform(**kwargs)
-		)]
-
-	def _transform(self, **kwargs):
-		pass
 
 
 class Loader(object):
 
-	# `extractors` should be a dictionary mapping attribute names to extractor
-	# instankces.
-	extractors = None
+	def load(self, transformed):
+		raise NotImplemented()
 
-	# `transformers` should be a list of transformation objects that should be
+
+class ETL(object):
+
+	# `extractor` should be an object that knows how to fetch data to be
+	# transformed from a single argument.
+	extractor = None
+
+	# `transformers` should be a dictionary of transformation objects that should be
 	# applied to extracted data.
 	transformers = None
 
-	def __init__(self):
-		self.extracted = None
-		self.transformed = {}
-		self.loaded = {}
+	# `loader` should be a loader instance. It should operate on a dictionary of
+	# transformed values
 
-	def __getattr__(self, attr):
-		for object_store in (self.loaded, self.transformed, self.extracted):
-			try:
-				return object_store[attr]
-			except (KeyError, TypeError):
-				continue
-		raise AttributeError()
+	def __init__(self, identifier):
+		self.identifier = identifier
+		self.raw_data = None
+		self.transformed = {}
+
+	def execute(self):
+		self.extract()
+		self.transform()
+		return self.load()
+
+	def extract(self):
+		self.raw_data = self.extractor.extract(self.identifier)
+		return self.raw_data
+
+	def transform(self):
+		self.transformed.update(
+			{
+				key: transformer.transform(self.raw_data)
+				for key, transformer in self.transformers.iteritems()
+			}
+		)
 
 	def load(self):
-		raise NotImplemented()
-
-	def execute(self, raw_data):
-		self.extracted = {
-			key: extractor.extract(raw_data)
-			for key, extractor in self.extractors.iteritems()
-		}
-
-		for transformer in self.transformers:
-			self.transformed.update(
-				transformer.transform(
-					**util.remap_keys_with_dict(
-						self.extracted,
-						transformer.extracted_to_argument_name_map
-					)
-				)
-			)
-
-		return self.load()
+		return self.loader.load(self.transformed)
 
 
 class ModelLoader(Loader):
 
-	model_class = None
+	def __init__(self, model_class):
+		self.model_class = model_class
 
-	def load(self):
-		model_creation_argumnets = {
-			field_name: getattr(self, field_name)
+	def load(self, transformed):
+		model_creation_arguments = {
+			field_name: transformed[field_name]
 			for field_name in self.model_class._meta.get_all_field_names()
 			if field_name != 'id'
 		}
-		return self.model_class(**model_creation_argumnets)
-
-
-class DateTransformer(SingleElementTransformer):
-
-	transform_arguments = set(['date_string'])
-	return_names = set(['date'])
-
-	DEFAULT_DATE_FORMAT = '%Y.%m.%d'
-
-	def __init__(self, date_format=None, **kwargs):
-		super(DateTransformer, self).__init__(**kwargs)
-
-		if date_format:
-			self.date_format = date_format
-		else:
-			self.date_format = self.DEFAULT_DATE_FORMAT
-
-	def _transform(self, date_string=None):
-		return datetime.strptime(date_string, self.date_format).date()
-
-
-class IntegerTransformer(SingleElementTransformer):
-
-	transform_arguments = set(['string'])
-	return_names = set(['int'])
-
-	def _transform(self, string=None):
-		return int(string)
+		return self.model_class(**model_creation_arguments)

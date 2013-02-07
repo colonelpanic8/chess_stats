@@ -1,8 +1,8 @@
+from contextlib import closing
 import itertools
 import glob
 import os
 import re
-from contextlib import closing
 from urllib import urlopen
 
 from BeautifulSoup import BeautifulSoup
@@ -14,23 +14,23 @@ class ChessDotComScraper(object):
 	BASE_URL = "http://www.chess.com/"
 	GAME_LINK_HTML_ELEMENT_FORMAT_STRING = "c14_row{row}_7"
 	GAME_LINK_RE_MATCH_STRING = "/{game_type}/game\?id=([0-9]*)"
-	PGN_LINK_FORMAT = '{base_url}{game_type}/download_pgn.html?lid={game_id}'
 
 	GAME_TYPE_LIVE = 0
 	GAME_TYPE_ONLINE = 1
+
 	GAME_TYPES_SHOW = {
 		GAME_TYPE_LIVE: "live",
 		GAME_TYPE_ONLINE: "echess"
 	}
+
 	GAME_TYPES_PATH = {
 		GAME_TYPE_LIVE: "livechess",
 		GAME_TYPE_ONLINE: "echess"
 	}
 
-	def __init__(self, game_type, log_function=None):
-
-		# This means that this object does not support concurrency
-		self.game_ids = None
+	def __init__(self, game_type, member, log_function=None):
+		self.member = member
+		self.game_ids = []
 		self.soup = None
 		self.game_type = game_type
 		if log_function is None:
@@ -39,15 +39,15 @@ class ChessDotComScraper(object):
 			log_function = log
 		self.log_function = log_function
 
-	def scrape(self, member, stop_at_id=None):
-
-		self.game_ids = []
-		with closing(urlopen(
-			self.BASE_URL + self.ARCHIVE_BASE_PAGE_FORMAT.format(
-				member=member,
-				game_type=self.GAME_TYPES_SHOW[self.game_type]
-			)
-		)) as html:
+	def scrape(self, stop_at_id=None):
+		with closing(
+				urlopen(
+					self.BASE_URL + self.ARCHIVE_BASE_PAGE_FORMAT.format(
+						member=self.member,
+						game_type=self.GAME_TYPES_SHOW[self.game_type]
+					)
+				)
+		) as html:
 			self.soup = BeautifulSoup(html.read())
 
 		while self.parse_page(stop_at_id=stop_at_id) and self.find_next_page():
@@ -116,31 +116,18 @@ class ChessDotComScraper(object):
 
 		return game_id
 
-	def get_pgns(self):
-		"""Yields (game_id, pgn_string) pairs."""
 
-		for game_id in self.game_ids:
-			yield (game_id, self.get_pgn_string(game_id))
+class ChessComPGNFileFinder(object):
 
-	def get_pgn_string(self, game_id):
-		"""Download the pgn associated with game_id from chess.com"""
+	filename_matcher = re.compile('.*\.pgn')
 
-		# It seems that chess.com always uses echess here, even for live games.
-		url = self.PGN_LINK_FORMAT.format(
-			base_url=self.BASE_URL,
-			game_type='echess',
-			game_id=game_id
-		)
-		with closing(urlopen(url)) as pgn_file:
-			return pgn_file.read()
-
-
-class ChessComPGNFileLoader(object):
-
-	DEFAULT_LOAD_PATH = './load'
+	def get_matching_files(self, directory='.'):
+		for directory_path, directory_names, filenames in os.walk(directory):
+			for filename in filenames:
+				if self.filename_matcher(filename):
+					yield os.path.join(directory_path, filename)
 
 	def load(self, load_path=None, multi_game_pgns=False):
-
 		if not load_path:
 			load_path = self.DEFAULT_LOAD_PATH
 		if not os.path.exists(load_path):
