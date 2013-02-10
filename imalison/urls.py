@@ -7,7 +7,10 @@ import chess_stats.views
 
 urlpatterns = patterns(
 	'',
-        url(r'^chess_stats/css/move_browser_styles.css', chess_stats.views.CSSView.as_view()),
+	url(
+		r'^chess_stats/css/move_browser_styles.css',
+		chess_stats.views.CSSView.as_view()
+	),
 	url(
 		r'^chess_stats/js/(?P<path>.*)$',
 		'django.views.static.serve',
