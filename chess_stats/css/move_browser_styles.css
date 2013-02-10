@@ -2,7 +2,7 @@ body{
     margin: 0;
     padding: 0;
     font-family: AndaleMono;
-    background-color: {{black}};
+    background-color: {{background_color}};
 }
 
 h1 {
@@ -69,7 +69,7 @@ table.right {
 
 th {
     padding: 10px;
-    background-color: #00FF7F;
+    background-color: {{header_color}};
     color: white;
 }
 
@@ -79,7 +79,7 @@ th.movePair {
 }
 
 tr.row-stats {
-    background-color: #D8D8D8;
+    background-color: {{row_color_odd}}
 }
 
 tr.movePair{
@@ -87,7 +87,7 @@ tr.movePair{
 }
 
 tr:nth-child(even) {
-    background-color: white;
+    background-color: {{row_color_even}};
 }
 
 .movePair:nth-child(even) {

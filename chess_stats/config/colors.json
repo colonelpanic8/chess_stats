@@ -1,6 +1,9 @@
 {
     "footer_width": "300px",
-    "black": "black",
+    "background_color": "white",
     "link_hover_color": "#66FF00",
-    "link_color": "#DB00D0"
+    "link_color": "#DB00D0",
+    "row_color_even": "#D8D8D8",
+    "row_color_odd": "white",
+    "header_color": "#00FF7F",
 }
