@@ -1,4 +1,7 @@
+import simplejson
+
 from django.db import models
+
 from . import fields
 
 
@@ -60,6 +63,32 @@ class ChessDotComGame(models.Model):
 	moves = fields.JSONField()
 	victor_was_white = models.NullBooleanField(null=True)
 
+	@property
+	def black_username(self):
+		return self.black_user.username
+
+	@property
+	def white_username(self):
+		return self.white_user.username
+
+	@property
+	def as_dict(self):
+		return {
+			'id': self.chess_dot_com_id,
+			'date_played': str(self.date_played),
+			'white_username': self.white_username,
+			'black_username': self.black_username,
+			'white_elo': self.white_elo,
+			'black_elo': self.black_elo,
+			'moves': self.moves,
+			'victor_was_white': self.victor_was_white
+		}
+
+	@property
+	def as_json(self):
+		return simplejson.dumps(self.as_dict)
+
+
 	def __unicode__(self):
 		return ' '.join(
 			[
@@ -71,14 +100,6 @@ class ChessDotComGame(models.Model):
 				str(self.chess_dot_com_id),
 			]
 		)
-
-	@property
-	def black_username(self):
-		return self.black_user.username
-
-	@property
-	def white_username(self):
-		return self.white_user.username
 
 	def matches_moves(self, moves):
 		for game_move, match_move in zip(self.moves, moves):

@@ -21,7 +21,7 @@ DATABASES = {
         'PORT': '',
     },
 }
-DATABASES['default'] = dj_database_url.config()
+#DATABASES['default'] = dj_database_url.config()
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -122,7 +122,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-	'chess_stats'
+	'chess_stats',
+	'django_socketio'
 )
 
 # A sample logging configuration. The only tangible logging

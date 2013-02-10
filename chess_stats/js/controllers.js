@@ -1,5 +1,41 @@
 'use strict';
 
+String.prototype.format = function() {
+    var formatted = this;
+    for (var i = 0; i < arguments.length; i++) {
+        var regexp = new RegExp('\\{'+i+'\\}', 'gi');
+        formatted = formatted.replace(regexp, arguments[i]);
+    }
+    return formatted;
+};
+
+function GameBrowseCtrl($scope) {
+    var gameLoader = {
+        games: [],
+        socket: new io.Socket(),
+        user: ""
+    }
+
+    gameLoader.init = function (user) {
+        gameLoader.user = user
+        gameLoader.socket.connect();
+        gameLoader.socket.on(
+            'message',
+            function (game_data) {
+                console.log(game_data)
+                gameLoader.games.push(JSON.parse(game_data))
+                $scope.$apply()
+            }
+        )
+    }
+
+    gameLoader.buildChessDotComGameURL = function (id) {
+        return "http://www.chess.com/livechess/game?id={0}".format(id)
+    }
+
+    $scope.gameLoader = gameLoader
+}
+
 function MoveStatsCtrl($scope, $http) {
 	var moveControl = {
 		moves: [],
@@ -7,7 +43,7 @@ function MoveStatsCtrl($scope, $http) {
 		moveStatsList: [],
 		username: "",
         refreshLock: false,
-        isWhite: false
+        isWhite: true
 	}
 
 	moveControl.refreshMoveStatsList = function() {
@@ -107,5 +143,8 @@ function MoveStatsCtrl($scope, $http) {
 	}
 
 	$scope.moveControl = moveControl
-	$scope.init = function(username) {moveControl.username = username; 	moveControl.refreshMoveStatsList()}
+	$scope.init = function(username) {
+        moveControl.username = username;
+        moveControl.refreshMoveStatsList()
+    }
 }

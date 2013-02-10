@@ -1,44 +1,57 @@
 {% load custom_filters %}
-<head>
-  <link rel="stylesheet" href="../css/move_browser_styles.css" type="text/css">
-</head>
-<h1>
-  <a href="../browse_moves/{{ username }}">{{ username }}</a>
-</h1>
-<table>
-  <tr>
-    <th>White Elo</th>
-    <th>White Username</th>
-    <th>Black Elo</th>
-    <th>Black Username</th>
-    <th>Date Played</th>
-    <th>Game ID</th>
-  </tr>
-  {% for game in games %}
-  <tr>
-    <td>{{game.white_elo}}</td>
-    <td>
-      <a href='{{game.white_username}}'>
-	{% if game.victor_was_white %}
-	<b>{% endif %}
-	  {{game.white_username}}
-	  {% if game.victor_was_white %}
-	</b>{% endif %}
-      </a>
-    </td>
-    <td>{{game.black_elo}}</td>
-    <td>
-      <a href='{{game.black_username}}'>
-	{% if game.victor_was_white|is_false %}
-	<b>{% endif %}
-	  {{game.black_username}}
-	  {% if game.victor_was_white|is_false %}
-	</b>{% endif %}
-      </a>
-    </td>
+{% load verbatim %}
+{% load socketio_tags %}
+<html ng-app="myApp">
+  <head>
+    {% socketio %}
+    <script src="../js/lib/angular/angular.js"></script>
+    <script src="../js/lib/angular/angular-resource.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/services.js"></script>
+    <script src="../js/controllers.js"></script>
+    <script src="../js/filters.js"></script>
+    <script src="../js/directives.js"></script>
+    <link rel="stylesheet" href="../css/move_browser_styles.css" type="text/css">
+  </head>
+  <body>
+    <h1>
+      <a href="../browse_moves/{{ username }}">{{ username }}</a>
+    </h1>
+    <div id="angular" ng-controller="GameBrowseCtrl" ng-init="gameLoader.init({{username}})")>
+      {% verbatim %}
+      <div>
+        <table>
+          <tr>
+            <th>White Elo</th>
+            <th>White Username</th>
+            <th>Black Elo</th>
+            <th>Black Username</th>
+            <th>Date Played</th>
+            <th>Game ID</th>
+          </tr>
+          <tr ng-repeat="game in gameLoader.games" jq:animate="dropdown;250">
+            <td>{{game.white_elo}}</td>
+            <td>
+              <a href='{{game.white_username}}'>
+	            <b ng-show="game.victor_was_white">
+	              {{game.white_username}}
+	            </b>
+              </a>
+            </td>
+            <td>{{game.black_elo}}</td>
+            <td>
+              <a href='{{game.black_username}}'>
+	            <b ng-hide="game.victor_was_white">
+	              {{game.black_username}}
+	            </b>
+              </a>
+            </td>
 
-    <td>{{game.date_played}}</td>
-    <td>{{game.chess_dot_com_game_id}}</td>
-  </tr>
-  {% endfor %}
-</table>
+            <td>{{game.date_played}}</td>
+            <td><a href={{gameLoader.buildChessDotComGameURL(game.id)}}>{{game.id}}</a></td>
+          </tr>
+      </div>
+      {% endverbatim %}
+    </div>
+  </body>
+</html>
