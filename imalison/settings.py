@@ -12,8 +12,16 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASES = {
-    'default': dj_database_url.config()
+	'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'database.db',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
+    },
 }
+DATABASES['default'] = dj_database_url.config()
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
