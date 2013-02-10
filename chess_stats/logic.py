@@ -14,6 +14,14 @@ def save_games(games):
 		game.save()
 
 
+def get_games_for_user(username):
+	try:
+		user = models.ChessDotComUser.find_user_by_username(username)
+	except models.ChessDotComUser.DoesNotExist:
+		return []
+	return user.all_games
+
+
 def fetch_games_for_user(username, stop_at_latest_id=True, stop_at_id=None):
 	if stop_at_latest_id:
 		try:
@@ -34,6 +42,13 @@ def fetch_games_for_user(username, stop_at_latest_id=True, stop_at_id=None):
 		user.most_recently_played_game_in_records.chess_dot_com_id
 	user.save()
 	return user.all_games
+
+
+def yield_scraped_games(username):
+	scraper = ChessDotComScraper(ChessDotComScraper.GAME_TYPE_LIVE, username)
+	scraper.scrape()
+	for game_id in scraper.game_ids:
+		yield ChessDotComGameETL(game_id).execute()
 
 
 def load_games_from_legacy_files_in_directory(directory):

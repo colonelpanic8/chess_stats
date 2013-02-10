@@ -55,7 +55,7 @@ class ChessDotComScraper(object):
 
 	def parse_page(self, stop_at_id=None):
 		"""Parse a single page of a game archive from chess.com. Returns true if
-		stop_at_id was encounter."""
+		stop_at_id was encountered."""
 
 		for row in itertools.count():
 			game_id = self.get_game_id(row)

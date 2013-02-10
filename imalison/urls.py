@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 import chess_stats.views
 
 # Uncomment the next two lines to enable the admin:
@@ -43,6 +43,7 @@ urlpatterns = patterns(
 	url(
 		r'chess_stats/get_stats/.*',
 		chess_stats.views.get_game_stats
-	)
+	),
+	url("", include('django_socketio.urls')),
 )
 
