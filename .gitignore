@@ -31,3 +31,5 @@ pip-log.txt
 .ropeproject
 config.py
 database.db
+
+venv

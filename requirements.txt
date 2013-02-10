@@ -1,0 +1,6 @@
+BeautifulSoup==3.2.1
+Django==1.4.3
+dj-database-url==0.2.1
+psycopg2==2.4.6
+simplejson==3.0.7
+wsgiref==0.1.2
