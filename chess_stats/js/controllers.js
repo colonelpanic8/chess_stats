@@ -13,24 +13,34 @@ function GameBrowseCtrl($scope) {
     var gameLoader = {
         games: [],
         socket: new io.Socket(),
-        user: ""
+        username: ""
     }
 
-    gameLoader.init = function (user) {
-        gameLoader.user = user
+    gameLoader.buildChessDotComGameURL = function (id) {
+        return "http://www.chess.com/livechess/game?id={0}".format(id)
+    }
+
+    gameLoader.requestGames = function () {
+        var json_string = JSON.stringify({"request": "GET_GAMES", "username": this.username})
+        console.log(json_string)
+        console.log(this.username)
+        this.socket.send(json_string)
+    }
+
+    gameLoader.init = function (username) {
+        gameLoader.username = username
         gameLoader.socket.connect();
         gameLoader.socket.on(
             'message',
             function (game_data) {
                 console.log(game_data)
-                gameLoader.games.push(JSON.parse(game_data))
+                if(game_data) {
+                    gameLoader.games.push(JSON.parse(game_data))
+                }
                 $scope.$apply()
             }
         )
-    }
-
-    gameLoader.buildChessDotComGameURL = function (id) {
-        return "http://www.chess.com/livechess/game?id={0}".format(id)
+        gameLoader.requestGames()
     }
 
     $scope.gameLoader = gameLoader

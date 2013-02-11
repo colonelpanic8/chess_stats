@@ -17,7 +17,7 @@
     <h1>
       <a href="../browse_moves/{{ username }}">{{ username }}</a>
     </h1>
-    <div id="angular" ng-controller="GameBrowseCtrl" ng-init="gameLoader.init({{username}})")>
+    <div id="angular" ng-controller="GameBrowseCtrl" ng-init="gameLoader.init('{{username}}')")>
       {% verbatim %}
       <div>
         <table>
@@ -33,17 +33,15 @@
             <td>{{game.white_elo}}</td>
             <td>
               <a href='{{game.white_username}}'>
-	            <b ng-show="game.victor_was_white">
-	              {{game.white_username}}
-	            </b>
+	            <b ng-show="game.victor_was_white">(W)</b>
+                 {{game.white_username}}
               </a>
             </td>
             <td>{{game.black_elo}}</td>
             <td>
               <a href='{{game.black_username}}'>
-	            <b ng-hide="game.victor_was_white">
-	              {{game.black_username}}
-	            </b>
+	            <b ng-hide="game.victor_was_white">(W)</b>
+                {{game.black_username}}
               </a>
             </td>
 

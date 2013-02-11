@@ -46,8 +46,7 @@ def fetch_games_for_user(username, stop_at_latest_id=True, stop_at_id=None):
 
 def yield_scraped_games(username):
 	scraper = ChessDotComScraper(ChessDotComScraper.GAME_TYPE_LIVE, username)
-	scraper.scrape()
-	for game_id in scraper.game_ids:
+	for game_id in scraper.scrape():
 		yield ChessDotComGameETL(game_id).execute()
 
 
