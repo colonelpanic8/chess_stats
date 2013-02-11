@@ -3,6 +3,7 @@ import itertools
 import glob
 import os
 import re
+import time
 from urllib import urlopen
 
 from BeautifulSoup import BeautifulSoup
@@ -33,6 +34,7 @@ class ChessDotComScraper(object):
 		self.game_ids = []
 		self.soup = None
 		self.game_type = game_type
+		self.done = False
 		if log_function is None:
 			def log(string):
 				print string
@@ -40,6 +42,8 @@ class ChessDotComScraper(object):
 		self.log_function = log_function
 
 	def scrape(self, stop_at_id=None):
+		self.log_function(str(time.time()))
+		self.log_function("Loading main page.")
 		with closing(
 				urlopen(
 					self.BASE_URL + self.ARCHIVE_BASE_PAGE_FORMAT.format(
@@ -49,9 +53,14 @@ class ChessDotComScraper(object):
 				)
 		) as html:
 			self.soup = BeautifulSoup(html.read())
-
-		while self.parse_page(stop_at_id=stop_at_id) and self.find_next_page():
-			return self.game_ids
+		self.log_function(str(time.time()))
+		self.log_function("Done loading main page.")
+		while not self.done:
+			for game in self.parse_page(stop_at_id=stop_at_id):
+				yield game
+				self.log_function(str(time.time()))
+				self.log_function("Yielded game.")
+			self.done = not self.find_next_page()
 
 	def parse_page(self, stop_at_id=None):
 		"""Parse a single page of a game archive from chess.com. Returns true if
@@ -61,11 +70,13 @@ class ChessDotComScraper(object):
 			game_id = self.get_game_id(row)
 			if game_id is None:
 				self.log_function("No more games found on page.")
-				return True
+				raise StopIteration()
 			elif game_id == stop_at_id:
-				return False
+				self.done = True
+				raise StopIteration()
 			else:
 				self.game_ids.append(game_id)
+				yield game_id
 
 	def find_next_page(self):
 		"""Find the next page from the html of the current page. Returns True on
