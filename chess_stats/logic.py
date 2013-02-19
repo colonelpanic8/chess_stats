@@ -8,16 +8,10 @@ from legacy_etl import LegacyGameETL
 from scraper import ChessDotComScraper, ChessComPGNFileFinder
 
 
-def save_games(games):
-	# TODO: Do this in a single transaction.
-	for game in games:
-		game.save()
-
-
 def get_games_for_user(username):
 	try:
 		user = models.ChessDotComUser.find_user_by_username(username)
-	except models.ChessDotComUser.DoesNotExist:
+	except models.NoResultFound:
 		return []
 	return user.all_games
 
@@ -26,22 +20,26 @@ def fetch_games_for_user(username, stop_at_latest_id=True, stop_at_id=None):
 	if stop_at_latest_id:
 		try:
 			user = models.ChessDotComUser.find_user_by_username(username)
-		except models.ChessDotComUser.DoesNotExist:
+		except models.NoResultFound:
 			pass
 		else:
 			stop_at_id = user.last_scanned_chess_dot_com_game_id
 
 	scraper = ChessDotComScraper(ChessDotComScraper.GAME_TYPE_LIVE, username)
-	scraper.scrape(stop_at_id=stop_at_id)
 
-	games = [ChessDotComGameETL(game_id).execute() for game_id in scraper.game_ids]
-	save_games(games)
+	games = [ChessDotComGameETL(game_id).execute() for game_id in scraper.scrape(stop_at_id=stop_at_id)]
+
+	models.db.session.add_all(games)
+	models.db.session.commit()
 
 	user = models.ChessDotComUser.find_user_by_username(username)
-	user.last_scanned_chess_dot_com_game_id = \
-		user.most_recently_played_game_in_records.chess_dot_com_id
-	user.save()
-	return user.all_games
+	if games:
+		user.last_scanned_chess_dot_com_game_id = max(
+			games,
+			key=lambda game: game.chess_dot_com_id
+		).chess_dot_com_id
+
+	return user.all_games.all()
 
 
 def yield_scraped_games(username):
@@ -97,12 +95,12 @@ def build_stats_for_games(games):
 	black_wins = []
 	draws = []
 	for game in games:
-		if game.victor_was_white:
+		if game.result_as_int > 0:
 			white_wins.append(game)
-		elif game.victor_was_white == None:
-			draws.append(game)
-		else:
+		elif game.result_as_int < 0:
 			black_wins.append(game)
+		else:
+			draws.append(game)
 
 	game_count = len(games)
 	white_win_count = len(white_wins)
@@ -159,7 +157,7 @@ def build_sorted_game_stats_for_moves_by_username(username, moves, white=True):
 
 def build_sorted_game_stats_for_moves_for_all_games(moves):
 	return build_sorted_game_stats_for_moves(
-		models.ChessDotComGame.objects.all(),
+		models.ChessDotComGame.query.all(),
 		moves
 	)
 

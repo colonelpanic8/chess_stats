@@ -3,8 +3,9 @@ from datetime import datetime
 from urllib import urlopen
 import re
 
-import etl
-import models
+from . import common
+from . import etl
+from . import models
 
 
 class DataError(Exception):
@@ -131,7 +132,7 @@ class ChessDotComUserTransformer(MetaDataTransformer):
 		return models.ChessDotComUser.find_user_by_username(
 			username,
 			create_if_not_found=True
-		)
+		).id
 
 
 class ResultTransformer(MetaDataTransformer):
@@ -141,11 +142,11 @@ class ResultTransformer(MetaDataTransformer):
 	def _transform(self, result_string):
 		white_points = self.result_matcher.match(result_string).group(1)
 		if white_points == '1':
-			return True
+			return common.WHITE_VICTORY
 		elif white_points == '0':
-			return False
+			return common.BLACK_VICTORY
 		else:
-			return None
+			return common.DRAW
 
 
 class ChessDotComGameETL(etl.ETL):
@@ -154,13 +155,13 @@ class ChessDotComGameETL(etl.ETL):
 
 	transformers = {
 		'moves': MovesTransformer(),
-		'white_user': ChessDotComUserTransformer('White'),
-		'black_user': ChessDotComUserTransformer('Black'),
+		'white_user_id': ChessDotComUserTransformer('White'),
+		'black_user_id': ChessDotComUserTransformer('Black'),
 		'white_elo': IntegerTransformer('WhiteElo'),
 		'black_elo': IntegerTransformer('BlackElo'),
 		'date_played': DateTransformer('Date'),
 		'time_control': TimeControlTransformer('TimeControl'),
-		'victor_was_white': ResultTransformer('Result')
+		'result': ResultTransformer('Result')
 	}
 
 	loader = etl.ModelLoader(models.ChessDotComGame)
@@ -171,10 +172,10 @@ class ChessDotComGameETL(etl.ETL):
 
 	def execute(self):
 		try:
-			game = models.ChessDotComGame.objects.get(
-				chess_dot_com_id=self.transformed['chess_dot_com_id']
-			)
-		except models.ChessDotComGame.DoesNotExist:
+			game = models.ChessDotComGame.query.filter(
+				models.ChessDotComGame.chess_dot_com_id==self.transformed['chess_dot_com_id']
+			).one()
+		except models.NoResultFound:
 			# The game doesn't exist so we need to load it.
 			return super(ChessDotComGameETL, self).execute()
 		else:
