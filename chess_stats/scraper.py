@@ -43,7 +43,6 @@ class ChessDotComScraper(object):
 
 	def scrape(self, stop_at_id=None):
 		self.log_function(str(time.time()))
-		self.log_function("Loading main page.")
 		with closing(
 				urlopen(
 					self.BASE_URL + self.ARCHIVE_BASE_PAGE_FORMAT.format(
@@ -54,18 +53,15 @@ class ChessDotComScraper(object):
 		) as html:
 			self.soup = BeautifulSoup(html.read())
 		self.log_function(str(time.time()))
-		self.log_function("Done loading main page.")
 		while not self.done:
-			for game in self.parse_page(stop_at_id=stop_at_id):
-				yield game
-				self.log_function(str(time.time()))
-				self.log_function("Yielded game.")
+			for game_id in self.parse_page(stop_at_id=stop_at_id):
+				self.log_function(str(game_id))
+				yield game_id
 			self.done = not self.find_next_page()
 
 	def parse_page(self, stop_at_id=None):
 		"""Parse a single page of a game archive from chess.com. Returns true if
 		stop_at_id was encountered."""
-
 		for row in itertools.count():
 			game_id = self.get_game_id(row)
 			if game_id is None:

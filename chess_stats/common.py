@@ -1,0 +1,3 @@
+WHITE_VICTORY = 'W'
+BLACK_VICTORY = 'B'
+DRAW = 'D'

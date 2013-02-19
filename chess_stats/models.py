@@ -1,16 +1,53 @@
+from flask.ext.sqlalchemy import SQLAlchemy
 import simplejson
+from sqlalchemy.types import TypeDecorator, VARCHAR
+from sqlalchemy.orm.exc import NoResultFound
 
-from django.db import models
+from . import app
+from . import common
 
-from . import fields
+
+db = SQLAlchemy(app)
+db.Model.itercolumns = classmethod(lambda cls: cls.__table__.columns._data.iterkeys())
 
 
-class ChessDotComUser(models.Model):
+class JSONType(TypeDecorator):
 
-	username = models.CharField(max_length=20, unique=True)
-	date_joined = models.DateField(auto_now=True)
+    impl = VARCHAR
 
-	last_scanned_chess_dot_com_game_id = models.PositiveIntegerField(null=True)
+    def process_bind_param(self, value, dialect):
+        if value is not None:
+            value = simplejson.dumps(value)
+        return value
+
+    def process_result_value(self, value, dialect):
+        if value is not None:
+            value = simplejson.loads(value)
+        return value
+
+
+class ChessDotComUser(db.Model):
+
+	id = db.Column(db.Integer, primary_key=True)
+
+	username = db.Column(db.String(length=20), unique=True)
+	date_joined = db.Column(db.Date())
+
+	last_scanned_chess_dot_com_game_id = db.Column(db.Integer)
+
+	white_games = db.relationship(
+		'ChessDotComGame',
+		primaryjoin="ChessDotComGame.white_user_id==ChessDotComUser.id",
+		backref='white_user',
+		lazy='dynamic'
+	)
+
+	black_games = db.relationship(
+		'ChessDotComGame',
+		primaryjoin="ChessDotComGame.black_user_id==ChessDotComUser.id",
+		backref='black_user',
+		lazy='dynamic'
+	)
 
 	def __unicode__(self):
 		return self.username
@@ -18,50 +55,61 @@ class ChessDotComUser(models.Model):
 	@classmethod
 	def find_user_by_username(cls, username, create_if_not_found=False):
 		try:
-			return cls.objects.get(username=username)
-		except cls.DoesNotExist:
+			return cls.query.filter(cls.username == username).one()
+		except NoResultFound:
 			if create_if_not_found:
 				user = cls(username=username)
-				user.save()
+				db.session.add(user)
+				db.session.commit()
 				return user
 			raise
 
-	@classmethod
-	def load_games_by_username(cls, username):
-		"""Return games stored associated with `username`."""
-		user = cls.objects.get(username=username)
-		return user.white_games.all() + user.black_games.all()
-
 	@property
 	def all_games(self):
-		"""Return all games associated with the user sorted by date with more
-		recently played games coming first.
-		"""
-		return ChessDotComGame.objects.filter(
-			models.Q(black_user=self) | models.Q(white_user=self)
-		).order_by('-date_played', '-chess_dot_com_id')
+		return self.white_games.union(self.black_games)
+
+
+class ChessDotComGame(db.Model):
+
+	id = db.Column(db.Integer, primary_key=True)
+
+	chess_dot_com_id = db.Column(db.Integer)
+	date_played = db.Column(db.Date())
+
+	white_elo = db.Column(db.Integer)
+	white_user_id = db.Column(db.Integer, db.ForeignKey(ChessDotComUser.id))
+
+	black_elo = db.Column(db.Integer)
+	black_user_id = db.Column(db.Integer, db.ForeignKey(ChessDotComUser.id))
+
+	moves = db.Column(JSONType(255))
+	result = db.Column(
+		db.Enum(
+			common.WHITE_VICTORY,
+			common.BLACK_VICTORY,
+			common.DRAW
+		)
+	)
+
+	def __unicode__(self):
+		return ' '.join(
+			[
+				self.white_username,
+				'vs.',
+				self.black_username,
+				'-',
+				str(self.date_played),
+				str(self.chess_dot_com_id),
+			]
+		)
 
 	@property
-	def most_recently_played_game_in_records(self):
-		try:
-			return self.all_games[0]
-		except IndexError:
-			return None
-
-
-class ChessDotComGame(models.Model):
-
-	chess_dot_com_id = models.PositiveIntegerField(null=True)
-	date_played = models.DateField()
-
-	white_elo = models.PositiveIntegerField()
-	white_user = models.ForeignKey(ChessDotComUser, related_name='white_games')
-
-	black_elo = models.PositiveIntegerField()
-	black_user = models.ForeignKey(ChessDotComUser, related_name='black_games')
-
-	moves = fields.JSONField()
-	victor_was_white = models.NullBooleanField(null=True)
+	def result_as_int(self):
+		if self.result == common.WHITE_VICTORY:
+			return 1
+		if self.result == common.BLACK_VICTORY:
+			return -1
+		return 0
 
 	@property
 	def black_username(self):
@@ -81,25 +129,12 @@ class ChessDotComGame(models.Model):
 			'white_elo': self.white_elo,
 			'black_elo': self.black_elo,
 			'moves': self.moves,
-			'victor_was_white': self.victor_was_white
+			'result': self.result
 		}
 
 	@property
 	def as_json(self):
 		return simplejson.dumps(self.as_dict)
-
-
-	def __unicode__(self):
-		return ' '.join(
-			[
-				self.white_username,
-				'vs.',
-				self.black_username,
-				'-',
-				str(self.date_played),
-				str(self.chess_dot_com_id),
-			]
-		)
 
 	def matches_moves(self, moves):
 		for game_move, match_move in zip(self.moves, moves):

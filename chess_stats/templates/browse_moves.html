@@ -1,21 +1,21 @@
-{% load verbatim %}
 <html ng-app="myApp">
   <head>
-    <script src="../js/lib/angular/angular.js"></script>
-    <script src="../js/lib/angular/angular-resource.js"></script>
-    <script src="../js/app.js"></script>
-    <script src="../js/services.js"></script>
-    <script src="../js/controllers.js"></script>
-    <script src="../js/filters.js"></script>
-    <script src="../js/directives.js"></script>
-    <link rel="stylesheet" href="../css/move_browser_styles.css" type="text/css">
+    <script src={{ get_static_url("js/lib/angular/angular.js") }}></script>
+    <script src={{ get_static_url("js/lib/angular/angular-resource.js") }}></script>
+    <script src={{ get_static_url("js/app.js") }}></script>
+    <script src={{ get_static_url("js/services.js") }}></script>
+    <script src={{ get_static_url("js/controllers.js") }}></script>
+    <script src={{ get_static_url("js/filters.js") }}></script>
+    <script src={{ get_static_url("js/directives.js") }}></script>
+    <link rel="stylesheet" href={{ get_static_url("css/move_browser_styles.css") }} type="text/css">
   </head>
   <body>
-    <div id="angular"  ng-controller="MoveStatsCtrl" ng-init="init('{{username}}')">
-      {% verbatim %}
+    <div id="angular"  ng-controller="MoveStatsCtrl" ng-init="init('{{ username }}')">
       <header>
         <h1>
-          <a href="../browse_games/{{ moveControl.username }}">{{ moveControl.username }}</a>
+          <a href="../browse_games/[[ moveControl.username ]]">
+            [[ moveControl.username ]]
+          </a>
         </h1>
       </header>
       <div id="content">
@@ -25,20 +25,28 @@
             <td class="containing-td">
               <table class="left">
                 <th class="movePair">#</th>
-                <th class="movePair"><a ng-click="moveControl.setColor(true)">White</a></th>
-                <th class="movePair"><a ng-click="moveControl.setColor(false)">Black</a></th>
+                <th class="movePair">
+                  <a ng-click="moveControl.setColor(true)">
+                    White
+                  </a>
+                </th>
+                <th class="movePair">
+                  <a ng-click="moveControl.setColor(false)">
+                    Black
+                  </a>
+                </th>
                 <tr class="movePair"  ng-repeat="movePair in moveControl.movePairs">
                   <td>
-                    {{ movePair.index/2 + 1 }}.
+                    [[ movePair.index/2 + 1 ]].
                   </td>
                   <td>
                     <a ng-click="moveControl.truncateMovesTo(movePair.index)">
-                      {{ movePair.whiteMove }}
+                      [[ movePair.whiteMove ]]
                     </a>
                   </td>
                   <td>
                     <a ng-click="moveControl.truncateMovesTo(movePair.index + 1)">
-                      {{ movePair.blackMove }}
+                      [[ movePair.blackMove ]]
                     </a>
                   </td>
                 </tr>
@@ -58,23 +66,22 @@
                 <tr class="row-stats" ng-repeat="moveStats in moveControl.moveStatsList">
                   <td>
                     <a ng-click="moveControl.addMove(moveStats.move)">
-                      {{ moveStats.move }}
+                      [[ moveStats.move ]]
                     </a>
                   </td>
-                  <td>{{ moveStats.white_wins }}</td>
-                  <td>{{ moveStats.black_wins }}</td>
-                  <td>{{ moveStats.draws }}</td>
-                  <td>{{ moveStats.white_win_pct.toFixed(2) }}</td>
-                  <td>{{ moveStats.black_win_pct.toFixed(2) }}</td>
-                  <td>{{ moveStats.draw_pct.toFixed(2) }}</td>
-                  <td>{{ moveStats.white_average_elo }}</td>
-                  <td>{{ moveStats.black_average_elo }}</td>
+                  <td>[[ moveStats.white_wins ]]</td>
+                  <td>[[ moveStats.black_wins ]]</td>
+                  <td>[[ moveStats.draws ]]</td>
+                  <td>[[ moveStats.white_win_pct.toFixed(2) ]]</td>
+                  <td>[[ moveStats.black_win_pct.toFixed(2) ]]</td>
+                  <td>[[ moveStats.draw_pct.toFixed(2) ]]</td>
+                  <td>[[ moveStats.white_average_elo ]]</td>
+                  <td>[[ moveStats.black_average_elo ]]</td>
                 </tr>
               </table>
             </td>
           </tr><!--containing table-->
         </table><!--containing table-->
-        {% endverbatim %}
       </div><!--content-->
       <footer>
         <p>Copyright 2013</p>
@@ -82,4 +89,3 @@
     </div><!--angular-->
   </body>
 </html>
-
