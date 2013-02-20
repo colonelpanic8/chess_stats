@@ -2,10 +2,10 @@ import os
 import re
 import simplejson
 
-import models
-from chess_dot_com_etl import ChessDotComGameETL
-from legacy_etl import LegacyGameETL
-from scraper import ChessDotComScraper, ChessComPGNFileFinder
+from . import models
+from .chess_dot_com_etl import ChessDotComGameETL
+from .legacy_etl import LegacyGameETL
+from .scraper import ChessDotComScraper, ChessComPGNFileFinder
 
 
 def get_games_for_user(username):
@@ -27,7 +27,10 @@ def fetch_games_for_user(username, stop_at_latest_id=True, stop_at_id=None):
 
 	scraper = ChessDotComScraper(ChessDotComScraper.GAME_TYPE_LIVE, username)
 
-	games = [ChessDotComGameETL(game_id).execute() for game_id in scraper.scrape(stop_at_id=stop_at_id)]
+	games = [
+		ChessDotComGameETL(game_id).execute()
+		for game_id in scraper.scrape(stop_at_id=stop_at_id)
+	]
 
 	models.db.session.add_all(games)
 	models.db.session.commit()
@@ -45,7 +48,10 @@ def fetch_games_for_user(username, stop_at_latest_id=True, stop_at_id=None):
 def yield_scraped_games(username):
 	scraper = ChessDotComScraper(ChessDotComScraper.GAME_TYPE_LIVE, username)
 	for game_id in scraper.scrape():
-		yield ChessDotComGameETL(game_id).execute()
+		game = ChessDotComGameETL(game_id).execute()
+		models.db.session.add(game)
+		models.db.session.commit()
+		yield game
 
 
 def load_games_from_legacy_files_in_directory(directory):
