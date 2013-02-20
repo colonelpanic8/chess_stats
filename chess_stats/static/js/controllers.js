@@ -12,8 +12,16 @@ String.prototype.format = function() {
 function GameBrowseCtrl($scope) {
     var gameLoader = {
         games: [],
-        socket: new io.Socket(),
         username: ""
+    }
+
+    gameLoader.webSocket = new WebSocket("ws://localhost:8888/fetch_games/");
+    gameLoader.onopen = function (e) {
+        console.log("Opened Connection")
+    }
+    gameLoader.onclose = function() {}
+    gameLoader.webSocket.onmessage = function (messageEvent) {
+        gameLoader.handleMessage(JSON.parse(messageEvent.data))
     }
 
     gameLoader.buildChessDotComGameURL = function (id) {
@@ -21,26 +29,26 @@ function GameBrowseCtrl($scope) {
     }
 
     gameLoader.requestGames = function () {
-        var json_string = JSON.stringify({"request": "GET_GAMES", "username": this.username})
-        console.log(json_string)
-        console.log(this.username)
-        this.socket.send(json_string)
+        var json_string = JSON.stringify({
+        	"type": "GET_GAMES",
+        	"username": this.username
+        })
+        gameLoader.webSocket.send(json_string)
+    }
+
+    gameLoader.handleMessage = function (message) {
+        if(message.type == "START") {
+            gameLoader.requestGames()
+        }
+        if(message.type == "GAME") {
+            gameLoader.games.push(message.game)
+            $scope.$apply()
+        }
     }
 
     gameLoader.init = function (username) {
         gameLoader.username = username
-        gameLoader.socket.connect();
-        gameLoader.socket.on(
-            'message',
-            function (game_data) {
-                console.log(game_data)
-                if(game_data) {
-                    gameLoader.games.push(JSON.parse(game_data))
-                }
-                $scope.$apply()
-            }
-        )
-        gameLoader.requestGames()
+        //gameLoader.requestGames()
     }
 
     $scope.gameLoader = gameLoader

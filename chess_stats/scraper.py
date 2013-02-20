@@ -42,7 +42,6 @@ class ChessDotComScraper(object):
 		self.log_function = log_function
 
 	def scrape(self, stop_at_id=None):
-		self.log_function(str(time.time()))
 		with closing(
 				urlopen(
 					self.BASE_URL + self.ARCHIVE_BASE_PAGE_FORMAT.format(
@@ -52,10 +51,8 @@ class ChessDotComScraper(object):
 				)
 		) as html:
 			self.soup = BeautifulSoup(html.read())
-		self.log_function(str(time.time()))
 		while not self.done:
 			for game_id in self.parse_page(stop_at_id=stop_at_id):
-				self.log_function(str(game_id))
 				yield game_id
 			self.done = not self.find_next_page()
 
