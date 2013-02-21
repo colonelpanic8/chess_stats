@@ -1,7 +1,11 @@
 BeautifulSoup==3.2.1
-Django==1.4.3
-dj-database-url==0.2.1
-psycopg2==2.4.6
-simplejson==3.0.7
-wsgiref==0.1.2
+Flask==0.9
+Flask-SQLAlchemy==0.16
+Jinja2==2.6
+SQLAlchemy==0.8.0b2
+Werkzeug==0.8.3
+distribute==0.6.31
 ipython==0.13.1
+simplejson==3.0.8
+tornado==2.4.1
+wsgiref==0.1.2

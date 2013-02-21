@@ -15,11 +15,11 @@ function GameBrowseCtrl($scope) {
         username: ""
     }
 
-    gameLoader.webSocket = new WebSocket("ws://localhost:8888/fetch_games/");
-    gameLoader.onopen = function (e) {
-        console.log("Opened Connection")
-    }
-    gameLoader.onclose = function() {}
+    gameLoader.webSocket = new WebSocket(
+        "ws://{0}:8888/fetch_games/".format(document.domain)
+    );
+    gameLoader.webSocket.onopen = function (e) {}
+    gameLoader.webSocket.onclose = function (e) {}
     gameLoader.webSocket.onmessage = function (messageEvent) {
         gameLoader.handleMessage(JSON.parse(messageEvent.data))
     }

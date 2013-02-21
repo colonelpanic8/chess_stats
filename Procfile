@@ -1,1 +1,2 @@
-web: python runserver.py 0.0.0.0:$PORT --noreload
+web: python runserver.py
+web: python runwebsocketserver.py
