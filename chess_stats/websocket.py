@@ -1,8 +1,7 @@
 from __future__ import absolute_import
-
 import inspect
-
 import functools
+
 import simplejson
 from tornado import websocket
 
