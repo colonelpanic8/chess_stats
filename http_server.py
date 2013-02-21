@@ -9,7 +9,7 @@ from websocket_server import start_tornado_server
 
 if __name__ == "__main__":
 	if os.fork() == 0:
-		start_tornado_server()
+		start_tornado_server(*parse_host_and_port())
 	else:
 		host, port = parse_host_and_port()
 		app.run(port=port, host=host)
