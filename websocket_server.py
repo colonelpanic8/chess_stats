@@ -5,8 +5,10 @@ from tornado.ioloop import IOLoop
 from util import parse_host_and_port
 from chess_stats import tornado
 
-if __name__ == '__main__':
-	host, port = parse_host_and_port()
+def start_tornado_server(host, port):
 	http_server = HTTPServer(tornado.application)
 	http_server.listen(port)
 	IOLoop.instance().start()
+
+if __name__ == '__main__':
+	start_tornado_server(*parse_host_and_port())
