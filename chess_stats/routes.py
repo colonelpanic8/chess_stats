@@ -9,7 +9,7 @@ from . import logic
 
 @app.route("/chess_stats/browse_games/<username>")
 def browse_games(username):
-	return render_template('browse_games.html', username=username, port=app.port)
+	return render_template('browse_games.html', username=username, port=app.port+1)
 
 
 @app.route("/chess_stats/browse_moves/<username>")
