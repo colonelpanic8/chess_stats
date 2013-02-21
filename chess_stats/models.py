@@ -82,7 +82,7 @@ class ChessDotComGame(db.Model):
 	black_elo = db.Column(db.Integer)
 	black_user_id = db.Column(db.Integer, db.ForeignKey(ChessDotComUser.id))
 
-	moves = db.Column(JSONType(255))
+	moves = db.Column(JSONType(1500))
 	result = db.Column(
 		db.Enum(
 			common.WHITE_VICTORY,
