@@ -87,7 +87,8 @@ class ChessDotComGame(db.Model):
 		db.Enum(
 			common.WHITE_VICTORY,
 			common.BLACK_VICTORY,
-			common.DRAW
+			common.DRAW,
+			name='Result'
 		)
 	)
 
