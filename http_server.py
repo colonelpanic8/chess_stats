@@ -13,3 +13,4 @@ if __name__ == "__main__":
 	else:
 		host, port = parse_host_and_port()
 		app.run(port=port, host=host)
+		app.port = port

@@ -15,15 +15,6 @@ function GameBrowseCtrl($scope) {
         username: ""
     }
 
-    gameLoader.webSocket = new WebSocket(
-        "ws://{0}:8888/fetch_games/".format(document.domain)
-    );
-    gameLoader.webSocket.onopen = function (e) {}
-    gameLoader.webSocket.onclose = function (e) {}
-    gameLoader.webSocket.onmessage = function (messageEvent) {
-        gameLoader.handleMessage(JSON.parse(messageEvent.data))
-    }
-
     gameLoader.buildChessDotComGameURL = function (id) {
         return "http://www.chess.com/livechess/game?id={0}".format(id)
     }
@@ -46,9 +37,16 @@ function GameBrowseCtrl($scope) {
         }
     }
 
-    gameLoader.init = function (username) {
+    gameLoader.init = function (username, port) {
         gameLoader.username = username
-        //gameLoader.requestGames()
+        gameLoader.webSocket = new WebSocket(
+            "ws://{0}:{1}/fetch_games/".format(document.domain, port)
+        );
+        gameLoader.webSocket.onopen = function (e) {}
+        gameLoader.webSocket.onclose = function (e) {}
+        gameLoader.webSocket.onmessage = function (messageEvent) {
+            gameLoader.handleMessage(JSON.parse(messageEvent.data))
+        }
     }
 
     $scope.gameLoader = gameLoader
