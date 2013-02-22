@@ -8,7 +8,7 @@ def parse_host_and_port():
 		action='store',
 		type=int,
 		dest='port',
-		default=80,
+		default=5000,
 		help='The port that should be listned on.',
 	)
 	parser.add_argument(
