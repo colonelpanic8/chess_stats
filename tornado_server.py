@@ -11,4 +11,6 @@ def start_tornado_server(host, port):
 	IOLoop.instance().start()
 
 if __name__ == '__main__':
-	start_tornado_server(*parse_host_and_port())
+	host, port = parse_host_and_port()
+	tornado.app.port = port
+	start_tornado_server(host, port)
