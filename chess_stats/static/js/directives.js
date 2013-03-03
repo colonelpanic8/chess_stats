@@ -2,18 +2,12 @@
 
 /* Directives */
 
-
-angular.module('myApp.directives', []).
-  directive('appVersion', ['version', function(version) {
-    return function(scope, elm, attrs) {
-      elm.text(version);
-    };
-  }]);
-
-angular.module('myApp.directives', []).directive(
-    'jq:animate',
+angular.module('ChessStats.directives', []).directive(
+    'jqAnimate',
     function(jQueryExpression, templateElement){ 
-        return function(instanceElement){ 
+        console.log('init')
+        return function(instanceElement){
+            console.log('test')
             instanceElement.show('slow'); 
         } 
     }
