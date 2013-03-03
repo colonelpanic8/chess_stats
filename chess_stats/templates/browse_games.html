@@ -1,5 +1,6 @@
-<html ng-app="myApp">
+<html ng-app="ChessStats">
   <head>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src={{ get_static_url("js/lib/angular/angular.js") }}></script>
     <script src={{ get_static_url("js/lib/angular/angular-resource.js") }}></script>
     <script src={{ get_static_url("js/app.js") }}></script>
@@ -23,7 +24,7 @@
             <th>Date Played</th>
             <th>Game ID</th>
           </tr>
-          <tr ng-repeat="game in gameLoader.games" jq:animate="dropdown;250">
+          <tr ng-repeat="game in gameLoader.games" ng:fade="true">
             <td>[[game.white_elo]]</td>
             <td>
               <a href='[[game.white_username]]'>
