@@ -8,14 +8,15 @@
     <script src={{ get_static_url("js/controllers.js") }}></script>
     <script src={{ get_static_url("js/filters.js") }}></script>
     <script src={{ get_static_url("js/directives.js") }}></script>
-    <link rel="stylesheet" href={{ get_static_url("css/move_browser_styles.css") }} type="text/css">
+    <link rel="stylesheet" href={{ get_static_url("css/browse_games_styles.css") }} type="text/css">
   </head>
   <body>
     <h1>
       <a href="../browse_moves/{{ username }}">{{ username }}</a>
     </h1>
     <div id="angular" ng-controller="GameBrowseCtrl" ng-init="gameLoader.init('{{ username }}', '{{ port }}')")>
-      <div> <table>
+      <div>
+        <table class="game-table">
           <tr>
             <th>White Elo</th>
             <th>White Username</th>
