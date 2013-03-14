@@ -12,6 +12,9 @@ class UCIClient(object):
 		self._process_command = process_command
 		self._engine = self._start_engine()
 		self._engine.stdin.write("isready\n")
+		while True:
+			if self._engine.stdout.readline().rstrip() == 'readyok':
+				break
 
 	def set_position_from_moves_list(self, uci_moves_list):
 		self._engine.stdin.write(
@@ -19,7 +22,7 @@ class UCIClient(object):
 		)
 		return self
 
-	def evaluate_position(self, duration=datetime.timedelta(seconds=3)):
+	def evaluate_position(self, duration=datetime.timedelta(seconds=5)):
 		self._engine.stdin.write(
 			"go movetime %d\n" % int(duration.total_seconds()*1000)
 		)
@@ -44,7 +47,7 @@ class UCIClient(object):
 	best_move_line_matcher = re.compile("bestmove ([a-z0-9]*)")
 
 	def _parse_evaluation_lines(self, evaluation_lines):
-		centipawn_score = 0
+		centipawn_score = None
 		best_move = ''
 		match = self.best_move_line_matcher.match(evaluation_lines.pop())
 		if match:
@@ -64,5 +67,6 @@ StockfishClient = lambda *args, **kwargs: UCIClient('Stockfish/stockfish', *args
 
 
 if __name__ == '__main__':
+	print __file__
 	uci_client = StockfishClient()
 	import ipdb; ipdb.set_trace()
