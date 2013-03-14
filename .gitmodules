@@ -1,3 +1,6 @@
 [submodule "Stockfish"]
 	path = Stockfish
 	url = git@github.com:mcostalba/Stockfish.git
+[submodule "ChessUtil"]
+	path = ChessUtil
+	url = git@github.com:IvanMalison/ChessUtil.git
