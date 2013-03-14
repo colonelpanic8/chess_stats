@@ -171,3 +171,10 @@ def build_sorted_game_stats_for_moves_for_all_games(moves):
 def get_color_dictionary():
 	with open('chess_stats/config/colors.json') as colors_file:
 		return simplejson.loads(colors_file.read())
+
+
+def perform_analysis(game):
+	import analysis
+	analyzer = analysis.ChessGameAnalyzer()
+	analyzer.analyze_moves(game.moves)
+	analyzer.close()
