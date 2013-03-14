@@ -31,7 +31,6 @@ class UCIClient(object):
 			if data is not None:
 				evaluation_lines.append(data)
 
-		print evaluation_lines
 		return self._parse_evaluation_lines(evaluation_lines)
 
 	def _start_engine(self):
@@ -52,10 +51,13 @@ class UCIClient(object):
 			best_move = match.group(1)
 		while evaluation_lines:
 			match = self.evaluation_line_matcher.search(evaluation_lines.pop())
-			if match:
+			if match and match.group(1) != '':
 				centipawn_score = int(match.group(1))
 				break
 		return best_move, centipawn_score
+
+	def quit(self):
+		self._engine.stdin.write("quit\n")
 
 
 StockfishClient = lambda *args, **kwargs: UCIClient('Stockfish/stockfish', *args, **kwargs)
