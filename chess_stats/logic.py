@@ -1,11 +1,13 @@
+from __future__ import division
 import os
 import re
 import simplejson
 
 from . import models
+from . import game_analyzer
 from .chess_dot_com_etl import ChessDotComGameETL
 from .legacy_etl import LegacyGameETL
-from .scraper import ChessDotComScraper, ChessComPGNFileFinder
+from .scraper import ChessDotComScraper
 
 
 def get_games_for_user(username):
@@ -174,7 +176,23 @@ def get_color_dictionary():
 
 
 def perform_analysis(game):
-	import analysis
-	analyzer = analysis.ChessGameAnalyzer()
-	analyzer.analyze_moves(game.moves)
-	analyzer.close()
+	from ChessUtil.playable_game import PlayableChessGame
+	pg = PlayableChessGame()
+	with game_analyzer.ChessGameAnalyzer() as analyzer:
+		for move_num, (move, uci_move, (best_move, score)) in enumerate(
+			analyzer.yield_move_analyses(game.moves)
+		):
+			pg.make_move_from_algebraic_and_return_uci(move)
+			white_score = score
+			if not move_num % 2:
+				print move_num/2 + 1
+				print "White to move."
+			else:
+				print "Black to move."
+				white_score *= -1
+			if white_score > 0:
+				print "White Winning"
+			elif white_score < 0:
+				print "Black Winning"
+			print "%4s - %5s, %d" % (move, best_move, score)
+			pg._board.print_board()

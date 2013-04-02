@@ -1,5 +1,6 @@
 import logic
 
+
 class BFSLoader(object):
 
 	def __init__(self, starting_user, max_users_to_load=500):

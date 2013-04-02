@@ -43,7 +43,7 @@ class UCIClient(object):
 			stdin=subprocess.PIPE
 		)
 
-	evaluation_line_matcher = re.compile("score cp ([0-9]*)")
+	evaluation_line_matcher = re.compile("score cp (-?[0-9]*)")
 	best_move_line_matcher = re.compile("bestmove ([a-z0-9]*)")
 
 	def _parse_evaluation_lines(self, evaluation_lines):
@@ -52,11 +52,13 @@ class UCIClient(object):
 		match = self.best_move_line_matcher.match(evaluation_lines.pop())
 		if match:
 			best_move = match.group(1)
-		while evaluation_lines:
-			match = self.evaluation_line_matcher.search(evaluation_lines.pop())
+		for line in evaluation_lines[::-1]:
+			match = self.evaluation_line_matcher.search(line)
 			if match and match.group(1) != '':
 				centipawn_score = int(match.group(1))
 				break
+		if centipawn_score is None:
+			import ipdb; ipdb.set_trace()
 		return best_move, centipawn_score
 
 	def quit(self):
