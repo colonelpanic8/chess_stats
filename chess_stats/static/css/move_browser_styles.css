@@ -1,98 +1,20 @@
-body{
-    margin: 0;
-    padding: 0;
-    font-family: AndaleMono;
-    background-color: {{background_color}};
-}
-
-h1 {
-    font-size: 200%;
-    text-transform: uppercase;
-    text-align: center;
-    color: white
-}
-
-a {
-    text-decoration: none;
-    color: {{link_color}};
-}
-
-footer {
-    clear: both;
-    position: relative;
-    font-size: .95em;
-    font-style: italic;
-    padding-top: 2em;
-    margin: 7em auto;
-    text-align: center;
-    width: {{footer_width}};
-}
-
-a:hover{
-    color: {{link_hover_color}};
-}
-
-#Moves {
-    margin-left: 15%;
-}
-
-td.containing-td {
+.containing-table tr {
     vertical-align: top;
 }
 
-table {
-    margin-top: 0;
-    margin-right: auto;
-    margin-left: auto;
-    border-collapse: collapse;
+.containing-table td {
+    text-align: center;
+}
+
+.containing-table th {
+    text-align: center;
+}
+
+.containing-table table.right th {
+    text-align: center;
+    width: 60px;
 }
 
 table.containing-table {
     width: 80%;
-}
-
-.moves-table {
-    background-color: none;
-    border: none;
-}
-
-table.left {
-    vertical-align: top;
-    overflow: hidden;
-}
-
-table.right {
-    float: left;
-}
-
-
-th {
-    padding: 10px;
-    background-color: {{header_color}};
-    color: white;
-}
-
-th.movePair {
-    text-transform: uppercase;
-    background-color: transparent;
-}
-
-tr.row-stats {
-    background-color: {{row_color_odd}}
-}
-
-tr.movePair{
-    background-color: transparent;
-}
-
-tr:nth-child(even) {
-    background-color: {{row_color_even}};
-}
-
-.movePair:nth-child(even) {
-    background-color: transparent;
-}
-
-td{
-    text-align: center;
 }

@@ -1,0 +1,23 @@
+h1 {
+    font-size: 200%;
+    text-transform: uppercase;
+    text-align: center;
+    color:
+}
+
+table {
+    margin-top: 0;
+    margin-right: auto;
+    margin-left: auto;
+    border-collapse: collapse;
+}
+
+footer {
+    clear: both;
+    position: relative;
+    font-size: .95em;
+    font-style: italic;
+    padding-top: 2em;
+    margin: 7em auto;
+    text-align: center;
+}
