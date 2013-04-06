@@ -14,5 +14,5 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
 		app_dir=application_directory
 	)
 )
-# app.debug = True
+app.debug = True
 
