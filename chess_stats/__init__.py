@@ -2,7 +2,6 @@ from __future__ import absolute_import
 import os
 
 from flask import Flask, url_for
-from flask_sass import Sass
 
 
 application_directory = os.path.abspath(os.path.dirname(__file__))
@@ -15,6 +14,5 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
 		app_dir=application_directory
 	)
 )
-sass = Sass(app)
 # app.debug = True
 
