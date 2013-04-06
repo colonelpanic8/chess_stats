@@ -7,7 +7,15 @@
     <script src={{ get_static_url("js/controllers.js") }}></script>
     <script src={{ get_static_url("js/filters.js") }}></script>
     <script src={{ get_static_url("js/directives.js") }}></script>
-    <link rel="stylesheet" href={{ get_static_url("css/move_browser_styles.css") }} type="text/css">
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href={{
+          get_static_url("css/base_styles.css") }}
+          type="text/css">
+    <link rel="stylesheet" href={{
+          get_static_url("css/move_browser_styles.css") }}
+          type="text/css">
   </head>
   <body>
     <div id="angular"  ng-controller="MoveStatsCtrl" ng-init="init('{{ username }}')">
@@ -18,12 +26,11 @@
           </a>
         </h1>
       </header>
-      <div id="content">
-        <br>
+      <div>
         <table class="containing-table">
           <tr>
-            <td class="containing-td">
-              <table class="left">
+            <td>
+              <table class="table table-striped table-bordered">
                 <th class="movePair">#</th>
                 <th class="movePair">
                   <a ng-click="moveControl.setColor(true)">
@@ -53,7 +60,7 @@
               </table>
             </td>
             <td class="containing-td">
-              <table class="right">
+              <table class="right table table-striped table-bordered">
                 <th>Move</th>
                 <th>White Wins</th>
                 <th>Black Wins</th>
@@ -61,8 +68,8 @@
                 <th>White Win %</th>
                 <th>Black Win %</th>
                 <th>Draw %</th>
-                <th>White Average Elo</th>
-                <th>Black Average Elo</th>
+                <th>White Avg Elo</th>
+                <th>Black Avg Elo</th>
                 <tr class="row-stats" ng-repeat="moveStats in moveControl.moveStatsList">
                   <td>
                     <a ng-click="moveControl.addMove(moveStats.move)">
@@ -75,8 +82,8 @@
                   <td>[[ moveStats.white_win_pct.toFixed(2) ]]</td>
                   <td>[[ moveStats.black_win_pct.toFixed(2) ]]</td>
                   <td>[[ moveStats.draw_pct.toFixed(2) ]]</td>
-                  <td>[[ moveStats.white_average_elo ]]</td>
-                  <td>[[ moveStats.black_average_elo ]]</td>
+                  <td>[[ moveStats.white_average_elo.toFixed(0) ]]</td>
+                  <td>[[ moveStats.black_average_elo.toFixed(0) ]]</td>
                 </tr>
               </table>
             </td>

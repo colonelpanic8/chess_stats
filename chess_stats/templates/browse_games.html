@@ -8,15 +8,19 @@
     <script src={{ get_static_url("js/controllers.js") }}></script>
     <script src={{ get_static_url("js/filters.js") }}></script>
     <script src={{ get_static_url("js/directives.js") }}></script>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
     <link rel="stylesheet" href={{ get_static_url("css/browse_games_styles.css") }} type="text/css">
   </head>
   <body>
-    <h1>
-      <a href="../browse_moves/{{ username }}">{{ username }}</a>
-    </h1>
-    <div id="angular" ng-controller="GameBrowseCtrl" ng-init="gameLoader.init('{{ username }}', '{{ port }}')")>
-      <div>
-        <table class="game-table">
+    <div class="center">
+      <h1>
+        <a href="../browse_moves/{{ username }}">{{ username }}</a>
+      </h1>
+    </div>
+    <div id="angular" ng-controller="GameBrowseCtrl" 
+         ng-init="gameLoader.init('{{ username }}', '{{ port }}')")>
+      <div class="row span10 center">
+        <table class="game-table table table-striped table-bordered">
           <tr>
             <th>White Elo</th>
             <th>White Username</th>
@@ -29,14 +33,14 @@
             <td>[[game.white_elo]]</td>
             <td>
               <a href='[[game.white_username]]'>
-	            <b ng-show="game.victor_was_white">(W)</b>
+	            <b ng-show="game.result == 'W'">(W)</b>
                  [[game.white_username]]
               </a>
             </td>
             <td>[[game.black_elo]]</td>
             <td>
               <a href='[[game.black_username]]'>
-	            <b ng-hide="game.victor_was_white">(W)</b>
+	            <b ng-show="game.result == 'B'">(W)</b>
                 [[game.black_username]]
               </a>
             </td>
