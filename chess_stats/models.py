@@ -1,6 +1,6 @@
 from flask.ext.sqlalchemy import SQLAlchemy
 import simplejson
-from sqlalchemy.types import TypeDecorator, VARCHAR
+from sqlalchemy.types import INTEGER, TypeDecorator, VARCHAR
 from sqlalchemy.orm.exc import NoResultFound
 
 from . import app
@@ -23,6 +23,30 @@ class JSONType(TypeDecorator):
     def process_result_value(self, value, dialect):
         if value is not None:
             value = simplejson.loads(value)
+        return value
+
+
+class AnalysisScore(object):
+
+    def __init__(self, value, is_mate_in_n=False):
+        self.value = value
+        self.is_mate_in_n = is_mate_in_n
+
+
+class AnalysisScoreType(TypeDecorator):
+
+    impl = INTEGER
+
+    def process_bind_param(self, value, dialect):
+        if value is not None:
+            value = value.score * 2
+            if value.is_mate_in_n:
+                value += 1
+        return value
+
+    def process_result_value(self, value, dialect):
+        if value is not None:
+            value = AnalysisScore(value / 2, bool(value & 1))
         return value
 
 
@@ -142,3 +166,13 @@ class ChessDotComGame(db.Model):
             if game_move != match_move:
                 return False
         return True
+
+
+class AnalysisNode(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    parent_id = db.Column(db.Integer, db.ForeignKey('AnalysisNode'))
+    uci_moves = db.Column(db.String(length=500), unique=True)
+    score = db.Column(AnalysisScoreType)
+
+    parent = db.relationship('AnalysisNode', backref='children')
