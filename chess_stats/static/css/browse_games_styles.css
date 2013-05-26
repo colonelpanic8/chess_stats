@@ -6,6 +6,13 @@
 
 .game-table td {
     text-align: center;
+    overflow: hidden;
+}
+
+.user-column {
+    overflow: hidden;
+    min-width: 120px;
+    max-width: 100px;
 }
 
 .game-table th {
