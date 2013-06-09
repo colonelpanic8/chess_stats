@@ -11,4 +11,7 @@ angular.module('ChessStats.directives', []).directive(
             instanceElement.show('slow'); 
         } 
     }
-);
+)
+
+
+
