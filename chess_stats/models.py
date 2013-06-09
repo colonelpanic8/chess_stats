@@ -168,11 +168,11 @@ class ChessDotComGame(db.Model):
         return True
 
 
-class AnalysisNode(db.Model):
+# class AnalysisNode(db.Model):
 
-    id = db.Column(db.Integer, primary_key=True)
-    parent_id = db.Column(db.Integer, db.ForeignKey('AnalysisNode'))
-    uci_moves = db.Column(db.String(length=500), unique=True)
-    score = db.Column(AnalysisScoreType)
+#     id = db.Column(db.Integer, primary_key=True)
+#     parent_id = db.Column(db.Integer, db.ForeignKey('AnalysisNode'))
+#     uci_moves = db.Column(db.String(length=500), unique=True)
+#     score = db.Column(AnalysisScoreType)
 
-    parent = db.relationship('AnalysisNode', backref='children')
+#     parent = db.relationship('AnalysisNode', backref='children')
