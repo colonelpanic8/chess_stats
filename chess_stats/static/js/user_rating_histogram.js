@@ -4,6 +4,25 @@ function buildMorrisDate(date) {
   return dateString;
 }
 
+function averageEloByDate(userRatingElements) {
+  var aggregateElo = 0;
+  var numberOfElosInDay = 0;
+  var previousDate = userRatingElements[0].date
+  var averageRatingByDate = [];
+  _.each(userRatingElements, function(ratingElement) {
+    if (ratingElement.date === previousDate) {
+      numberOfElosInDay += 1;
+      aggregateElo = aggregateElo + ratingElement.elo;
+    } else {
+      averageRatingByDate.push({elo: aggregateElo/numberOfElosInDay, date: previousDate})
+      aggregateElo = ratingElement.elo;
+      previousDate = ratingElement.date;
+      numberOfElosInDay = 1;
+    }
+  });
+  return averageRatingByDate;
+}
+
 angular.module('ChessStats.directives', []).directive(
   'ngUserRatingHistogram', function() { 
     return function(scope, element, attrs) {
@@ -16,16 +35,17 @@ angular.module('ChessStats.directives', []).directive(
           _.each(userRatingElements, function (ratingElement) {
             ratingElement.date = buildMorrisDate(ratingElement.date_played);
           });
-          console.log(userRatingElements);
+          averageRatingByDate = averageEloByDate(userRatingElements);
+          console.log(averageRatingByDate);
           Morris.Line({
             element: element,
-            data: userRatingElements,
+            data: averageRatingByDate,
             xkey: 'date',
             ykeys: ['elo'],
-            ymax: _.max(userRatingElements, function(ratingElement) {
+            ymax: _.max(averageRatingByDate, function(ratingElement) {
               return ratingElement.elo;
             }).elo,
-            ymin: _.min(userRatingElements, function(ratingElement) {
+            ymin: _.min(averageRatingByDate, function(ratingElement) {
               return ratingElement.elo
             }).elo
           });
