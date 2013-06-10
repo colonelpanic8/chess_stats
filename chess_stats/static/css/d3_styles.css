@@ -31,16 +31,19 @@ path {
 }
 
 .x.axis path {
-    display: none;
+    // display: none;
+    fill: none;
+    stroke: #000;
 }
 
 .x.axis text {
     font-size: 10px;
 }
 
-.y.axis line, .y.axis path {
-    fill: none;
-    stroke: #000;
+.y.axis line, y.axis path {
+    display: none;
+    // fill: none;
+    // stroke: #000;
 }
 
 .y.axis text {
