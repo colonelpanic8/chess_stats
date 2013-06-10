@@ -1,0 +1,27 @@
+body {
+    background-image: url('../img/login_background.png');
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-position:center center; 
+}
+
+#login-bar {    
+    border: 3px solid white;
+    width: 20%;
+    margin: auto;
+    color: white;
+    position: relative;
+    top: 200px;
+    text-align: center;    
+}
+
+#logo {
+    padding: 20px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#login-form {
+    padding: 5px;
+    border-top: 3px solid white;
+    background-color: #34dfe7;
+}
