@@ -10,12 +10,12 @@ path {
     float: left;
 }
 
-.data1 {
-    stroke: green;
+.graph-line {
+    stroke: #ff530D;
 }
 
-.data2 {
-    stroke: orange;
+.graph-circle {
+    fill: green;
 }
 
 .axis {
