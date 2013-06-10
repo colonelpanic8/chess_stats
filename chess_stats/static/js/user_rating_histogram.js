@@ -1,6 +1,6 @@
 /* implementation heavily influenced by http://bl.ocks.org/1166403 */
 
-function buildMorrisDate(date) { 
+function buildDate(date) { 
   var dateString = date.year.toString() + '-' + date.month.toString() + '-' + date.day.toString();
   return dateString;
 }
@@ -28,7 +28,6 @@ function averageEloByDate(userRatingElements) {
 var m = [80, 80, 80, 80]; // margins
 var w = 1500 - m[1] - m[3];// width
 var h = 600 - m[0] - m[2]; // height
-var timeStep = 300000000;
 
 angular.module('ChessStats.directives', []).directive(
   'ngUserRatingHistogram', function() { 
@@ -40,11 +39,10 @@ angular.module('ChessStats.directives', []).directive(
         success: function(userRatingElementsJSON) {
           var userRatingElements = JSON.parse(userRatingElementsJSON);
           _.each(userRatingElements, function (ratingElement) {
-            ratingElement.date = new Date(buildMorrisDate(ratingElement.date_played));
+            ratingElement.date = new Date(buildDate(ratingElement.date_played));
           });
           userRatingElements = _.sortBy(userRatingElements, function(item) {return item.date});
           var averagedEloByDate = averageEloByDate(userRatingElements);
-          console.log(averagedEloByDate);
           var data = _.map(userRatingElements, function(ratingElement) {
             return [ratingElement.date, ratingElement.elo];
           });
@@ -52,7 +50,6 @@ angular.module('ChessStats.directives', []).directive(
           var endTime = _.max(data, function(item) { return item[0] })[0];
           var minY = _.min(data, function(item) { return item[1] })[1];
           var maxY = _.max(data, function(item) { return item[1] })[1];
-          console.log([minY, endTime]);
           _.each(data, function (item) {console.log(item[0])});
           
           var x = d3.time.scale().domain([startTime, endTime]).range([0, w]);
@@ -66,6 +63,7 @@ angular.module('ChessStats.directives', []).directive(
             .y(function(ratingElement) { 
               return y(ratingElement.elo);
             })
+
           // Add an SVG element with the desired dimensions and
           // margin.
           var graph = d3.select(element[0]).append("svg:svg")
@@ -94,9 +92,19 @@ angular.module('ChessStats.directives', []).directive(
           // add lines
           // do this AFTER the axes above so that the line is above the
           // tick-lines
-          console.log();
-          graph.append("svg:path").attr("d", line(averagedEloByDate)).attr("class", "data1");
-          graph.append("svg:path").attr("d", line(userRatingElements)).attr("class", "data2");
+          graph.append("svg:path").attr("d", line(averagedEloByDate)).attr("class", "graph-line");
+          graph.selectAll("circle")
+            .data(userRatingElements)
+            .enter()
+            .append("circle")
+            .attr("cx", function(ratingElement, index) {
+              return x(ratingElement.date);
+            })
+            .attr("cy", function(ratingElement) {
+              return y(ratingElement.elo);
+            })
+            .attr("r", 1.5)
+            .attr("class", "graph-circle");
         }
       });
     }
