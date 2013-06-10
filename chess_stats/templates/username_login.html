@@ -1,10 +1,7 @@
+<!DOCTYPE html>
 <html ng-app="ChessStats">
   <head>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-     <link rel="stylesheet"
-           href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
-     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-     <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
     <script src={{ get_static_url("js/lib/angular/angular.js") }}></script>
     <script src={{ get_static_url("js/lib/angular/angular-resource.js") }}></script>
     <script src={{ get_static_url("js/app.js") }}></script>
@@ -14,16 +11,16 @@
     <script src={{ get_static_url("js/directives.js") }}></script>
 
     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
-    <script src={{ get_static_url("js/user_rating_histogram.js") }}></script>
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css"
-          rel="stylesheet">
-
     <link rel="stylesheet" href={{
           get_static_url("css/base_styles.css") }}
           type="text/css">
   </head>
   <body>
-    <div ng-user-rating-histogram username="{{ username }}"></div>
-    <div ng-user-rating-histogram-by-game username="{{ username }}"></div>
+    <h1>Chess Stats Login</h1>
+    <form ng-submit="loginUsername()" ng-controller="LoginCtrl">
+      <input type="text" ng-model="username"  size="30"
+             placeholder="Enter valid Chess.com username">
+      <input class="btn-primary" type="submit" value="enter">
+    </form>
   </body>
 </html>

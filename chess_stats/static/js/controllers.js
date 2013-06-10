@@ -9,6 +9,12 @@ String.prototype.format = function() {
     return formatted;
 };
 
+function LoginCtrl($scope, $location) {
+  $scope.loginUsername = function() {
+    window.location = "browse_games/" + $scope.username;
+  }
+};
+
 function GameBrowseCtrl($scope) {
     var gameLoader = {
         games: [],
@@ -67,7 +73,7 @@ function MoveStatsCtrl($scope, $http) {
       $http(
          {
             'method': 'GET',
-            'url': '/chess_stats/get_stats',
+            'url': '/get_stats',
             'params': {
                'moves': this.moves,
                'username': this.username,
