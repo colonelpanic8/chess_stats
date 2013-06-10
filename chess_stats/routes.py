@@ -44,6 +44,10 @@ def user_rating_history_json(username):
 def user_rating_graph(username):
    return render_template('user_rating_histogram.html', username=username)
 
+@app.route("/")
+def username_login():
+   return render_template('username_login.html')
 
 if __name__ == "__main__":
    app.run()
+
