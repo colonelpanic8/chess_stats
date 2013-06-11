@@ -8,6 +8,11 @@
     <script src={{ get_static_url("js/controllers.js") }}></script>
     <script src={{ get_static_url("js/filters.js") }}></script>
     <script src={{ get_static_url("js/directives.js") }}></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+    <script src="http://mbostock.github.com/d3/d3.v2.js"></script>
+    <script src={{ get_static_url("js/user_rating_histogram.js")
+    }}></script>
+
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css"
           rel="stylesheet">
 
@@ -17,6 +22,9 @@
     <link rel="stylesheet" href={{
           get_static_url("css/browse_games_styles.css") }}
           type="text/css">
+    <link rel="stylesheet" href={{
+          get_static_url("css/d3_styles.css") }} type="text/css">
+
   </head>
   <body>
     <div class="center">
@@ -24,6 +32,10 @@
         <a href="../browse_moves/{{ username }}">{{ username }}</a>
       </h1>
     </div>
+
+    <div id="graph" class="rating-graph" ng-user-rating-histogram
+    username="{{ username }}"></div>
+
     <div id="angular" ng-controller="GameBrowseCtrl" 
          ng-init="gameLoader.init('{{ username }}', '{{ port }}')")>
       <div class="row span10 center">

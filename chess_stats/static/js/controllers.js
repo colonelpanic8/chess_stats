@@ -149,14 +149,14 @@ function MoveStatsCtrl($scope, $http) {
             {
                'index': this.moves.length - 1,
                'whiteMove': this.moves[this.moves.length - 1],
-               'blackMove': "..."
+               'blackMove': ". . ."
             }
          );
       } else {
          movePairs.push(
             {
                'index': this.moves.length,
-               'whiteMove': "...",
+               'whiteMove': ". . .",
                'blackMove': ""
             }
          );
