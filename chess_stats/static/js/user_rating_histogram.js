@@ -103,10 +103,10 @@ angular.module('ChessStats.directives', []).directive(
             .attr("cy", function(ratingElement) {
               return y(ratingElement.elo);
             })
-            .attr("r", 1.5)
-            .attr("class", "graph-circle");
+            .attr("r", 1.5).on('click', function (derta) { window.location = 'http://www.chess.com/livechess/game?id=' + derta.chess_dot_com_id.toString()});
         }
       });
     }
   }
 )
+

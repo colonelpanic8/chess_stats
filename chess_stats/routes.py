@@ -34,6 +34,8 @@ def get_game_stats():
       move_stats = logic.build_sorted_game_stats_for_moves_for_all_games(moves)
    return simplejson.dumps(move_stats)
 
+
+
 @app.route("/user_rating_history_json/<username>")
 def user_rating_history_json(username):
    return simplejson.dumps(
