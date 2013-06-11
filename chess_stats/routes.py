@@ -10,7 +10,6 @@ from .user_rating_history_fetcher import UserRatingHistoryFetcher
 def browse_games(username):
    return render_template('browse_games.html', username=username, port=app.port)
 
-
 @app.route("/browse_moves/<username>")
 def browse_user_moves(username):
    return render_template('browse_moves.html', username=username)

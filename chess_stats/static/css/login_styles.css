@@ -1,11 +1,11 @@
 body {
-    background-image: url('../img/login_background.png');
-    background-repeat:no-repeat;
-    background-attachment:fixed;
-    background-position:center center; 
     margin: 0;
     color: #F72E2A;
     font-family: Georgia, sans-serif;
+    background-image: url('../img/login_background.png');
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-position:center center;
 }
 
 
@@ -16,16 +16,14 @@ media="all"
 }
 
 #header-wrapper {
-    padding: 40px 0;
+    padding: 30px 0;
     width: 100%;
     background: #fff;
 }
 
 #header {
-    width: 500px;
+    width: 960px;
     margin: 0 auto;
-    height: 26px;
-    line-height: 24px;
     position: relative;
 }
  
@@ -39,13 +37,8 @@ media="all"
 #logo {
     display: block;
     float: left;
-    left: 0;
-}
-
-#logo h1 {
-    font-size: 32px;
-    position: absolute;
-    right: 0;
+    height: 26px;
+    margin: 8px 0;
 }
 
 #navigation {
@@ -57,14 +50,25 @@ media="all"
     padding: 0 0 0 40px;
 }
 
-#login-form {
-    border: 3px solid white;
-    width: 20%;
+#login-wrapper {
+    border: 1px solid #F72E2A;
+    width: 30%;
     margin: auto;
     color: white;
-    position: relative;
-    top: 200px;
-    text-align: center;    
-    padding: 5px;
-    background-color: #34dfe7;
+    background-color: white;
+    position: absolute;
+    top: 250px;
+    left: 35%;
+    text-align: center;
+}
+
+#login-description {
+    color: #F72E2A;
+    font-size: 2em;
+    padding: 60px;
+}
+
+#login-form {
+    border-top: 1px solid #F72E2A;
+    padding: 10px 0 10px 0;
 }

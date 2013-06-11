@@ -3,6 +3,10 @@ path {
     fill: none;
 }
 
+circle {
+    cursor: pointer;
+}
+
 .rating-graph {
     top: 0px;
     left: 0; 
@@ -10,11 +14,11 @@ path {
 }
 
 .graph-line {
-    stroke: #ff530D;
+    stroke: #FF7300;
 }
 
 .graph-circle {
-    fill: green;
+    fill: #E82C0C;
 }
 
 .axis {
@@ -47,4 +51,18 @@ path {
 
 .y.axis text {
     font-size: 12px;
+}
+
+.tooltip {   
+  position: absolute;           
+  text-align: center;           
+  width: 80px;                  
+  padding: 6px;             
+  font: 10px sans-serif;        
+  background: black;   
+  color: white;
+  border: 0px;      
+  border-radius: 2px;           
+  box-shadow: 5px 5px 8px #bcbcbc;
+  pointer-events: none;         
 }
