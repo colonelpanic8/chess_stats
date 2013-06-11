@@ -19,7 +19,7 @@
   </head>
   <body>
     <div id="header-wrapper">
-      <div id="header" class="container_12 clear">
+      <div id="header">
         <h1 id="logo"><span>Chess Stats</span></h1>
         <ul id="navigation">
           <li><span>Chess.com</span></li>
@@ -28,12 +28,17 @@
       </div>
     </div>
 
-    <div id="login-form">
-      <form ng-submit="loginUsername()" ng-controller="LoginCtrl">
-        <input type="text" ng-model="username" size="30"
-               placeholder="Enter valid Chess.com username">
-        <input class="btn-primary" type="submit" value="enter">
-      </form>
+    <div id="login-wrapper">
+      <div id="login-description">
+        Enter a Chess.com username for stats and game analysis
+      </div>
+      <div id="login-form">
+        <form ng-submit="loginUsername()" ng-controller="LoginCtrl">
+          <input type="text" ng-model="username" size="30"
+               placeholder="Chess.com Name">
+          <input class="btn-primary" type="submit" value="enter">
+        </form>
+      </div>
     </div>
   </body>
 </html>

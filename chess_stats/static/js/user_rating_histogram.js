@@ -88,23 +88,39 @@ angular.module('ChessStats.directives', []).directive(
             .attr("class", "y axis")
             .attr("transform", "translate(-10,0)")
             .call(yAxisLeft);
-          
-          // add lines
-          // do this AFTER the axes above so that the line is above the
-          // tick-lines
+
+          var tooltipDiv = d3.select("body").append("div")   
+            .attr("class", "tooltip")               
+            .style("opacity", 0);
+
           graph.append("svg:path").attr("d", line(averagedEloByDate)).attr("class", "graph-line");
           graph.selectAll("circle")
             .data(userRatingElements)
             .enter()
             .append("circle")
+            .attr("class", "graph-circle")
             .attr("cx", function(ratingElement, index) {
               return x(ratingElement.date);
             })
             .attr("cy", function(ratingElement) {
               return y(ratingElement.elo);
             })
-            .attr("r", 1.5)
+            .attr("r", 3)
+            .on("mouseover", function(ratingElement) {      
+              tooltipDiv.transition()        
+                .duration(200)      
+                .style("opacity", .8);      
+              tooltipDiv .html("id: " + ratingElement.chess_dot_com_id + "<br/>" + "rating: " + ratingElement.elo)  
+                .style("left", (d3.event.pageX) + "px")     
+                .style("top", (d3.event.pageY - 40) + "px");    
+            })                  
+            .on("mouseout", function(ratingElement) {       
+              tooltipDiv.transition()        
+                .duration(500)      
+                .style("opacity", 0);   
+            })
             .on('click', function (ratingElement) { window.location = 'http://www.chess.com/livechess/game?id=' + ratingElement.chess_dot_com_id.toString()});
+
         }
       });
     }
