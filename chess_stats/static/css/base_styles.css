@@ -35,3 +35,37 @@ a:hover {
     text-decoration: none;
     color: navy;
 }
+
+.table {
+    font-family: 'Open Sans';
+    font-size: 14px;
+}
+
+.table th {
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.table td {
+    border-top: 1px solid #fee4e4;
+    text-align: center;
+}
+
+.table-bordered {
+    border: 1px solid #fee4e4;
+    border-radius: 0;
+    border-collapse: collapse;
+}
+
+.table-bordered td, .table-bordered th {
+    border-left: 1px solid #fee4e4;
+}
+
+.table-striped tbody>tr:nth-child(odd)>td,.table-striped tbody>tr:nth-child(odd)>th{
+    background-color:#fef2f2;
+}
+
+.table-bordered tbody:first-child tr:first-child>th {
+    color: white;
+    background-color: #fc564a;
+}
