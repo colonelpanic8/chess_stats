@@ -29,6 +29,7 @@ var m = [80, 80, 80, 80]; // margins
 var w = 1500 - m[1] - m[3];// width
 var h = 600 - m[0] - m[2]; // height
 
+
 angular.module('ChessStats.directives', []).directive(
   'ngUserRatingHistogram', function() { 
     return function(scope, element, attrs) {
