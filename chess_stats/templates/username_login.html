@@ -10,22 +10,32 @@
     <script src={{ get_static_url("js/filters.js") }}></script>
     <script src={{ get_static_url("js/directives.js") }}></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,300'
+          rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href={{
+          get_static_url("css/base_styles.css") }}
+          type="text/css">
     <link rel="stylesheet" href={{
           get_static_url("css/login_styles.css") }}
           type="text/css">
+
   </head>
   <body>
     <header>
       <div id="navigation">
+        <div id="navigation-background"></div>
         <div class="links">
-          <div class="graph-link">
-            <p>1</p>
+          <div class="histogram-link" ng-class="navClass('histogram')">
+            <p><a href='/rating_graph/{{username}}' id="nav-link">1</a></p>
           </div>
-          <div class="two-link">
-            <p>2</p>
+          <div class="games-history-link" ng-class="navClass('gamesHistory')">
+            <p><a href='/rating_graph/{{username}}'>2</a></p>
           </div>
-          <div class="three-link">
-            <p>3</p>
+          <div class="game-analysis-link" ng-class="navClass('gameAnalysis')">
+            <p><a href='/rating_graph/{{username}}'>3</a></p>
+          </div>
+          <div class="moves-stats-link" ng-class="navClass('movesStats')">
+            <p><a href='/rating_graph/{{username}}'>4</a></p>
           </div>
         </div>
       </div>

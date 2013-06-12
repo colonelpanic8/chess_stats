@@ -1,17 +1,18 @@
 body {
     margin: 0;
-    color: #F72E2A;
-    font-family: Helvetica, sans-serif;
-    background-color: #eaeaea;
+    font-family: 'Open Sans', sans-serif;
+//    background-color: #eaeaea;
 //    background-image: url('../img/login_background.png');
     background-repeat:no-repeat;
     background-attachment:fixed;
     background-position:center center;
 }
 
-#navigation {
-    background-color: white;
+#navigation-background {
+    opacity: 0.2;
+    background-color: black;
     position: absolute;
+    height: 3400px;
     width: 70px;
     top: 0;
     bottom: 0;
@@ -19,13 +20,12 @@ body {
 
 #navigation .links {
     position: fixed;
-    top: 20%;
+    top: 25%;
     left: 0;
 }
 
 #navigation .links > div {
     position: relative;
-    color: #FFF;
     font-size: 22px;
     text-align: center;
     width: 70px;
@@ -40,19 +40,29 @@ body {
     cursor: pointer;
     position: absolute;
     z-index: 9999;
-    top: 30%;
+    top: 35%;
+    font-size: 15px;
 }
 
-#navigation .graph-link {
-    background-color: #34dfe7;
+#navigation .links a, a:visited {
+    color: white;
 }
 
-#navigation .two-link {
-    background-color: #ffd400;
+#navigation .histogram-link {
+    background-color: #213540;
 }
 
-#navigation .three-link {
-    background-color: #ff151f;
+#navigation .games-history-link {
+    background-color: #ff0000; 
+}
+
+#navigation .game-analysis-link {
+    background-color: #ffe000;
+}
+
+#navigation .moves-stats-link {
+    background-color: #16c1f3;
+
 }
 
 #login-wrapper {
@@ -62,7 +72,7 @@ body {
     color: white;
     background-color: white;
     position: absolute;
-    top: 250px;
+    top: 25%;
     left: 35%;
     text-align: center;
 }

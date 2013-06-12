@@ -12,6 +12,7 @@ menu, nav, output, ruby, section, summary, time, mark, audio, video {
     vertical-align: baseline;
     list-style: none;
     font-family: 'Open Sans';
+    text-decoration: none;
 }
 
 table {
@@ -19,6 +20,11 @@ table {
     margin-right: auto;
     margin-left: auto;
     border-collapse: collapse;
+}
+
+#content {
+    width: 90%;
+    margin: 0 auto 0 7%;
 }
 
 footer {
@@ -31,7 +37,18 @@ footer {
     text-align: center;
 }
 
-a:hover {
+.page-header {
+    font-weight: 300;
+    padding-bottom: 2px;
+    border-bottom: 2px solid white;
+    letter-spacing: 1px;
+}
+
+.table a, a:visited {
+    color: #0088cd;
+}
+
+.table a:hover {
     text-decoration: none;
     color: navy;
 }

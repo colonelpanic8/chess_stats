@@ -13,6 +13,13 @@
     <script src="http://mbostock.github.com/d3/d3.v2.js"></script>
     <script src={{ get_static_url("js/user_rating_histogram.js")
     }}></script>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css"
+          rel="stylesheet"> 
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,300|Source+Code+Pro:300,400,600'
+          rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href={{
+          get_static_url("css/login_styles.css") }}
+          type="text/css">
     <link rel="stylesheet" href={{
           get_static_url("css/base_styles.css") }}
           type="text/css">
@@ -20,7 +27,29 @@
           get_static_url("css/d3_styles.css") }} type="text/css">
   </head>
   <body>
-    <h1> {{ username }} </h1>
-    <div id="graph" class="rating-graph" ng-user-rating-histogram username="{{ username }}"></div>
+    <header>
+      <div id="navigation">
+        <div id="navigation-background"></div>
+        <div class="links">
+          <div class="histogram-link" ng-class="navClass('histogram')">
+            <p><a href='/rating_graph/{{username}}'>1</a></p>
+          </div>
+          <div class="games-history-link" ng-class="navClass('gamesHistory')">
+            <p><a href='/rating_graph/{{username}}'>2</a></p>
+          </div>
+          <div class="game-analysis-link" ng-class="navClass('gameAnalysis')">
+            <p><a href='/rating_graph/{{username}}'>3</a></p>
+          </div>
+          <div class="moves-stats-link" ng-class="navClass('movesStats')">
+            <p><a href='/rating_graph/{{username}}'>4</a></p>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div id="content">
+      <h2> {{ username }} / <span class="page-header"> Rating Histogram</span></h2>
+      <div id="graph" class="rating-graph" ng-user-rating-histogram
+           username="{{ username }}"></div>
+    </div>
   </body>
 </html>
