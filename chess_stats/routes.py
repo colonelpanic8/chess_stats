@@ -10,7 +10,6 @@ from .user_rating_history_fetcher import UserRatingHistoryFetcher
 def browse_games(username):
    return render_template('browse_games.html', username=username, port=app.port)
 
-
 @app.route("/browse_moves/<username>")
 def browse_user_moves(username):
    return render_template('browse_moves.html', username=username)
@@ -33,6 +32,8 @@ def get_game_stats():
    else:
       move_stats = logic.build_sorted_game_stats_for_moves_for_all_games(moves)
    return simplejson.dumps(move_stats)
+
+
 
 @app.route("/user_rating_history_json/<username>")
 def user_rating_history_json(username):

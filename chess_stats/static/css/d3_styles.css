@@ -1,0 +1,68 @@
+path {
+    stroke-width: 1;
+    fill: none;
+}
+
+circle {
+    cursor: pointer;
+}
+
+.rating-graph {
+    top: 0px;
+    left: 0; 
+    float: left;
+}
+
+.graph-line {
+    stroke: #FF7300;
+}
+
+.graph-circle {
+    fill: #E82C0C;
+}
+
+.axis {
+    shape-rendering: crispEdges;
+}
+
+.x.axis line {
+    stroke: lightgrey;
+}
+
+.x.axis .minor {
+    stroke-opacity: .5;
+}
+
+.x.axis path {
+    // display: none;
+    fill: none;
+    stroke: #000;
+}
+
+.x.axis text {
+    font-size: 10px;
+}
+
+.y.axis line, y.axis path {
+    display: none;
+    // fill: none;
+    // stroke: #000;
+}
+
+.y.axis text {
+    font-size: 12px;
+}
+
+.tooltip {   
+  position: absolute;           
+  text-align: center;           
+  width: 80px;                  
+  padding: 6px;             
+  font: 10px sans-serif;        
+  background: black;   
+  color: white;
+  border: 0px;      
+  border-radius: 2px;           
+  box-shadow: 5px 5px 8px #bcbcbc;
+  pointer-events: none;         
+}
