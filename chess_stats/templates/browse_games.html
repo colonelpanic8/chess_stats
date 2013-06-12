@@ -14,7 +14,9 @@
     <link rel="stylesheet" href={{
           get_static_url("css/base_styles.css") }}
           type="text/css">
-    <link rel="stylesheet" href={{ get_static_url("css/browse_games_styles.css") }} type="text/css">
+    <link rel="stylesheet" href={{
+          get_static_url("css/browse_games_styles.css") }}
+          type="text/css">
   </head>
   <body>
     <div class="center">
@@ -27,30 +29,29 @@
       <div class="row span10 center">
         <table class="game-table table table-striped table-bordered">
           <tr>
-            <th>White Elo</th>
+            <th>Date Played</th> 
             <th class="user-column">White Username</th>
-            <th>Black Elo</th>
+            <th>White Elo</th>
             <th class="user-column">Black Username</th>
-            <th>Date Played</th>
+            <th>Black Elo</th>
             <th>Game ID</th>
           </tr>
           <tr ng-repeat="game in gameLoader.games" ng:fade="true">
-            <td>[[game.white_elo]]</td>
+            <td>[[game.date_played]]</td>
             <td class="user-column">
               <a href='[[game.white_username]]'>
 	            <b ng-show="game.result == 'W'">(W)</b>
                  [[game.white_username]]
               </a>
             </td>
-            <td>[[game.black_elo]]</td>
+            <td>[[game.white_elo]]</td>
             <td class="user-column">
               <a href='[[game.black_username]]'>
 	            <b ng-show="game.result == 'B'">(W)</b>
                 [[game.black_username]]
               </a>
             </td>
-
-            <td>[[game.date_played]]</td>
+            <td>[[game.black_elo]]</td>
             <td><a href=[[gameLoader.buildChessDotComGameURL(game.id)]]>[[game.id]]</a></td>
           </tr>
       </div>

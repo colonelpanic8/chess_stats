@@ -1,4 +1,6 @@
-function buildMorrisDate(date) { 
+/* implementation heavily influenced by http://bl.ocks.org/1166403 */
+
+function buildDate(date) { 
   var dateString = date.year.toString() + '-' + date.month.toString() + '-' + date.day.toString();
   return dateString;
 }
@@ -6,10 +8,10 @@ function buildMorrisDate(date) {
 function averageEloByDate(userRatingElements) {
   var aggregateElo = 0;
   var numberOfElosInDay = 0;
-  var previousDate = userRatingElements[0].date
+  var previousDate = userRatingElements[0].date;
   var averageRatingByDate = [];
   _.each(userRatingElements, function(ratingElement) {
-    if (ratingElement.date === previousDate) {
+    if (ratingElement.date.valueOf() === previousDate.valueOf()) {
       numberOfElosInDay += 1;
       aggregateElo = aggregateElo + ratingElement.elo;
     } else {
@@ -22,6 +24,11 @@ function averageEloByDate(userRatingElements) {
   return averageRatingByDate;
 }
 
+// define dimensions of graph
+var m = [80, 80, 80, 80]; // margins
+var w = 1500 - m[1] - m[3];// width
+var h = 600 - m[0] - m[2]; // height
+
 angular.module('ChessStats.directives', []).directive(
   'ngUserRatingHistogram', function() { 
     return function(scope, element, attrs) {
@@ -32,58 +39,91 @@ angular.module('ChessStats.directives', []).directive(
         success: function(userRatingElementsJSON) {
           var userRatingElements = JSON.parse(userRatingElementsJSON);
           _.each(userRatingElements, function (ratingElement) {
-            ratingElement.date = buildMorrisDate(ratingElement.date_played);
+            ratingElement.date = new Date(buildDate(ratingElement.date_played));
           });
-          averageRatingByDate = averageEloByDate(userRatingElements);
-          console.log(averageRatingByDate);
-          Morris.Line({
-            element: element,
-            data: averageRatingByDate,
-            xkey: 'date',
-            ykeys: ['elo'],
-            ymax: _.max(averageRatingByDate, function(ratingElement) {
-              return ratingElement.elo;
-            }).elo,
-            ymin: _.min(averageRatingByDate, function(ratingElement) {
-              return ratingElement.elo
-            }).elo
+          userRatingElements = _.sortBy(userRatingElements, function(item) {return item.date});
+          var averagedEloByDate = averageEloByDate(userRatingElements);
+          var data = _.map(userRatingElements, function(ratingElement) {
+            return [ratingElement.date, ratingElement.elo];
           });
+          var startTime = _.min(data, function(item) { return item[0] })[0];
+          var endTime = _.max(data, function(item) { return item[0] })[0];
+          var minY = _.min(data, function(item) { return item[1] })[1];
+          var maxY = _.max(data, function(item) { return item[1] })[1];
+          _.each(data, function (item) {console.log(item[0])});
+          
+          var x = d3.time.scale().domain([startTime, endTime]).range([0, w]);
+          x.tickFormat(d3.time.format("%Y-%m-%d"));
+          var y = d3.scale.linear().domain([minY, maxY]).range([h, 0]);
+          
+          var line = d3.svg.line()
+            .x(function(ratingElement, index) {
+              return x(ratingElement.date); 
+            })
+            .y(function(ratingElement) { 
+              return y(ratingElement.elo);
+            })
+
+          // Add an SVG element with the desired dimensions and
+          // margin.
+          var graph = d3.select(element[0]).append("svg:svg")
+            .attr("width", w + m[1] + m[3])
+            .attr("height", h + m[0] + m[2])
+            .append("svg:g")
+            .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+          // create yAxis
+          var xAxis = d3.svg.axis().scale(x).tickSize(-h).tickSubdivide(1);
+
+          // Add the x-axis.
+          graph.append("svg:g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + h + ")")
+            .call(xAxis);
+
+          // create left yAxis
+          var yAxisLeft = d3.svg.axis().scale(y).ticks(6).orient("left");
+          // Add the y-axis to the left
+          graph.append("svg:g")
+            .attr("class", "y axis")
+            .attr("transform", "translate(-10,0)")
+            .call(yAxisLeft);
+
+          var tooltipDiv = d3.select("body").append("div")   
+            .attr("class", "tooltip")               
+            .style("opacity", 0);
+
+          graph.append("svg:path").attr("d", line(averagedEloByDate)).attr("class", "graph-line");
+          graph.selectAll("circle")
+            .data(userRatingElements)
+            .enter()
+            .append("circle")
+            .attr("class", "graph-circle")
+            .attr("cx", function(ratingElement, index) {
+              return x(ratingElement.date);
+            })
+            .attr("cy", function(ratingElement) {
+              return y(ratingElement.elo);
+            })
+            .attr("r", 3)
+            .on("mouseover", function(ratingElement) {      
+              tooltipDiv.transition()        
+                .duration(200)      
+                .style("opacity", .8);      
+              tooltipDiv .html("id: " + ratingElement.chess_dot_com_id + "<br/>" + "rating: " + ratingElement.elo)  
+                .style("left", (d3.event.pageX) + "px")     
+                .style("top", (d3.event.pageY - 40) + "px");    
+            })                  
+            .on("mouseout", function(ratingElement) {       
+              tooltipDiv.transition()        
+                .duration(500)      
+                .style("opacity", 0);   
+            })
+            .on('click', function (ratingElement) { window.location = 'http://www.chess.com/livechess/game?id=' + ratingElement.chess_dot_com_id.toString()});
+
         }
       });
     }
   }
 )
 
-
-angular.module('ChessStats.directives', []).directive(
-  'ngUserRatingHistogramByGame', function() { 
-    return function(scope, element, attrs) {
-      $.ajax({
-        url: '/user_rating_history_json/' + attrs.username,
-        method: 'get',
-        datatype: 'json',
-        success: function(userRatingElementsJSON) {
-          var userRatingElements = JSON.parse(userRatingElementsJSON);
-          var gameIndex = 0;
-          _.each(userRatingElements, function (ratingElement) {
-            ratingElement.date = buildMorrisDate(ratingElement.date_played);
-            ratingElement.x = gameIndex;
-            gameIndex += 1;
-          });
-          Morris.Line({
-            element: element,
-            data: userRatingElements,
-            xkey: 'x',
-            ykeys: ['elo'],
-            ymax: _.max(userRatingElements, function(ratingElement) {
-              return ratingElement.elo;
-            }).elo,
-            ymin: _.min(userRatingElements, function(ratingElement) {
-              return ratingElement.elo
-            }).elo
-          });
-        }
-      });
-    }
-  }
-)
