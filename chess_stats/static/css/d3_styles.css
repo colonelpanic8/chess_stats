@@ -1,3 +1,22 @@
+body {
+    background-color: #213540;
+}
+
+#content h2 {
+    font-size: 36px;
+    font-family: 'Source Code Pro';
+    display: block;
+    margin-right: 10%;
+    font-weight: 400;
+    color: white;
+    position: relative;
+    top: 40px;
+    text-align: right;
+}
+#content i {
+    position: relative;
+    top: 3px;
+}
 path {
     stroke-width: 1;
     fill: none;
@@ -10,6 +29,8 @@ circle {
 .rating-graph {
     margin: 0 auto;
     text-align: center;
+    position: relative;
+    top: 70px;
 }
 
 .graph-line {
@@ -31,7 +52,7 @@ circle {
 .x.axis path {
     // display: none;
     fill: none;
-    stroke: #000;
+    stroke: #14141b;
 }
 
 .x.axis text, .y.axis text, .tooltip {
@@ -54,10 +75,10 @@ circle {
   text-align: center;           
   width: 80px;                  
   padding: 6px;             
-  background: black;   
+  background-color: #ff7300;   
   color: white;
   border: 0px;      
-  border-radius: 2px;           
-  box-shadow: 5px 5px 8px #bcbcbc;
+  border-radius: 1px;           
+  box-shadow: 5px 5px 8px #202020;
   pointer-events: none;         
 }

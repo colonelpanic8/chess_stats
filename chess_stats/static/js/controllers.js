@@ -1,3 +1,4 @@
+
 'use strict';
 
 String.prototype.format = function() {
@@ -11,9 +12,15 @@ String.prototype.format = function() {
 
 function LoginCtrl($scope, $location) {
   $scope.loginUsername = function() {
-    window.location = "browse_games/" + $scope.username;
+    window.location = "rating_graph/" + $scope.username;
   }
 };
+
+// function NavCtrl($scope, $location) {
+//   $scope.navClass = function (page) {
+
+//   }
+// };
 
 function GameBrowseCtrl($scope) {
     var gameLoader = {
