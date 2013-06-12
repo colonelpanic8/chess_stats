@@ -182,9 +182,9 @@ def perform_analysis(game):
 def perform_analysis_interactive(game):
     from ChessUtil.playable_game import PlayableChessGame
     pg = PlayableChessGame()
-    with game_analyzer.ChessGameAnalyzer() as analyzer:
+    with game_analyzer.ChessGameAnalyzer(game) as analyzer:
         for move_num, (move, uci_move, (best_move, score)) in enumerate(
-            analyzer.yield_move_analyses(game.moves)
+            analyzer.yield_move_analyses()
         ):
             pg.make_move_from_algebraic_and_return_uci(move)
             white_score = score
