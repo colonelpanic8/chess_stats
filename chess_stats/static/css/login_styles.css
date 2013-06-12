@@ -1,53 +1,58 @@
 body {
     margin: 0;
     color: #F72E2A;
-    font-family: Georgia, sans-serif;
-    background-image: url('../img/login_background.png');
+    font-family: Helvetica, sans-serif;
+    background-color: #eaeaea;
+//    background-image: url('../img/login_background.png');
     background-repeat:no-repeat;
     background-attachment:fixed;
     background-position:center center;
 }
 
-
-media="all"
-.clear:before, .clear:after {
-    content: "";
-    display: table;
-}
-
-#header-wrapper {
-    padding: 30px 0;
-    width: 100%;
-    background: #fff;
-}
-
-#header {
-    width: 960px;
-    margin: 0 auto;
-    position: relative;
-}
- 
-#header:after {
-    content: " ";
-    display: block; 
-    height: 0; 
-    clear: both;
-}
-
-#logo {
-    display: block;
-    float: left;
-    height: 26px;
-    margin: 8px 0;
-}
-
 #navigation {
-    float: right;
+    background-color: white;
+    position: absolute;
+    width: 70px;
+    top: 0;
+    bottom: 0;
 }
 
-#navigation li {
-    display: inline;
-    padding: 0 0 0 40px;
+#navigation .links {
+    position: fixed;
+    top: 20%;
+    left: 0;
+}
+
+#navigation .links > div {
+    position: relative;
+    color: #FFF;
+    font-size: 22px;
+    text-align: center;
+    width: 70px;
+    height: 70px;
+    z-index: 9999;
+}
+
+#navigation .links div > p {
+    margin: 0;
+    padding: 0 40%;
+    overflow: hidden;
+    cursor: pointer;
+    position: absolute;
+    z-index: 9999;
+    top: 30%;
+}
+
+#navigation .graph-link {
+    background-color: #34dfe7;
+}
+
+#navigation .two-link {
+    background-color: #ffd400;
+}
+
+#navigation .three-link {
+    background-color: #ff151f;
 }
 
 #login-wrapper {

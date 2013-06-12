@@ -11,6 +11,7 @@ menu, nav, output, ruby, section, summary, time, mark, audio, video {
     font: inherit;
     vertical-align: baseline;
     list-style: none;
+    font-family: 'Open Sans';
 }
 
 table {
@@ -18,7 +19,6 @@ table {
     margin-right: auto;
     margin-left: auto;
     border-collapse: collapse;
-    font-family: "Helvetica Neue", Helvetica;
 }
 
 footer {
@@ -67,5 +67,5 @@ a:hover {
 
 .table-bordered tbody:first-child tr:first-child>th {
     color: white;
-    background-color: #fc564a;
+    background-color: #ff3f34;
 }
