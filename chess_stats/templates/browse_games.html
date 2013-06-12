@@ -40,7 +40,7 @@
 
     <div id="angular" ng-controller="GameBrowseCtrl" 
          ng-init="gameLoader.init('{{ username }}', '{{ port }}')")>
-      <div class="row span10 center">
+      <div class="row span8 center">
         <table class="game-table table table-striped table-bordered">
           <tr>
             <th>Date Played</th> 
@@ -54,19 +54,21 @@
             <td>[[game.date_played]]</td>
             <td class="user-column">
               <a href='[[game.white_username]]'>
-	            <b ng-show="game.result == 'W'">(W)</b>
+	            <b ng-show="game.result ==
+                 'W'"><img src="../static/img/crown_icon.svg" width="10%"></b>
                  [[game.white_username]]
               </a>
             </td>
             <td>[[game.white_elo]]</td>
             <td class="user-column">
               <a href='[[game.black_username]]'>
-	            <b ng-show="game.result == 'B'">(W)</b>
+	            <b ng-show="game.result == 'B'"><img src="../static/img/crown_icon.svg" width="10%"></b>
                 [[game.black_username]]
               </a>
             </td>
             <td>[[game.black_elo]]</td>
-            <td><a href=[[gameLoader.buildChessDotComGameURL(game.id)]]>[[game.id]]</a></td>
+            <td><a href=[[gameLoader.buildChessDotComGameURL(game.id)]]
+            target="_blank">[[game.id]]</a></td>
           </tr>
       </div>
     </div>
