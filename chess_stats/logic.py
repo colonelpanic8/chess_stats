@@ -61,6 +61,7 @@ def load_games_from_legacy_files_in_directory(directory):
     for directory_path, directory_names, filenames in os.walk(directory):
         for filename in filenames:
             if filename_matcher.match(filename):
+                print filename
                 load_games_from_legacy_xml(
                     os.path.join(directory_path, filename),
                     os.path.basename(directory_path)
