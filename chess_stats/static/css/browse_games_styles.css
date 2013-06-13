@@ -1,7 +1,13 @@
-.game-table {
+#game-table {
     display: block;
     text-align: center;
     line-height: 1;
+    box-shadow: 5px 5px 8px #ffb9b7;
+    margin-top: 20px;
+}
+
+#game-table a, a:visited {
+    color: #0088cd;
 }
 
 .user-column {
@@ -10,12 +16,27 @@
     max-width: 100px;
 }
 
-.center {
-    float: none;
-    margin: auto;
+#game-table th, .game-table td {
     text-align: center;
 }
 
-.game-table th, .game-table td {
-    text-align: center;
+#page-header a, a:visited {
+    color: black;
+}
+#page-header a:hover {
+    color: #0088cd;
+    text-decoration: none;
+}
+
+.table-bordered, .table td, .table-bordered td, .table-bordered th {
+    border: 1px solid #FFC5C5;
+}
+
+.table-striped tbody>tr:nth-child(odd)>td,.table-striped tbody>tr:nth-child(odd)>th{
+    background-color:#ffebea;
+}
+
+.table-bordered tbody:first-child tr:first-child>th {
+    color: white;
+    background-color: #ff3f34;
 }
