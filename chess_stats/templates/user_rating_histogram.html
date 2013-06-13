@@ -15,7 +15,7 @@
     }}></script>
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css"
           rel="stylesheet"> 
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,300|Source+Code+Pro:300,400,600'
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400,600,300|Source+Code+Pro:300,400,600'
           rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href={{
           get_static_url("css/login_styles.css") }}
@@ -47,7 +47,11 @@
       </div>
     </header>
     <div id="content">
-      <h2> {{ username }} / <span class="page-header"> Rating Histogram</span></h2>
+      <div id="page-header">
+        <h2> {{ username }} / <span id="page-title"> Rating
+            Histogram</span></h2>
+        <p><i class="icon-hand-right icon-white"></i> Select plot point to view game analysis</p>
+      </div>
       <div id="graph" class="rating-graph" ng-user-rating-histogram
            username="{{ username }}"></div>
     </div>

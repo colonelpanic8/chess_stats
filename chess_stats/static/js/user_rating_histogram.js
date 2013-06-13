@@ -25,7 +25,7 @@ function averageEloByDate(userRatingElements) {
 }
 
 // define dimensions of graph
-var m = [80, 80, 80, 80]; // margins
+var m = [80, 80, 80, 100]; // margins
 var w = 1200 - m[1] - m[3];// width
 var h = 600 - m[0] - m[2]; // height
 
@@ -82,13 +82,29 @@ angular.module('ChessStats.directives', []).directive(
             .attr("transform", "translate(0," + h + ")")
             .call(xAxis);
 
-          // create left yAxis
-          var yAxisLeft = d3.svg.axis().scale(y).ticks(6).orient("left");
+          // Add the x-axis label
+          graph.append("text")
+            .attr("id", "x-axis-label") 
+            .attr("transform", "translate(" + (w / 2) + " ," + (h + m[3]/2) + ")")
+            .style("text-anchor", "middle")
+            .text("Game Date" + " (" + new Date().getFullYear() + ")");
+
+          // Create left yAxis
+          var yAxisLeft = d3.svg.axis().scale(y).orient("left");
           // Add the y-axis to the left
           graph.append("svg:g")
             .attr("class", "y axis")
             .attr("transform", "translate(-10,0)")
             .call(yAxisLeft);
+
+          // Add the y-axis label
+          graph.append("text")
+            .attr("id", "y-axis-label") 
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - m[0])
+            .attr("x", 0 - (h / 2))
+            .style("text-anchor", "middle")
+            .text("Player Rating (elo)");
 
           var tooltipDiv = d3.select("body").append("div")   
             .attr("class", "tooltip")               
@@ -106,7 +122,7 @@ angular.module('ChessStats.directives', []).directive(
             .attr("cy", function(ratingElement) {
               return y(ratingElement.elo);
             })
-            .attr("r", 3)
+            .attr("r", 3.5)
             .on("mouseover", function(ratingElement) {      
               tooltipDiv.transition()        
                 .duration(200)      
