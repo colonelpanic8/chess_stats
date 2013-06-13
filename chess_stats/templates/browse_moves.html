@@ -1,5 +1,6 @@
 <html ng-app="ChessStats">
   <head>
+    <meta charset="utf-8">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src={{ get_static_url("js/lib/angular/angular.js") }}></script>
     <script src={{ get_static_url("js/lib/angular/angular-resource.js") }}></script>
@@ -58,8 +59,8 @@
     </header>
 
     <div id="content">
-      <div id="angular"  ng-controller="MoveStatsCtrl" ng-init="init('{{ username }}')">
-        <div id="page-header" class="span12 center">
+      <div id="angular" class="board-table-container" ng-controller="MoveStatsCtrl" ng-init="init('{{ username }}')">
+        <div id="page-header" style="text-align:left;">
           <h2><a href="../browse_games/[[ moveControl.username ]]">
               [[ moveControl.username ]]
             </a> / <span id="page-title"> Moves Statistics</span></h2>
@@ -68,19 +69,21 @@
          </p>
         </div>
 
-        <table class="containing-table span12 center">
+        <div style="margin-top:40px;">
+        <img src="../static/img/chess_board.svg" width="37%" id="temp-chessboard">
+        <table class="containing-table">
           <tr>
-            <td>
+            <td class="span2">
               <table id="moves-table" class="table table-striped table-bordered">
                 <th class="movePair">#</th>
                 <th class="movePair">
                   <a ng-click="moveControl.setColor(true)">
-                    White
+                    White &#9812;
                   </a>
                 </th>
                 <th class="movePair">
                   <a ng-click="moveControl.setColor(false)">
-                    Black
+                    Black &#9818;
                   </a>
                 </th>
                 <tr class="movePair"  ng-repeat="movePair in moveControl.movePairs">
@@ -106,7 +109,8 @@
                 </tr>
               </table>
             </td>
-            <td class="containing-td">
+
+            <td class="containing-td span7">
               <table class="right table table-striped table-bordered">
                 <th>Next Move</th>
                 <th>White Win % <span>(# games)</span></th>
@@ -135,6 +139,7 @@
             </td>
           </tr><!--containing table-->
         </table><!--containing table-->
+        </div><!-- contains image and tables -->
       </div><!--content-->
     </div><!--angular-->
   </body>

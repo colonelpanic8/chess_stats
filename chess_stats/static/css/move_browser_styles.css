@@ -1,14 +1,22 @@
+#temp-chessboard {
+    float: left;
+}
+
+.board-table-container {
+    margin: auto;
+    width: 90%;
+}
 #page-header a, a:visited {
     color: black;
+}
+
+#page-header a:hover, table #bold a:hover, .containing-table a:hover {
+    color: #16c1f3;
 }
 
 #moves-table tbody:first-child tr:first-child>th {
     color: black;
     background-color: white;
-}
-
-.containing-table {
-    margin-top: 20px;
 }
 
 table .containing-table a, a:visited {
