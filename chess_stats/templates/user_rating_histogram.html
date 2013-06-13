@@ -13,10 +13,12 @@
     <script src="http://mbostock.github.com/d3/d3.v2.js"></script>
     <script src={{ get_static_url("js/user_rating_histogram.js")
     }}></script>
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css"
-          rel="stylesheet"> 
+    <script src={{ get_static_url("js/navigation.js") }}></script>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400,600,300|Source+Code+Pro:300,400,600'
           rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href={{
+          get_static_url("bootstrap/css/bootstrap.min.css") }}
+          type="text/css">
     <link rel="stylesheet" href={{
           get_static_url("css/login_styles.css") }}
           type="text/css">
@@ -31,21 +33,34 @@
       <div id="navigation">
         <div id="navigation-background"></div>
         <div class="links">
-          <div class="histogram-link" ng-class="navClass('histogram')">
-            <p><a href='/rating_graph/{{username}}'>1</a></p>
+          <div class="histogram-link">
+            <p><a href="../rating_graph/{{username}}">1</a></p>
+            <div>
+              <p>Rating Histogram</p>
+            </div>
           </div>
-          <div class="games-history-link" ng-class="navClass('gamesHistory')">
-            <p><a href='/rating_graph/{{username}}'>2</a></p>
+          <div class="games-history-link">
+            <p><a href="../browse_games/{{username}}">2</a></p>
+            <div>
+              <p>Game History</p>
+            </div>
           </div>
-          <div class="game-analysis-link" ng-class="navClass('gameAnalysis')">
-            <p><a href='/rating_graph/{{username}}'>3</a></p>
+          <div class="game-analysis-link">
+            <p><a href="/rating_graph/{{username}}">3</a></p>
+            <div>
+              <p>Game Analysis</p>
+            </div>
           </div>
           <div class="moves-stats-link" ng-class="navClass('movesStats')">
-            <p><a href='/rating_graph/{{username}}'>4</a></p>
+            <p><a href="../browse_moves/{{username}}">4</a></p>
+            <div>
+              <p>Moves Statistics</p>
+            </div>
           </div>
         </div>
       </div>
     </header>
+
     <div id="content">
       <div id="page-header">
         <h2> {{ username }} / <span id="page-title"> Rating

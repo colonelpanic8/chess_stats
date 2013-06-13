@@ -16,12 +16,6 @@ function LoginCtrl($scope, $location) {
   }
 };
 
-// function NavCtrl($scope, $location) {
-//   $scope.navClass = function (page) {
-
-//   }
-// };
-
 function GameBrowseCtrl($scope) {
     var gameLoader = {
         games: [],
