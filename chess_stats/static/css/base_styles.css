@@ -32,6 +32,10 @@ table {
     top: 3px;
 }
 
+#bold {
+    font-weight: 600;
+}
+
 footer {
     clear: both;
     position: relative;
