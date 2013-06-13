@@ -31,6 +31,10 @@ body {
     letter-spacing: 1px;
 }
 
+.rating-graph, path, .axis, .x.axis text, y.axis text {
+    z-index: -1;
+}
+
 path {
     stroke-width: 1;
     fill: none;

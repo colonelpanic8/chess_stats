@@ -78,7 +78,7 @@ footer {
     color: #0088cd;
 }
 
-.table a:hover {
+.table a:hover, a:hover {
     text-decoration: none;
     color: navy;
 }
