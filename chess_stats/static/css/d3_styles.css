@@ -31,10 +31,6 @@ body {
     letter-spacing: 1px;
 }
 
-.rating-graph, path, .axis, .x.axis text, y.axis text {
-    z-index: -1;
-}
-
 path {
     stroke-width: 1;
     fill: none;
@@ -63,10 +59,6 @@ circle {
     shape-rendering: crispEdges;
 }
 
-.x.axis .minor {
-    stroke-opacity: .5;
-}
-
 .x.axis path {
     // display: none;
     fill: none;
@@ -79,6 +71,7 @@ circle {
 }
 
 #x-axis-label, #y-axis-label {
+    z-index: -1;
     letter-spacing: 1px;
     font-size: 14px;
     font-weight: 300;
