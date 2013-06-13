@@ -16,7 +16,7 @@ def browse_user_moves(username):
 
 @app.route("/browse_moves")
 def browse_moves():
-   return render_template('browse_moves.html', username='')
+   return render_template('browse_moves_all.html', username='')
 
 @app.route("/get_stats")
 def get_game_stats():
@@ -32,8 +32,6 @@ def get_game_stats():
    else:
       move_stats = logic.build_sorted_game_stats_for_moves_for_all_games(moves)
    return simplejson.dumps(move_stats)
-
-
 
 @app.route("/user_rating_history_json/<username>")
 def user_rating_history_json(username):
