@@ -4,17 +4,14 @@ body {
 
 #page-header h2 {
     font-size: 36px;
-//    font-family: 'Source Code Pro';
     letter-spacing: 1px;
     font-weight: 400;
     color: #fff;
-//    color: #DAFFE6;
 }
 
 #page-header {
     margin-right: 10%;
     position: relative;
-    top: 40px;
     text-align: right;
 }
 
@@ -34,10 +31,6 @@ body {
     letter-spacing: 1px;
 }
 
-#content i {
-    position: relative;
-    top: 3px;
-}
 path {
     stroke-width: 1;
     fill: none;
@@ -51,7 +44,6 @@ circle {
     margin: 0 auto;
     text-align: center;
     position: relative;
-    top: 50px;
 }
 
 .graph-line {
@@ -110,7 +102,7 @@ circle {
   color: white;
   border: 0px;      
   border-radius: 1px;           
-  box-shadow: 5px 5px 8px #202020;
+  box-shadow: 5px 5px 8px #202020; 
   pointer-events: none;         
 }
 

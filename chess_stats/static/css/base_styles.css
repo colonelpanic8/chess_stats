@@ -27,6 +27,11 @@ table {
     margin: 0 auto 0 7%;
 }
 
+#content i {
+    position: relative;
+    top: 3px;
+}
+
 footer {
     clear: both;
     position: relative;
@@ -37,6 +42,12 @@ footer {
     text-align: center;
 }
 
+.center {
+    float: none;
+    margin: auto;
+    text-align: center;
+}
+
 #page-header h2 {
     font-size: 36px;
     letter-spacing: 1px;
@@ -44,10 +55,10 @@ footer {
 }
 
 #page-header {
-    margin-right: 10%;
-    position: relative;
-    top: 40px;
     text-align: right;
+    height: 100px;
+    margin: 0 auto;
+    margin-top: 40px;
 }
 
 #page-title {
@@ -56,6 +67,7 @@ footer {
     padding-bottom: 3px;
     margin-bottom: 15px;
     letter-spacing: 1px;
+    border-bottom: 2px solid;
 }
 
 .table a, a:visited {
@@ -99,4 +111,15 @@ footer {
 .table-bordered tbody:first-child tr:first-child>th {
     color: white;
     background-color: #ff3f34;
+}
+
+.table-bordered tbody:first-child tr:first-child>th:last-child {
+    -webkit-border-top-right-radius: 0px;
+    -moz-border-radius-topright: 0px;
+    border-top-right-radius: 0px;
+}
+.table-bordered tbody:first-child tr:first-child>th:first-child {
+    -webkit-border-top-left-radius: 0px;
+    -moz-border-radius-topleft: 0px;
+    border-top-left-radius: 0px;
 }

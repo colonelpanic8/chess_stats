@@ -46,16 +46,17 @@
       </div>
     </header>
 
-    <div class="center">
-      <div id="page-header">
+    <div id="content">
+      <div id="page-header" class="span10 center">
         <h2> <a href="../browse_moves/{{ username }}">{{ username
         }}</a> / <span id="page-title"> Game History</span></h2>
+        <p><i class="icon-hand-right"></i> Select game id to view game analysis</p>
       </div>
-    </div>
+
     <div id="angular" ng-controller="GameBrowseCtrl" 
          ng-init="gameLoader.init('{{ username }}', '{{ port }}')")>
-      <div class="row span8 center">
-        <table class="game-table table table-striped table-bordered">
+      <div class="row span10 center">
+        <table id="game-table" class="game-table table table-striped table-bordered">
           <tr>
             <th>Date Played</th> 
             <th class="user-column">White Player</th>
@@ -85,6 +86,7 @@
             target="_blank">[[game.id]]</a></td>
           </tr>
       </div>
+    </div>
     </div>
   </body>
 </html>
