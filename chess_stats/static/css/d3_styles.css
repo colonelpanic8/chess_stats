@@ -2,17 +2,38 @@ body {
     background-color: #213540;
 }
 
-#content h2 {
+#page-header h2 {
     font-size: 36px;
-    font-family: 'Source Code Pro';
-    display: block;
-    margin-right: 10%;
+//    font-family: 'Source Code Pro';
+    letter-spacing: 1px;
     font-weight: 400;
-    color: white;
+    color: #fff;
+//    color: #DAFFE6;
+}
+
+#page-header {
+    margin-right: 10%;
     position: relative;
     top: 40px;
     text-align: right;
 }
+
+#content p {
+    color: #fff;
+    font-family: 'Open Sans';
+    font-weight: 300;
+    font-size: 16px;
+}
+
+#page-title {
+    display: inline-block;
+    font-weight: 300;
+    padding-bottom: 3px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #DAFFE6;
+    letter-spacing: 1px;
+}
+
 #content i {
     position: relative;
     top: 3px;
@@ -30,10 +51,11 @@ circle {
     margin: 0 auto;
     text-align: center;
     position: relative;
-    top: 70px;
+    top: 50px;
 }
 
 .graph-line {
+    stroke-width: 1.5px;
     stroke: #FF7300;
 }
 
@@ -52,12 +74,21 @@ circle {
 .x.axis path {
     // display: none;
     fill: none;
-    stroke: #14141b;
+    stroke: #000;
 }
 
 .x.axis text, .y.axis text, .tooltip {
     font-size: 11px;
     font-family: 'Open Sans';
+}
+
+#x-axis-label, #y-axis-label {
+    letter-spacing: 1px;
+    font-size: 14px;
+    font-weight: 300;
+    text-transform: uppercase;
+    fill: #DAFFE6;
+//    fill: #FF8500;
 }
 
 .x.axis text, .y.axis text {
@@ -81,4 +112,8 @@ circle {
   border-radius: 1px;           
   box-shadow: 5px 5px 8px #202020;
   pointer-events: none;         
+}
+
+svg {
+    overflow: auto;
 }

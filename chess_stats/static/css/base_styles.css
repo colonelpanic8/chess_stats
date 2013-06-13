@@ -37,10 +37,24 @@ footer {
     text-align: center;
 }
 
-.page-header {
+#page-header h2 {
+    font-size: 36px;
+    letter-spacing: 1px;
+    font-weight: 400;
+}
+
+#page-header {
+    margin-right: 10%;
+    position: relative;
+    top: 40px;
+    text-align: right;
+}
+
+#page-title {
+    display: inline-block;
     font-weight: 300;
-    padding-bottom: 2px;
-    border-bottom: 2px solid white;
+    padding-bottom: 3px;
+    margin-bottom: 15px;
     letter-spacing: 1px;
 }
 

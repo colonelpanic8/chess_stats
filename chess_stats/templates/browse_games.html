@@ -10,7 +10,7 @@
     <script src={{ get_static_url("js/directives.js") }}></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css"
-          rel="stylesheet">
+          rel="stylesheet"> 
 
     <link rel="stylesheet" href={{
           get_static_url("css/login_styles.css") }}
@@ -47,9 +47,10 @@
     </header>
 
     <div class="center">
-      <h1>
-        <a href="../browse_moves/{{ username }}">{{ username }}</a>
-      </h1>
+      <div id="page-header">
+        <h2> <a href="../browse_moves/{{ username }}">{{ username
+        }}</a> / <span id="page-title"> Game History</span></h2>
+      </div>
     </div>
     <div id="angular" ng-controller="GameBrowseCtrl" 
          ng-init="gameLoader.init('{{ username }}', '{{ port }}')")>
