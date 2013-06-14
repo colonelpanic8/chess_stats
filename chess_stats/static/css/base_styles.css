@@ -151,7 +151,8 @@ footer {
 
 #logo-icon {
     position: fixed;
-    top: 5px;
+    margin: 0 auto;
+    top: 6px;
     left: 0;
     margin-top: 5px;
     text-align: center;
@@ -208,7 +209,7 @@ footer {
     color: white;
 }
 
-#navigation .histogram-link, #navigation .histogram-link div {
+#histogram-link, #histogram-link div {
     background-color: #213540;
 }
 
