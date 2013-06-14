@@ -209,7 +209,7 @@ footer {
     color: white;
 }
 
-#histogram-link, #histogram-link div {
+#navigation .histogram-link, #navigation .histogram-link div {
     background-color: #213540;
 }
 
