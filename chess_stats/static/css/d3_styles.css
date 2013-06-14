@@ -77,7 +77,6 @@ circle {
     font-weight: 300;
     text-transform: uppercase;
     fill: #DAFFE6;
-//    fill: #FF8500;
 }
 
 .x.axis text, .y.axis text {
@@ -85,7 +84,6 @@ circle {
 }
 
 .y.axis line, y.axis path {
-//    display: none;
     fill: none;
     stroke: #000;
 }
@@ -93,7 +91,7 @@ circle {
 .tooltip {   
   position: absolute;           
   text-align: center;           
-  width: 80px;                  
+  width: 100px;                  
   padding: 6px;             
   background-color: #ff7300;   
   color: white;
