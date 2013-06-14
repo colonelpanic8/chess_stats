@@ -75,7 +75,7 @@ footer {
 }
 
 .table a, a:visited {
-    color: #0088cd;
+    color: #0088cd
 }
 
 .table a:hover, a:hover {
@@ -84,6 +84,7 @@ footer {
 }
 
 .table {
+    color: black;
     font-family: 'Open Sans';
     font-size: 14px;
 }
@@ -140,10 +141,11 @@ footer {
 }
 
 #navigation-background {
+    min-height: 100%;
+    height: 100%;
     opacity: 0.2;
     background-color: black;
-    position: absolute;
-    height: 1500px;
+    position: fixed;
     width: 70px;
     top: 0;
     bottom: 0;
