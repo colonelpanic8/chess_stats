@@ -31,25 +31,25 @@
           <div class="histogram-link">
             <p><a href="../rating_graph/{{username}}">1</a></p>
             <div>
-              <p>Rating Histogram</p>
+              <p><a href="../rating_graph/{{username}}">Rating Histogram</a></p>
             </div>
           </div>
           <div class="games-history-link">
             <p><a href="../browse_games/{{username}}">2</a></p>
             <div>
-              <p>Game History</p>
+              <p><a href="../browse_games/{{username}}">Game History</a></p>
             </div>
           </div>
           <div class="game-analysis-link">
-            <p><a href="/rating_graph/{{username}}">3</a></p>
+            <p><a href="../">3</a></p>
             <div>
-              <p>Game Analysis</p>
+              <p><a href="../">Game Analysis</a></p>
             </div>
           </div>
           <div class="moves-stats-link" ng-class="navClass('movesStats')">
             <p><a href="../browse_moves/{{username}}">4</a></p>
             <div>
-              <p>Moves Statistics</p>
+              <p><a href="../browse_moves/{{username}}">Moves Statistics</a></p>
             </div>
           </div>
         </div>
@@ -78,12 +78,12 @@
                 <th class="movePair">#</th>
                 <th class="movePair">
                   <a ng-click="moveControl.setColor(true)">
-                    White &#9812;
+                    White &#9817;
                   </a>
                 </th>
                 <th class="movePair">
                   <a ng-click="moveControl.setColor(false)">
-                    Black &#9818;
+                    Black &#9823;
                   </a>
                 </th>
                 <tr class="movePair"  ng-repeat="movePair in moveControl.movePairs">
@@ -113,9 +113,9 @@
             <td class="containing-td span7">
               <table class="right table table-striped table-bordered">
                 <th>Next Move</th>
-                <th>White Win % <span>(# games)</span></th>
-                <th>Black Win % <span>(# games)</span></th>
-                <th>Draw % <span>(# games)</span></th>
+                <th>White Wins<span>(# games)</span></th>
+                <th>Black Wins<span>(# games)</span></th>
+                <th>Draws<span>(# games)</span></th>
                 <th>White Avg <span>(Elo)</span></th>
                 <th>Black Avg <span>(Elo)</span></th>
                 <tr class="row-stats" ng-repeat="moveStats in moveControl.moveStatsList">
@@ -126,12 +126,12 @@
                     </a>
                     </span>
                   </td>
-                  <td><span id="bold">[[ moveStats.white_win_pct.toFixed(2) * 100 |
-                  number:0 ]]</span> ([[ moveStats.white_wins ]])</td>
-                  <td><span id="bold">[[ moveStats.black_win_pct.toFixed(2) * 100 |
-                  number:0 ]]</span> ([[moveStats.black_wins]])</td>
-                  <td><span id="bold">[[ moveStats.draw_pct.toFixed(2) * 100 |
-                  number:0 ]]</span> ([[moveStats.draws]])</td>
+                  <td>[[ moveStats.white_win_pct.toFixed(2) * 100 |
+                  number:0 ]]%  ([[ moveStats.white_wins ]])</td>
+                  <td>[[ moveStats.black_win_pct.toFixed(2) * 100 |
+                  number:0 ]]% ([[moveStats.black_wins]])</td>
+                  <td>[[ moveStats.draw_pct.toFixed(2) * 100 |
+                  number:0 ]]% ([[moveStats.draws]])</td>
                   <td>[[ moveStats.white_average_elo.toFixed(0) ]]</td>
                   <td>[[ moveStats.black_average_elo.toFixed(0) ]]</td>
                 </tr>

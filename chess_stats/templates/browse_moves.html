@@ -78,12 +78,12 @@ all players</a></span>
                 <th class="movePair">#</th>
                 <th class="movePair">
                   <a ng-click="moveControl.setColor(true)">
-                    White &#9812;
+                    White &#9817;
                   </a>
                 </th>
                 <th class="movePair">
                   <a ng-click="moveControl.setColor(false)">
-                    Black &#9818;
+                    Black &#9823;
                   </a>
                 </th>
                 <tr class="movePair"  ng-repeat="movePair in moveControl.movePairs">
@@ -113,9 +113,9 @@ all players</a></span>
             <td class="containing-td span7">
               <table class="right table table-striped table-bordered">
                 <th>Next Move</th>
-                <th>White Win % <span>(# games)</span></th>
-                <th>Black Win % <span>(# games)</span></th>
-                <th>Draw % <span>(# games)</span></th>
+                <th>White Wins <span>(# games)</span></th>
+                <th>Black Wins <span>(# games)</span></th>
+                <th>Draws <span>(# games)</span></th>
                 <th>White Avg <span>(Elo)</span></th>
                 <th>Black Avg <span>(Elo)</span></th>
                 <tr class="row-stats" ng-repeat="moveStats in moveControl.moveStatsList">
@@ -126,12 +126,12 @@ all players</a></span>
                     </a>
                     </span>
                   </td>
-                  <td><span id="bold">[[ moveStats.white_win_pct.toFixed(2) * 100 |
-                  number:0 ]]</span> ([[ moveStats.white_wins ]])</td>
-                  <td><span id="bold">[[ moveStats.black_win_pct.toFixed(2) * 100 |
-                  number:0 ]]</span> ([[moveStats.black_wins]])</td>
-                  <td><span id="bold">[[ moveStats.draw_pct.toFixed(2) * 100 |
-                  number:0 ]]</span> ([[moveStats.draws]])</td>
+                  <td>[[ moveStats.white_win_pct.toFixed(2) * 100 |
+                  number:0 ]]% ([[ moveStats.white_wins ]])</td>
+                  <td>[[ moveStats.black_win_pct.toFixed(2) * 100 |
+                  number:0 ]]% ([[moveStats.black_wins]])</td>
+                  <td>[[ moveStats.draw_pct.toFixed(2) * 100 |
+                  number:0 ]]% ([[moveStats.draws]])</td>
                   <td>[[ moveStats.white_average_elo.toFixed(0) ]]</td>
                   <td>[[ moveStats.black_average_elo.toFixed(0) ]]</td>
                 </tr>

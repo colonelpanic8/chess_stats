@@ -1,5 +1,6 @@
 <html ng-app="ChessStats">
   <head>
+    <meta charset="utf-8">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src={{ get_static_url("js/lib/angular/angular.js") }}></script>
     <script src={{ get_static_url("js/lib/angular/angular-resource.js") }}></script>
@@ -58,7 +59,7 @@
     </header>
 
     <div id="content">
-      <div id="page-header" class="span10 center">
+      <div id="page-header" class="span12 center">
         <h2> <a href="../browse_moves/{{ username }}">{{ username
         }}</a> / <span id="page-title"> Game History</span></h2>
         <p><i class="icon-hand-right"></i> Select game id to view game analysis</p>
@@ -66,7 +67,7 @@
 
     <div id="angular" ng-controller="GameBrowseCtrl" 
          ng-init="gameLoader.init('{{ username }}', '{{ port }}')")>
-      <div class="row span10 center">
+      <div class="row span12 center">
         <table id="game-table" class="game-table table table-striped table-bordered">
           <tr>
             <th>Date Played</th> 
@@ -81,14 +82,14 @@
             <td class="user-column">
               <a href='[[game.white_username]]'>
 	            <b ng-show="game.result ==
-                 'W'"><img src="../static/img/crown_icon.svg" width="10%"></b>
+                 'W'">&#9813;</b>
                  [[game.white_username]]
               </a>
             </td>
             <td>[[game.white_elo]]</td>
             <td class="user-column">
               <a href='[[game.black_username]]'>
-	            <b ng-show="game.result == 'B'"><img src="../static/img/crown_icon.svg" width="10%"></b>
+	            <b ng-show="game.result == 'B'">&#9819;</b>
                 [[game.black_username]]
               </a>
             </td>
