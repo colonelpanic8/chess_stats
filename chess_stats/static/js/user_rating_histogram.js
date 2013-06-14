@@ -127,9 +127,10 @@ angular.module('ChessStats.directives', []).directive(
               tooltipDiv.transition()        
                 .duration(200)      
                 .style("opacity", .8);      
-              tooltipDiv .html("id: " + ratingElement.chess_dot_com_id + "<br/>" + "rating: " + ratingElement.elo)  
+              tooltipDiv .html( "Your ELO: " + ratingElement.elo + "<br/>"
++ "Opp ELO: " + ratingElement.opponent_elo + "<br/>" + "Opp: " + ratingElement.opponent)
                 .style("left", (d3.event.pageX) + "px")     
-                .style("top", (d3.event.pageY - 40) + "px");    
+                .style("top", (d3.event.pageY - 70) + "px");    
             })                  
             .on("mouseout", function(ratingElement) {       
               tooltipDiv.transition()        
