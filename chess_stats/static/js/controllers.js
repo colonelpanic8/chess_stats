@@ -47,9 +47,7 @@ function GameBrowseCtrl($scope) {
 
     gameLoader.init = function (username, port) {
         gameLoader.username = username
-        gameLoader.webSocket = new WebSocket(
-            "ws://{0}:{1}/fetch_games/".format(document.domain, port)
-        );
+        gameLoader.webSocket = 
         gameLoader.webSocket.onopen = function (e) {}
         gameLoader.webSocket.onclose = function (e) {}
         gameLoader.webSocket.onmessage = function (messageEvent) {
@@ -68,9 +66,13 @@ function MoveStatsCtrl($scope, $http, StatsFetcher, ChessGame) {
   }
   $scope.init = function(username) {
     $scope.username = username;
-    $scope.statsFetcher = new StatsFetcher($scope.username, 'white', function(moveStatsList) {
-      $scope.moveStatsList = moveStatsList;
-    });
+    $scope.statsFetcher = new StatsFetcher(
+      $scope.username,
+      'white',
+      function(moveStatsList) {
+        $scope.moveStatsList = moveStatsList;
+      }
+    );
     $scope.refreshMoveStatsList();
     $scope.chessGame.addListener($scope.refreshMoveStatsList);
   }
