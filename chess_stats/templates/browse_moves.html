@@ -4,31 +4,31 @@
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
-    <script src={{ get_static_url("js/lib/angular/angular.js") }}></script>
-    <script src={{ get_static_url("js/lib/angular/angular-resource.js") }}></script>
-    <script src={{ get_static_url("js/app.js") }}></script>
-    <script src={{ get_static_url("js/services.js") }}></script>
-    <script src={{ get_static_url("js/controllers.js") }}></script>
-    <script src={{ get_static_url("js/filters.js") }}></script>
-    <script src={{ get_static_url("js/directives.js") }}></script>
-    <script src={{ get_static_url("js/navigation.js") }}></script>
-    <script src={{ get_static_url("js/lib/ChessBoard/src/Board.js") }}></script>
-    <script src={{ get_static_url("js/lib/ChessBoard/lib/patch_draggable.js") }}></script>
-    <script src={{ get_static_url("js/lib/ChessBoard/src/Module.js") }}></script>
-    <script src={{ get_static_url("js/lib/ChessBoard/src/Board.js") }}></script>
-    <script src={{ get_static_url("js/lib/ChessBoard/src/Notation.js") }}></script>
-    <script src={{ get_static_url("js/lib/ChessBoard/src/Game.js") }}></script>
-    <script src={{ get_static_url("js/lib/ChessBoard/src/Directives.js") }}></script>
+    <script src=<% get_static_url("js/lib/angular/angular.js") %>></script>
+    <script src=<% get_static_url("js/lib/angular/angular-resource.js") %>></script>
+    <script src=<% get_static_url("js/app.js") %>></script>
+    <script src=<% get_static_url("js/services.js") %>></script>
+    <script src=<% get_static_url("js/controllers.js") %>></script>
+    <script src=<% get_static_url("js/filters.js") %>></script>
+    <script src=<% get_static_url("js/directives.js") %>></script>
+    <script src=<% get_static_url("js/navigation.js") %>></script>
+    <script src=<% get_static_url("js/lib/ChessBoard/src/Board.js") %>></script>
+    <script src=<% get_static_url("js/lib/ChessBoard/lib/patch_draggable.js") %>></script>
+    <script src=<% get_static_url("js/lib/ChessBoard/src/Module.js") %>></script>
+    <script src=<% get_static_url("js/lib/ChessBoard/src/Board.js") %>></script>
+    <script src=<% get_static_url("js/lib/ChessBoard/src/Notation.js") %>></script>
+    <script src=<% get_static_url("js/lib/ChessBoard/src/Game.js") %>></script>
+    <script src=<% get_static_url("js/lib/ChessBoard/src/Directives.js") %>></script>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600,300'
           rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href={{
-          get_static_url("bootstrap/css/bootstrap.min.css") }}
+    <link rel="stylesheet" href=<%
+          get_static_url("bootstrap/css/bootstrap.min.css") %>
           type="text/css">
-    <link rel="stylesheet" href={{
-          get_static_url("css/base_styles.css") }}
+    <link rel="stylesheet" href=<%
+          get_static_url("css/base_styles.css") %>
           type="text/css">
-    <link rel="stylesheet" href={{
-          get_static_url("css/move_browser_styles.css") }}
+    <link rel="stylesheet" href=<%
+          get_static_url("css/move_browser_styles.css") %>
           type="text/css">
   </head>
   <body>
@@ -36,12 +36,12 @@
     </header>
     <div id="content">
       <div id="angular" class="board-table-container"
-           ng-controller="MoveStatsCtrl" ng-init="init('{{
-                                                  username }}')">
+           ng-controller="MoveStatsCtrl" ng-init="init('<%
+                                                  username %>')">
         
         <div id="page-header" style="text-align:left;">
-          <h2><a href="../browse_games/[[ moveControl.username ]]">
-              [[ moveControl.username ]]
+          <h2><a href="../browse_games/{{ moveControl.username }}">
+              {{ moveControl.username }}
             </a> / <span id="page-title"> Moves Statistics</span></h2>
           <p> Review your strategy against <i class="icon-hand-right"></i><span id="bold"><a href="../browse_moves">all players</a></span>
           </p>
@@ -60,15 +60,15 @@
                   <td>
                     <span id="bold">
                       <a ng-click="chessGame.makeMoveFromAlgebraic(moveStats.move)">
-                        [[ moveStats.move ]]
+                        {{ moveStats.move }}
                       </a>
                     </span>
                   </td>
-                  <td>[[ moveStats.white_win_pct.toFixed(2) * 100 | number:0 ]]% ([[ moveStats.white_wins ]])</td>
-                  <td>[[ moveStats.black_win_pct.toFixed(2) * 100 | number:0 ]]% ([[moveStats.black_wins]])</td>
-                  <td>[[ moveStats.draw_pct.toFixed(2) * 100 | number:0 ]]% ([[moveStats.draws]])</td>
-                  <td>[[ moveStats.white_average_elo.toFixed(0) ]]</td>
-                  <td>[[ moveStats.black_average_elo.toFixed(0) ]]</td>
+                  <td>{{ moveStats.white_win_pct.toFixed(2) * 100 | number:0 }}% ({{ moveStats.white_wins }})</td>
+                  <td>{{ moveStats.black_win_pct.toFixed(2) * 100 | number:0 }}% ({{moveStats.black_wins}})</td>
+                  <td>{{ moveStats.draw_pct.toFixed(2) * 100 | number:0 }}% ({{moveStats.draws}})</td>
+                  <td>{{ moveStats.white_average_elo.toFixed(0) }}</td>
+                  <td>{{ moveStats.black_average_elo.toFixed(0) }}</td>
                 </tr>
               </table>
             <td>

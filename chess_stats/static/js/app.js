@@ -4,16 +4,12 @@
 var ChessStats = angular.module(
     'ChessStats',
     [
-      'ChessStats.filters',
-      'ChessStats.services',
-      'ChessStats.directives',
-      'ChessStats.factories',
-      'ChessGame'
-    ],
-    function($interpolateProvider) {
-        $interpolateProvider.startSymbol('[[');
-        $interpolateProvider.endSymbol(']]');
-    }
+        'ChessStats.filters',
+        'ChessStats.services',
+        'ChessStats.directives',
+        'ChessStats.factories',
+        'ChessGame'
+    ]
 ).config(
     [
         '$routeProvider',
@@ -22,17 +18,6 @@ var ChessStats = angular.module(
             $locationProvider.html5Mode(true);
         }
     ]
-);
-
-ChessStats.directive(
-    'jqAnimate',
-    function(jQueryExpression, templateElement){ 
-        console.log('init')
-        return function(instanceElement){
-            console.log('test')
-            instanceElement.show('slow'); 
-        } 
-    }
 );
 
 ChessStats.directive('ngFade', function () {
