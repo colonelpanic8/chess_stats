@@ -4,12 +4,12 @@
 var directives = angular.module('ChessStats.directives', [])
 
 directives.directive(
-    'jqAnimate',
-    function(jQueryExpression, templateElement){ 
-        return function(instanceElement){
-            instanceElement.show('slow'); 
-        } 
-    }
+  'jqAnimate',
+  function(jQueryExpression, templateElement){ 
+    return function(instanceElement){
+      instanceElement.show('slow'); 
+    } 
+  }
 )
 
 directives.directive('moveStatsTable', function() {
@@ -68,11 +68,22 @@ directives.directive('moveStatsTable', function() {
 
 directives.directive('navigationItem', function() {
   return {
+    restrict: "E",
     replace: true,
-    scope: {
-      href: "=href",
-      title: "=title"
-    },
-    templateUrl: "/directive_templates/navigation_item.html"
+    template: "<div><p>{{ letter }}</p><div><p>{{ title }}</p></div></div>",
+    link: function(scope, element, attrs) {
+      scope.title = attrs.title;
+      scope.letter = attrs.letter;
+      scope.href = attrs.href;
+      $(element).hover(function() {
+        $(element).children('div').stop(true, true).animate({
+          left: 70
+        }, 300);
+      }, function() {
+        $(element).children('div').stop(true, true).animate({
+          left: (70 + 150)* -1
+        }, 300);
+      });
+    }
   }
 });
