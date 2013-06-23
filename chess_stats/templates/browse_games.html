@@ -1,104 +1,47 @@
-<html ng-app="ChessStats">
-  <head>
-    <meta charset="utf-8">
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src={{ get_static_url("js/lib/angular/angular.js") }}></script>
-    <script src={{ get_static_url("js/lib/angular/angular-resource.js") }}></script>
-    <script src={{ get_static_url("js/app.js") }}></script>
-    <script src={{ get_static_url("js/services.js") }}></script>
-    <script src={{ get_static_url("js/controllers.js") }}></script>
-    <script src={{ get_static_url("js/filters.js") }}></script>
-    <script src={{ get_static_url("js/directives.js") }}></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
-    <script src={{ get_static_url("js/navigation.js") }}></script> 
-    <link rel="stylesheet" href={{
-          get_static_url("bootstrap/css/bootstrap.min.css") }}
-          type="text/css">
-    <link rel="stylesheet" href={{
-          get_static_url("css/base_styles.css") }}
-          type="text/css"> 
-    <link rel="stylesheet" href={{
-          get_static_url("css/browse_games_styles.css") }}
-          type="text/css">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,300'
-          rel='stylesheet' type='text/css'>
+{% extends "layout.html" %}
+{% block content %}
+<div id="page-header" class="span12 center">
+  <h2>
+    <a href="../browse_moves/<% username %>"><% username %></a>/
+    <span id="page-title">Game History</span></h2>
+  <p>
+    <i class="icon-hand-right"></i>Select game id to view game analysis
+  </p>
+</div>
 
-  </head>
-  <body>
-    <header>
-      <div id="navigation">
-        <div id="navigation-background"></div>
-        <div id="logo-icon"><a href="../"><img src="../static/img/logo_icon2.png"></a></div>
-        <div class="links">
-          <div class="histogram-link">
-            <p><a href="../rating_graph/{{username}}">1</a></p>
-            <div>
-              <p><a href="../rating_graph/{{username}}">Rating Histogram</a></p>
-            </div>
-          </div>
-          <div class="games-history-link">
-            <p><a href="../browse_games/{{username}}">2</a></p>
-            <div>
-              <p><a href="../browse_games/{{username}}">Game History</a></p>
-            </div>
-          </div>
-          <div class="game-analysis-link">
-            <p><a href="../">3</a></p>
-            <div>
-              <p><a href="../">Game Analysis</a></p>
-            </div>
-          </div>
-          <div class="moves-stats-link" ng-class="navClass('movesStats')">
-            <p><a href="../browse_moves/{{username}}">4</a></p>
-            <div>
-              <p><a href="../browse_moves/{{username}}">Moves Statistics</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <div id="content">
-      <div id="page-header" class="span12 center">
-        <h2> <a href="../browse_moves/{{ username }}">{{ username
-        }}</a> / <span id="page-title"> Game History</span></h2>
-        <p><i class="icon-hand-right"></i> Select game id to view game analysis</p>
-      </div>
-
-    <div id="angular" ng-controller="GameBrowseCtrl" 
-         ng-init="gameLoader.init('{{ username }}', '{{ port }}')")>
-      <div class="row span12 center">
-        <table id="game-table" class="game-table table table-striped table-bordered">
-          <tr>
-            <th>Date Played</th> 
-            <th class="user-column">White Player</th>
-            <th>White Elo</th>
-            <th class="user-column">Black Player</th>
-            <th>Black Elo</th>
-            <th>Game ID</th>
-          </tr>
-          <tr ng-repeat="game in gameLoader.games" ng:fade="true">
-            <td>[[game.date_played]]</td>
-            <td class="user-column">
-              <a href='[[game.white_username]]'>
-	            <b ng-show="game.result ==
-                 'W'">&#9813;</b>
-                 [[game.white_username]]
-              </a>
-            </td>
-            <td>[[game.white_elo]]</td>
-            <td class="user-column">
-              <a href='[[game.black_username]]'>
-	            <b ng-show="game.result == 'B'">&#9819;</b>
-                [[game.black_username]]
-              </a>
-            </td>
-            <td>[[game.black_elo]]</td>
-            <td><a href=[[gameLoader.buildChessDotComGameURL(game.id)]]
-            target="_blank">[[game.id]]</a></td>
-          </tr>
-      </div>
-    </div>
-    </div>
-  </body>
-</html>
+<div ng-controller="GameBrowseCtrl" ng-init="gameLoader.init('<% username %>', '<% port %>')")>
+  <div class="row span12 center">
+    <table id="game-table" class="game-table table table-striped table-bordered">
+      <tr>
+        <th>Date Played</th> 
+        <th class="user-column">White Player</th>
+        <th>White Elo</th>
+        <th class="user-column">Black Player</th>
+        <th>Black Elo</th>
+        <th>Game ID</th>
+      </tr>
+      <tr ng-repeat="game in gameLoader.games" ng:fade="true">
+        <td>[[game.date_played]]</td>
+        <td class="user-column">
+          <a href='[[game.white_username]]'>
+	    <b ng-show="game.result == 'W'">&#9813;</b>
+            [[game.white_username]]
+          </a>
+        </td>
+        <td>[[game.white_elo]]</td>
+        <td class="user-column">
+          <a href='[[game.black_username]]'>
+	    <b ng-show="game.result == 'B'">&#9819;</b>
+            [[game.black_username]]
+          </a>
+        </td>
+        <td>[[game.black_elo]]</td>
+        <td>
+          <a href=[[gameLoader.buildChessDotComGameURL(game.id)]] target="_blank">
+            [[game.id]]
+          </a>
+        </td>
+      </tr>
+  </div>
+</div>
+{% endblock%}

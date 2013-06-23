@@ -1,7 +1,7 @@
 'use strict';
 
 /* Directives */
-directives = angular.module('ChessStats.directives', [])
+var directives = angular.module('ChessStats.directives', [])
 
 directives.directive(
     'jqAnimate',
@@ -64,17 +64,15 @@ directives.directive('moveStatsTable', function() {
     templateUrl: 'directive_templates/move_stats_table.html',
     controller: moveStatsController
   }
-} 
+});
 
 directives.directive('navigationItem', function() {
   return {
-    restrict: 'E',
     replace: true,
     scope: {
       href: "=href",
-      
-    template: '<div><p><a href="../rating_graph/{{username}}">1</a></p>' +
-      '<div><p><a href="../rating_graph/{{username}}">Rating Histogram</a></p></div></div>',
-    link: function(element
+      title: "=title"
+    },
+    templateUrl: "/directive_templates/navigation_item.html"
   }
 });

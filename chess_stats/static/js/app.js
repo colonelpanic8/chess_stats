@@ -4,9 +4,11 @@
 var ChessStats = angular.module(
     'ChessStats',
     [
-    	'ChessStats.filters',
-    	'ChessStats.services',
-    	'ChessStats.directives'
+      'ChessStats.filters',
+      'ChessStats.services',
+      'ChessStats.directives',
+      'ChessStats.factories',
+      'ChessGame'
     ],
     function($interpolateProvider) {
         $interpolateProvider.startSymbol('[[');
