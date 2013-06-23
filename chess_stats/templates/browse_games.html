@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<div ng-controller="GameBrowseCtrl" ng-init="gameLoader.init('{{ username }}', '{{ port }}')")>
+<div ng-controller="GameBrowseCtrl" ng-init="gameLoader.init('<% username %>', '<% port %>')")>
   <div class="row span12 center">
     <table id="game-table" class="game-table table table-striped table-bordered">
       <tr>
@@ -13,24 +13,24 @@
         <th>Game ID</th>
       </tr>
       <tr ng-repeat="game in gameLoader.games" ng:fade="true">
-        <td>[[game.date_played]]</td>
+        <td>{{game.date_played}}</td>
         <td class="user-column">
-          <a href='[[game.white_username]]'>
+          <a href='{{game.white_username}}'>
 	    <b ng-show="game.result == 'W'">&#9813;</b>
-            [[game.white_username]]
+            {{game.white_username}}
           </a>
         </td>
-        <td>[[game.white_elo]]</td>
+        <td>{{game.white_elo}}</td>
         <td class="user-column">
-          <a href='[[game.black_username]]'>
+          <a href='{{game.black_username}}'>
 	    <b ng-show="game.result == 'B'">&#9819;</b>
-            [[game.black_username]]
+            {{game.black_username}}
           </a>
         </td>
-        <td>[[game.black_elo]]</td>
+        <td>{{game.black_elo}}</td>
         <td>
-          <a href=[[gameLoader.buildChessDotComGameURL(game.id)]] target="_blank">
-            [[game.id]]
+          <a href={{gameLoader.buildChessDotComGameURL(game.id)}} target="_blank">
+            {{game.id}}
           </a>
         </td>
       </tr>
