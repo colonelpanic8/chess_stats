@@ -4,3 +4,6 @@
 [submodule "ChessUtil"]
 	path = ChessUtil
 	url = git@github.com:IvanMalison/ChessUtil.git
+[submodule "chess_stats/static/js/lib/ChessBoard"]
+	path = chess_stats/static/js/lib/ChessBoard
+	url = git@github.com:IvanMalison/ChessBoard.git

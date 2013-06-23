@@ -32,7 +32,7 @@ body {
 }
 
 path {
-    stroke-width: 1;
+    stroke-width: 1px;
     fill: none;
 }
 
@@ -59,12 +59,6 @@ circle {
     shape-rendering: crispEdges;
 }
 
-.x.axis path {
-    // display: none;
-    fill: none;
-    stroke: #000;
-}
-
 .x.axis text, .y.axis text, .tooltip {
     font-size: 11px;
     font-family: 'Open Sans';
@@ -83,7 +77,7 @@ circle {
     font-weight: 600;
 }
 
-.y.axis line, y.axis path {
+.y.axis line, .y.axis path {
     fill: none;
     stroke: #000;
 }
