@@ -1,6 +1,3 @@
-
-'use strict';
-
 String.prototype.format = function() {
     var formatted = this;
     for (var i = 0; i < arguments.length; i++) {
@@ -9,6 +6,10 @@ String.prototype.format = function() {
     }
     return formatted;
 };
+
+function NavigationCtrl($scope) {
+  
+}
 
 function LoginCtrl($scope, $location) {
   $scope.loginUsername = function() {

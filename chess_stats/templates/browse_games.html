@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<div ng-controller="GameBrowseCtrl" ng-init="gameLoader.init('<% username %>', '<% port %>')")>
+<div ng-controller="GameBrowseCtrl"
+     ng-init="gameLoader.init('<% username %>', '<% port %>')")>
+  
   <div class="row span12 center">
     <table id="game-table" class="game-table table table-striped table-bordered">
       <tr>
