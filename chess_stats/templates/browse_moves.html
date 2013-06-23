@@ -46,7 +46,7 @@
               <p><a href="../">Game Analysis</a></p>
             </div>
           </div>
-          <div class="moves-stats-link" ng-class="navClass('movesStats')">
+          <div class="moves-stats-link">
             <p><a href="../browse_moves/{{username}}">4</a></p>
             <div>
               <p><a href="../browse_moves/{{username}}">Moves Statistics</a></p>
@@ -63,82 +63,55 @@
               [[ moveControl.username ]]
             </a> / <span id="page-title"> Moves Statistics</span></h2>
           <p> Review your
-          strategy
-          against <i class="icon-hand-right"></i><span id="bold"><a href="../browse_moves">
-all players</a></span>
-         </p>
+            strategy
+            against <i class="icon-hand-right"></i><span id="bold"><a href="../browse_moves">
+                all players</a></span>
+          </p>
         </div>
 
         <div style="margin-top:40px;">
-        <img src="../static/img/chess_board.svg" width="37%" id="temp-chessboard">
-        <table class="containing-table">
-          <tr>
-            <td class="span2">
-              <table id="moves-table" class="table table-striped table-bordered">
-                <th class="movePair">#</th>
-                <th class="movePair">
-                  <a ng-click="moveControl.setColor(true)">
-                    White &#9817;
-                  </a>
-                </th>
-                <th class="movePair">
-                  <a ng-click="moveControl.setColor(false)">
-                    Black &#9823;
-                  </a>
-                </th>
-                <tr class="movePair"  ng-repeat="movePair in moveControl.movePairs">
-                  <td>
-                    <span id="bold">
-                    [[ movePair.index/2 + 1 ]].
-                    </span>
-                  </td>
-                  <td>
-                    <span id="bold">
-                    <a ng-click="moveControl.truncateMovesTo(movePair.index)">
-                      [[ movePair.whiteMove ]]
+          <img src="../static/img/chess_board.svg" width="37%" id="temp-chessboard">
+          <table class="containing-table">
+            <tr>
+              <td class="span2">
+                <table id="moves-table" class="table table-striped table-bordered">
+                  <th class="movePair">#</th>
+                  <th class="movePair">
+                    <a ng-click="moveControl.setColor(true)">
+                      White &#9817;
                     </a>
-                    </span>
-                  </td>
-                  <td>
-                    <span id="bold">
-                    <a ng-click="moveControl.truncateMovesTo(movePair.index + 1)">
-                      [[ movePair.blackMove ]]
+                  </th>
+                  <th class="movePair">
+                    <a ng-click="moveControl.setColor(false)">
+                      Black &#9823;
                     </a>
-                    </span>
-                  </td>
-                </tr>
-              </table>
-            </td>
-
-            <td class="containing-td span7">
-              <table class="right table table-striped table-bordered">
-                <th>Next Move</th>
-                <th>White Wins <span>(# games)</span></th>
-                <th>Black Wins <span>(# games)</span></th>
-                <th>Draws <span>(# games)</span></th>
-                <th>White Avg <span>(Elo)</span></th>
-                <th>Black Avg <span>(Elo)</span></th>
-                <tr class="row-stats" ng-repeat="moveStats in moveControl.moveStatsList">
-                  <td>
-                    <span id="bold">
-                    <a ng-click="moveControl.addMove(moveStats.move)">
-                      [[ moveStats.move ]]
-                    </a>
-                    </span>
-                  </td>
-                  <td>[[ moveStats.white_win_pct.toFixed(2) * 100 |
-                  number:0 ]]% ([[ moveStats.white_wins ]])</td>
-                  <td>[[ moveStats.black_win_pct.toFixed(2) * 100 |
-                  number:0 ]]% ([[moveStats.black_wins]])</td>
-                  <td>[[ moveStats.draw_pct.toFixed(2) * 100 |
-                  number:0 ]]% ([[moveStats.draws]])</td>
-                  <td>[[ moveStats.white_average_elo.toFixed(0) ]]</td>
-                  <td>[[ moveStats.black_average_elo.toFixed(0) ]]</td>
-                </tr>
-              </table>
-            </td>
-          </tr><!--containing table-->
-        </table><!--containing table-->
+                  </th>
+                  <tr class="movePair"  ng-repeat="movePair in moveControl.movePairs">
+                    <td>
+                      <span id="bold">
+                        [[ movePair.index/2 + 1 ]].
+                      </span>
+                    </td>
+                    <td>
+                      <span id="bold">
+                        <a ng-click="moveControl.truncateMovesTo(movePair.index)">
+                          [[ movePair.whiteMove ]]
+                        </a>
+                      </span>
+                    </td>
+                    <td>
+                      <span id="bold">
+                        <a ng-click="moveControl.truncateMovesTo(movePair.index + 1)">
+                          [[ movePair.blackMove ]]
+                        </a>
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+              <move-stats-table>
+            </tr><!--containing table-->
+          </table><!--containing table-->
         </div><!-- contains image and tables -->
       </div><!--content-->
     </div><!--angular-->
