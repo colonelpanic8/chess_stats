@@ -1,47 +1,12 @@
-<!DOCTYPE html>
-<html ng-app="ChessStats">
-  <head>
-    <meta charset="utf-8">
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
-    <script src=<% get_static_url("js/lib/angular/angular.js") %>></script>
-    <script src=<% get_static_url("js/lib/angular/angular-resource.js") %>></script>
-    <script src=<% get_static_url("js/app.js") %>></script>
-    <script src=<% get_static_url("js/services.js") %>></script>
-    <script src=<% get_static_url("js/controllers.js") %>></script>
-    <script src=<% get_static_url("js/filters.js") %>></script>
-    <script src=<% get_static_url("js/directives.js") %>></script>
-    <script src="http://mbostock.github.com/d3/d3.v2.js"></script>
-    <script src=<% get_static_url("js/user_rating_histogram.js")
-    %>></script>
-    <script src=<% get_static_url("js/navigation.js") %>></script>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400,600,300|Source+Code+Pro:300,400,600'
-          rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href=<%
-          get_static_url("bootstrap/css/bootstrap.min.css") %>
-          type="text/css">
-    <link rel="stylesheet" href=<%
-          get_static_url("css/d3_styles.css") %> type="text/css">
-    <link rel="stylesheet" href=<%
-          get_static_url("css/base_styles.css") %>
-          type="text/css">
-    <script src=<% get_static_url("js/lib/ChessBoard/src/Module.js") %>></script>
-    <script src=<% get_static_url("js/lib/ChessBoard/src/Board.js") %>></script>
-    <script src=<% get_static_url("js/lib/ChessBoard/src/Notation.js") %>></script>
-    <script src=<% get_static_url("js/lib/ChessBoard/src/Game.js") %>></script>
-    <script src=<% get_static_url("js/lib/ChessBoard/src/Directives.js") %>></script>
-  </head>
-  <body>
-    
-
-    <div id="content">
-      <div id="page-header" style="margin-right:9%;">
-        <h2> <% username %> / <span id="page-title"> Rating
-            Histogram</span></h2>
-        <p><i class="icon-hand-right icon-white"></i> Select plot point to view game analysis</p>
-      </div>
-      <div id="graph" class="rating-graph" ng-user-rating-histogram
-           username="<% username %>"></div>
-    </div>
-  </body>
-</html>
+{% extends "layout.html" %}
+{% block content %}
+<div id="content">
+  <div id="page-header" style="margin-right:9%;">
+    <h2> <% username %> / <span id="page-title"> Rating
+        Histogram</span></h2>
+    <p><i class="icon-hand-right icon-white"></i> Select plot point to view game analysis</p>
+  </div>
+  <div id="graph" class="rating-graph" ng-user-rating-histogram
+       username="<% username %>"></div>
+</div>
+{% endblock%}
