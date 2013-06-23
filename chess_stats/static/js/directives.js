@@ -70,6 +70,7 @@ directives.directive('navigationItem', function() {
   return {
     restrict: "E",
     replace: true,
+    scope: true,
     template: "<div><p>{{ letter }}</p><div><p>{{ title }}</p></div></div>",
     link: function(scope, element, attrs) {
       scope.title = attrs.title;
