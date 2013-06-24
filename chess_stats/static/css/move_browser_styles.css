@@ -1,10 +1,15 @@
-#temp-chessboard {
+.chess-board {
     float: left;
+}
+
+.moves-tables {
+    float: right;
 }
 
 .board-table-container {
     margin: auto;
     width: 90%;
+    overflow: hidden;
 }
 #page-header a, a:visited {
     color: black;

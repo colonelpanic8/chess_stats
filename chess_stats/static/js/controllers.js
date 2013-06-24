@@ -1,10 +1,10 @@
 String.prototype.format = function() {
-    var formatted = this;
-    for (var i = 0; i < arguments.length; i++) {
-        var regexp = new RegExp('\\{'+i+'\\}', 'gi');
-        formatted = formatted.replace(regexp, arguments[i]);
-    }
-    return formatted;
+  var formatted = this;
+  for (var i = 0; i < arguments.length; i++) {
+    var regexp = new RegExp('\\{'+i+'\\}', 'gi');
+    formatted = formatted.replace(regexp, arguments[i]);
+  }
+  return formatted;
 };
 
 function NavigationCtrl($scope) {
@@ -18,44 +18,44 @@ function LoginCtrl($scope, $location) {
 };
 
 function GameBrowseCtrl($scope) {
-    var gameLoader = {
-        games: [],
-        username: ""
-    }
+  var gameLoader = {
+    games: [],
+    username: ""
+  }
 
-    gameLoader.buildChessDotComGameURL = function (id) {
-        return "http://www.chess.com/livechess/game?id={0}".format(id)
-    }
+  gameLoader.buildChessDotComGameURL = function (id) {
+    return "http://www.chess.com/livechess/game?id={0}".format(id)
+  }
 
-    gameLoader.requestGames = function () {
-        var json_string = JSON.stringify({
-           "type": "GET_GAMES",
-           "username": this.username
-        })
-        gameLoader.webSocket.send(json_string)
-    }
+  gameLoader.requestGames = function () {
+    var json_string = JSON.stringify({
+      "type": "GET_GAMES",
+      "username": this.username
+    })
+    gameLoader.webSocket.send(json_string)
+  }
 
-    gameLoader.handleMessage = function (message) {
-        if(message.type == "START") {
-            gameLoader.requestGames()
-        }
-        if(message.type == "GAME") {
-            gameLoader.games.push(message.game)
-            $scope.$apply()
-        }
+  gameLoader.handleMessage = function (message) {
+    if(message.type == "START") {
+      gameLoader.requestGames()
     }
-
-    gameLoader.init = function (username, port) {
-        gameLoader.username = username
-        gameLoader.webSocket = 
-        gameLoader.webSocket.onopen = function (e) {}
-        gameLoader.webSocket.onclose = function (e) {}
-        gameLoader.webSocket.onmessage = function (messageEvent) {
-            gameLoader.handleMessage(JSON.parse(messageEvent.data))
-        }
+    if(message.type == "GAME") {
+      gameLoader.games.push(message.game)
+      $scope.$apply()
     }
+  }
 
-    $scope.gameLoader = gameLoader
+  gameLoader.init = function (username, port) {
+    gameLoader.username = username
+    gameLoader.webSocket = 
+      gameLoader.webSocket.onopen = function (e) {}
+    gameLoader.webSocket.onclose = function (e) {}
+    gameLoader.webSocket.onmessage = function (messageEvent) {
+      gameLoader.handleMessage(JSON.parse(messageEvent.data))
+    }
+  }
+
+  $scope.gameLoader = gameLoader
 }
 
 function MoveStatsCtrl($scope, $http, StatsFetcher, ChessGame) {
