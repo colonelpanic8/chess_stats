@@ -173,12 +173,11 @@ class ChessDotComGameETL(etl.ETL):
     def execute(self):
         try:
             game = models.ChessDotComGame.query.filter(
-                models.ChessDotComGame.chess_dot_com_id==self.transformed['chess_dot_com_id']
+                models.ChessDotComGame.chess_dot_com_id == self.transformed['chess_dot_com_id']
             ).one()
         except models.NoResultFound:
             # The game doesn't exist so we need to load it.
             return super(ChessDotComGameETL, self).execute()
-        else:
-            # The game already exists; just return it.
-            return game
+        # The game already exists; just return it.
+        return game
 

@@ -23,7 +23,7 @@ function GameBrowseCtrl($scope, HistoryRequestor) {
     $scope.port = port;
     $scope.historyRequestor = new HistoryRequestor($scope.username, $scope.port);
     $scope.historyRequestor.addGameHandler($scope.addGameToGameHistory);
-    $scope.historyRequestor.requestExistingGames();
+    $scope.historyRequestor.requestRefreshGames();
   }
   $scope.buildChessDotComGameURL = function (id) {
     return "http://www.chess.com/livechess/game?id={0}".format(id)
@@ -31,8 +31,9 @@ function GameBrowseCtrl($scope, HistoryRequestor) {
   $scope.gameHistory = [];
   $scope.addGameToGameHistory = function(newGame) {
     $scope.gameHistory.splice(_.sortedIndex($scope.gameHistory, newGame, function(game) {
-      return game.id;
+      return -game.id;
     }), 0, newGame);
+    $scope.$apply()
   }
 }
 
