@@ -75,5 +75,12 @@ function MoveStatsCtrl($scope, $http, StatsFetcher, ChessGame) {
     );
     $scope.refreshMoveStatsList();
     $scope.chessGame.addListener($scope.refreshMoveStatsList);
+    $scope.chessGame.addMoveChecker(function(move, isUndo) {
+      if(isUndo) return true;
+      var algebraicMoves = _.map($scope.moveStatsList, function(moveStats) {
+        return moveStats.move
+      });
+      return !(algebraicMoves.indexOf(move.algebraic) < 0);
+    });
   }
 }
