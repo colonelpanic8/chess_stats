@@ -2,35 +2,6 @@
 /*     background-color: #213540; */
 /* } */
 
-#page-header h2 {
-    font-size: 36px;
-    letter-spacing: 1px;
-    font-weight: 400;
-    color: #fff;
-}
-
-#page-header {
-    margin-right: 10%;
-    position: relative;
-    text-align: right;
-}
-
-#content p {
-    color: #fff;
-    font-family: 'Open Sans';
-    font-weight: 300;
-    font-size: 16px;
-}
-
-#page-title {
-    display: inline-block;
-    font-weight: 300;
-    padding-bottom: 3px;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #DAFFE6;
-    letter-spacing: 1px;
-}
-
 path {
     stroke-width: 1px;
     fill: none;

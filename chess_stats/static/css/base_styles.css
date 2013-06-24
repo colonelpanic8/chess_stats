@@ -36,6 +36,14 @@ table {
     font-weight: 600;
 }
 
+.black {
+    color: black;
+}
+
+.white {
+    color: white;
+}
+
 footer {
     clear: both;
     position: relative;
@@ -72,6 +80,12 @@ footer {
     margin-bottom: 15px;
     letter-spacing: 1px;
     border-bottom: 2px solid;
+}
+
+#content p {
+    font-family: 'Open Sans';
+    font-weight: 300;
+    font-size: 16px;
 }
 
 .table a, a:visited {
@@ -273,4 +287,106 @@ footer {
 }
 #login-form .submit-button {
     width: 90px;
+}
+
+/* Browse Game History */
+
+#game-table {
+    display: block;
+    text-align: center;
+    line-height: 1;
+    box-shadow: 5px 5px 8px #ffb9b7;
+    margin-top: 20px;
+}
+
+#game-table a, a:visited {
+    color: #0088cd;
+}
+
+.user-column {
+    overflow: hidden;
+    min-width: 120px;
+    max-width: 100px;
+}
+
+#game-table th, .game-table td {
+    text-align: center;
+}
+
+/* Browse Moves Styles */
+
+#page-header a, a:visited {
+    color: black;
+}
+
+#page-header a:hover, table #bold a:hover, .containing-table a:hover {
+    color: #16c1f3;
+}
+
+#moves-table tbody:first-child tr:first-child>th {
+    color: black;
+    background-color: white;
+}
+
+.chess-board {
+    float: left;
+    border: 3px solid black;
+}
+
+.containing-table {
+    float: right;
+}
+
+.content-container {
+    margin: auto;
+    width: 90%;
+    overflow: hidden;
+}
+
+.board-table-container {
+    margin-top: 40px;
+}
+
+table .containing-table a, a:visited {
+    color: black;
+    font-weight: 600;
+}
+
+.containing-td th span {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 300;
+    text-transform: lowercase;
+}
+
+.blue {
+    box-shadow: 5px 5px 8px #cdfbff;
+}
+
+.blue tbody:first-child tr:first-child>th {
+    color: white;
+    background-color: #16c1f3;
+}
+
+.blue tbody>tr:nth-child(odd)>td {
+    background-color: #CDFBFF;
+} 
+
+
+.blue, .blue td, .blue th {
+    border: 1px solid #A4EFFA;
+}
+
+
+.red, .red td, .red th {
+    border: 1px solid #FFC5C5;
+}
+
+.red tbody:first-child tr:first-child>th {
+    color: white;
+    background-color: #ff3f34;
+}
+
+.red tbody>tr:nth-child(odd)>td,.red tbody>tr:nth-child(odd)>th{
+    background-color:#ffebea;
 }
