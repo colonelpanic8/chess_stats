@@ -31,7 +31,7 @@ angular.module('ChessStats.factories', []).factory('StatsFetcher', function($htt
       this.webSocket = new WebSocket(
         "ws://{0}:{1}/fetch_games/".format(document.domain, this.port)
       );
-      var boundHandleMessage = this.handleGame.bind(this);
+      var boundHandleGame = this.handleGame.bind(this);
       this.webSocket.onmessage = function(messageEvent) {
         var message = JSON.parse(messageEvent.data)
         if(message.type == "START") {
