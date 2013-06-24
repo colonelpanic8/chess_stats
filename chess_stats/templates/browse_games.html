@@ -1,20 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
-
 <div ng-controller="GameBrowseCtrl"
-     ng-init="gameLoader.init('<% username %>', '<% port %>')")>
-  
-  <div id="page-header" class="span12 center">
-    <h2>
-      <a href="../browse_moves/AlexMalison">AlexMalison</a>
-       / 
-      <span id="page-title"> Game History</span>
-    </h2>
-    <p>
-      <i class="icon-hand-right"></i>
-      Select game id to view game analysis
-    </p>
-  </div>
+     ng-init="init('<% username %>', '<% port %>')")>
   <div class="row span12 center">
     <table id="game-table" class="game-table table table-striped table-bordered">
       <tr>
@@ -25,7 +12,7 @@
         <th>Black Elo</th>
         <th>Game ID</th>
       </tr>
-      <tr ng-repeat="game in gameLoader.games" ng:fade="true">
+      <tr ng-repeat="game in gameHistory" ng:fade="true">
         <td>{{game.date_played}}</td>
         <td class="user-column">
           <a href='{{game.white_username}}'>
