@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
-<div id="content">
-  <div id="page-header" style="margin-right:9%;">
-    <h2> <% username %> / <span id="page-title"> Rating
-        Histogram</span></h2>
-    <p class="white"><i class="icon-hand-right icon-white"></i> Select plot point to view game analysis</p>
-  </div>
-  <div id="graph" class="rating-graph" ng-user-rating-histogram
-       username="<% username %>"></div>
+<div id="page-header" style="margin-right:9%;">
+  <h2> <% username %> / <span id="page-title"> Rating Histogram</span></h2>
+  <p class="white">
+    <i class="icon-hand-right icon-white"></i>
+    Select plot point to view game analysis
+  </p>
 </div>
+<div id="graph" class="rating-graph" user-rating-histogram
+       username="<% username %>"></div>
 {% endblock%}

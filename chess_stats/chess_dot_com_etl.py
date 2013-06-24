@@ -181,3 +181,26 @@ class ChessDotComGameETL(etl.ETL):
         # The game already exists; just return it.
         return game
 
+
+class ChessDotComGameFileExtractor(object):
+
+    def extract(self, filename):
+        with open(filename, 'r') as file:
+            return file.read()
+
+
+class ChessDotComGameFileETL(ChessDotComGameETL):
+
+    id_matcher = re.compile('.*? - (.*?)\.pgn')
+
+    extractor = ChessDotComGameFileExtractor()
+
+    def __init__(self, filepath):
+        etl.ETL.__init__(self, filepath)
+        matches = self.id_matcher.search(filepath)
+        if not matches:
+            import ipdb; ipdb.set_trace()
+        else:
+            print filepath
+
+        self.transformed['chess_dot_com_id'] = matches.group(1)

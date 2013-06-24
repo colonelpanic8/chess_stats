@@ -6,6 +6,7 @@ import simplejson
 from . import models
 from . import game_analyzer
 from .chess_dot_com_etl import ChessDotComGameETL
+from .chess_dot_com_etl import ChessDotComGameFileETL
 from .legacy_etl import LegacyGameETL
 from .scraper import ChessDotComScraper
 
@@ -66,6 +67,14 @@ def load_games_from_legacy_files_in_directory(directory):
                     os.path.join(directory_path, filename),
                     os.path.basename(directory_path)
                 )
+
+
+def load_games_from_pgn_files_in_directory(directory):
+    filename_matcher = re.compile('.*? - (.*?)\.pgn')
+    for directory_path, directory_names, filenames in os.walk(directory):
+        for filename in filenames:
+            if filename_matcher.match(filename):
+                yield ChessDotComGameFileETL(os.path.join(directory_path, filename)).execute()
 
 
 def load_games_from_legacy_xml(filename, username):
