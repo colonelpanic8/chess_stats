@@ -76,6 +76,9 @@ directives.directive('navigationItem', function() {
       scope.title = attrs.title;
       scope.letter = attrs.letter;
       scope.href = attrs.href;
+      $(element).on("click", function() {
+        window.location = scope.href;
+      });
       $(element).hover(function() {
         $(element).children('div').stop(true, true).animate({
           left: 70
