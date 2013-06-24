@@ -15,7 +15,7 @@ def get_games_for_user(username):
         user = models.ChessDotComUser.find_user_by_username(username)
     except models.NoResultFound:
         return []
-    return user.all_games
+    return user.all_games.all()
 
 
 def fetch_games_for_user(username, stop_at_latest_id=True, stop_at_id=None):

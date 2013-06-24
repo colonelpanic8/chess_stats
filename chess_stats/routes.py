@@ -39,6 +39,12 @@ def user_rating_history_json(username):
       UserRatingHistoryFetcher(username).get_user_rating_history()
    )
 
+@app.route("/get_game_history/<username>")
+def get_game_history(username):
+   return simplejson.dumps(
+       [game.as_dict for game in logic.get_games_for_user(username)]
+   )
+
 @app.route("/rating_graph/<username>")
 def user_rating_graph(username):
    return render_template('user_rating_histogram.html', username=username)

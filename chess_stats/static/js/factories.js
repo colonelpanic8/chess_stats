@@ -17,34 +17,52 @@ angular.module('ChessStats.factories', []).factory('StatsFetcher', function($htt
     }).success(this.successCallback);
   }
   return StatsFetcher;
-}).factory('HistoryRequestor', function() {
+}).factory('HistoryRequestor', function($http) {
 
   function HistoryRequestor(username, port) {
     this.username = username;
-    this.webSocket = new WebSocket(
-      "ws://{0}:{1}/fetch_games/".format(document.domain, port)
-    );
-    this.messageHandlers = [];
-    this.webSocket.onmessage = this.handleMessage.bind(this);
+    this.gameHandlers = [];
+    this.webSocket = null;
+    this.port = port;
   }
   
   HistoryRequestor.prototype = {
     requestRefreshGames: function() {
-      var json_string = JSON.stringify({
-        "type": "GET_GAMES",
-        "username": this.username
-      })
-      this.webSocket.send(json_string)
+      this.webSocket = new WebSocket(
+        "ws://{0}:{1}/fetch_games/".format(document.domain, this.port)
+      );
+      var boundHandleMessage = this.handleGame.bind(this);
+      this.webSocket.onmessage = function(messageEvent) {
+        var message = JSON.parse(messageEvent.data)
+        if(message.type == "START") {
+          this.webSocket.send(JSON.stringify({
+            "type": "GET_GAMES",
+            "username": this.username
+          }));
+        } else {
+          boundHandleGame(message.game);
+        }
+      }.bind(this);
     },
-    addMessageHandler: function(handler) {
-      this.messageHandlers.push(handler);
+    requestExistingGames: function() {
+      $http({
+        'method': 'GET',
+        'url': '/get_game_history/' + this.username,
+      }).success(function(gameHistory) {
+        _.each(gameHistory, function(game) {
+          this.handleGame(game)
+        }, this);
+      }.bind(this));
     },
-    handleMessage: function(messageEvent) {
-      var message = JSON.parse(messageEvent.data);
-      _.each(this.messageHandlers, function(handler) {
-        handler(message);
+    addGameHandler: function(handler) {
+      this.gameHandlers.push(handler);
+    },
+    handleGame: function(game) {
+      _.each(this.gameHandlers, function(handler) {
+        handler(game);
       });
-    }
+    },
+      
   }
   return HistoryRequestor;
 });

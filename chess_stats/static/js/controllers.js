@@ -17,45 +17,23 @@ function LoginCtrl($scope, $location) {
   }
 };
 
-function GameBrowseCtrl($scope) {
-  var gameLoader = {
-    games: [],
-    username: ""
+function GameBrowseCtrl($scope, HistoryRequestor) {
+  $scope.init = function(username, port) {
+    $scope.username = username;
+    $scope.port = port;
+    $scope.historyRequestor = new HistoryRequestor($scope.username, $scope.port);
+    $scope.historyRequestor.addGameHandler($scope.addGameToGameHistory);
+    $scope.historyRequestor.requestExistingGames();
   }
-
-  gameLoader.buildChessDotComGameURL = function (id) {
+  $scope.buildChessDotComGameURL = function (id) {
     return "http://www.chess.com/livechess/game?id={0}".format(id)
   }
-
-  gameLoader.requestGames = function () {
-    var json_string = JSON.stringify({
-      "type": "GET_GAMES",
-      "username": this.username
-    })
-    gameLoader.webSocket.send(json_string)
+  $scope.gameHistory = [];
+  $scope.addGameToGameHistory = function(newGame) {
+    $scope.gameHistory.splice(_.sortedIndex($scope.gameHistory, newGame, function(game) {
+      return game.id;
+    }), 0, newGame);
   }
-
-  gameLoader.handleMessage = function (message) {
-    if(message.type == "START") {
-      gameLoader.requestGames()
-    }
-    if(message.type == "GAME") {
-      gameLoader.games.push(message.game)
-      $scope.$apply()
-    }
-  }
-
-  gameLoader.init = function (username, port) {
-    gameLoader.username = username
-    gameLoader.webSocket = 
-      gameLoader.webSocket.onopen = function (e) {}
-    gameLoader.webSocket.onclose = function (e) {}
-    gameLoader.webSocket.onmessage = function (messageEvent) {
-      gameLoader.handleMessage(JSON.parse(messageEvent.data))
-    }
-  }
-
-  $scope.gameLoader = gameLoader
 }
 
 function MoveStatsCtrl($scope, $http, StatsFetcher, ChessGame) {
