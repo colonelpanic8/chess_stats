@@ -11,6 +11,7 @@ class UCIClient(object):
         self._engine = self._start_engine()
         self._engine.stdin.write("isready\n")
         while True:
+            # WHAT!? This is shit code:
             if self._engine.stdout.readline().rstrip() == 'readyok':
                 break
 
@@ -63,7 +64,7 @@ class UCIClient(object):
         self._engine.stdin.write("quit\n")
 
 
-StockfishClient = lambda *args, **kwargs: UCIClient('Stockfish/stockfish', *args, **kwargs)
+StockfishClient = lambda *args, **kwargs: UCIClient('stockfish_osx', *args, **kwargs)
 
 
 if __name__ == '__main__':
