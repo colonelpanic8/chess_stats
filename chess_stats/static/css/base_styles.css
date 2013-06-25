@@ -389,3 +389,76 @@ table .containing-table a, a:visited {
 .red tbody>tr:nth-child(odd)>td,.red tbody>tr:nth-child(odd)>th{
     background-color:#ffebea;
 }
+
+/* Rating Graph Styles */
+
+path {
+    stroke-width: 1px;
+    fill: none;
+}
+
+circle {
+    cursor: pointer;
+}
+
+svg {
+    overflow: auto;
+}
+
+.rating-graph {
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+}
+
+.graph-line {
+    stroke-width: 1.5px;
+    stroke: #FF7300;
+}
+
+.graph-circle {
+    fill: #E82C0C;
+}
+
+.axis {
+    shape-rendering: crispEdges;
+}
+
+.x.axis path, .y.axis line {
+    fill: none;
+    stroke: #000;
+}
+.tooltip {   
+  position: absolute;           
+  text-align: center;           
+  width: 120px;                  
+  padding: 10px 6px 10px 6px;             
+  background-color: #ff7300;   
+  color: white;
+  border: 0px;      
+  border-radius: 1px;           
+  box-shadow: 5px 5px 8px #202020; 
+  pointer-events: none;         
+}
+
+.x.axis text, .y.axis text, .tooltip {
+    font-size: 11px;
+    font-family: 'Open Sans';
+}
+
+#x-axis-label, #y-axis-label {
+    z-index: -1;
+    letter-spacing: 1px;
+    font-size: 14px;
+    font-weight: 300;
+    text-transform: uppercase;
+    fill: #DAFFE6;
+}
+
+#rating-graph-background { 
+    z-index: -1;
+    height: 100%;
+    position:absolute;
+    width: 100%;
+    background-color: #213540;
+}
