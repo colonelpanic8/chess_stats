@@ -27,7 +27,7 @@ function averageEloByDate(userRatingElements) {
 
 // define dimensions of graph
 var m = [80, 80, 80, 100]; // margins
-var w = 1200 - m[1] - m[3];// width
+var w = 1200 - m[1] - m[3]; // width
 var h = 600 - m[0] - m[2]; // height
 
 angular.module('ChessStats.directives').directive('userRatingHistogram', function() { 
