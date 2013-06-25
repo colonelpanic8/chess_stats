@@ -326,14 +326,15 @@ footer {
     color: black;
     background-color: white;
 }
-
 .chess-board {
     float: left;
     border: 3px solid black;
 }
 
 .containing-table {
-    float: right;
+    float: left;
+    margin-left: 20px;
+    width: 60%;
 }
 
 .content-container {
@@ -344,6 +345,7 @@ footer {
 
 .board-table-container {
     margin-top: 40px;
+    width: 100%;
 }
 
 table .containing-table a, a:visited {
