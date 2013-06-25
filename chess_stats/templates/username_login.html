@@ -1,87 +1,39 @@
-<!DOCTYPE html>
-<html ng-app="ChessStats">
-  <head>
-    <meta charset="utf-8">
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src=<% get_static_url("js/lib/angular/angular.js") %>></script>
-    <script src=<% get_static_url("js/lib/angular/angular-resource.js") %>></script>
-    <script src=<% get_static_url("js/app.js") %>></script>
-    <script src=<% get_static_url("js/services.js") %>></script>
-    <script src=<% get_static_url("js/controllers.js") %>></script>
-    <script src=<% get_static_url("js/filters.js") %>></script>
-    <script src=<% get_static_url("js/directives.js") %>></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
-    <script src=<% get_static_url("js/navigation.js") %>></script>
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,300,300italic" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="../static/css/base_styles.css" type="text/css">
-  </head>
-  <body>
-    <div id="login-background">
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817; 
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;  
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;  
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
-      &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
-    </div>
-    <header>
-      <div id="navigation">
-        <div id="navigation-background"></div>
-        <div id="logo-icon"><img src="../static/img/logo_icon2.png"></div>
-        <div class="links">
-          <div class="histogram-link">
-            <p><a href="../">1</a></p>
-            <div>
-              <p>Rating Histogram</p>
-            </div>
-          </div>
-          <div class="games-history-link">
-            <p><a href="../">2</a></p>
-            <div>
-              <p>Game History</p>
-            </div>
-          </div>
-          <div class="game-analysis-link">
-            <p><a href="../">3</a></p>
-            <div>
-              <p>Game Analysis</p>
-            </div>
-          </div>
-          <div class="moves-stats-link">
-            <p><a href="../">4</a></p>
-            <div>
-              <p>Moves Statistics</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <div id="login-wrapper">
-      <div id="login-description">
-        Enter a Chess.com username for stats and game analysis<br /> <span>&#9812;
+{% extends "layout.html" %}
+{% block content %}
+<div id="content">
+  <div id="login-background">
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817; 
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;  
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;  
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
+    &#9812; &#9813; &#9814; &#9815; &#9816; &#9817;
+  </div>
+  <div id="login-wrapper">
+    <div id="login-description">
+      Enter a Chess.com username for stats and game analysis<br /> <span>&#9812;
         &#9813; &#9814; &#9815; &#9816; &#9817;</span>
-      </div>
-      <div id="login-form">
-        <form ng-submit="loginUsername()" ng-controller="LoginCtrl">
-          <input type="text" ng-model="username" size="30"
-               placeholder="Chess.com Username">
-          <input class="submit-button" type="submit" value="enter">
-        </form>
-      </div>
     </div>
-  </body>
-</html>
+    <div id="login-form">
+      <form ng-submit="loginUsername()" ng-controller="LoginCtrl">
+        <input type="text" ng-model="username" size="30"
+               placeholder="Chess.com Username">
+        <input class="submit-button" type="submit" value="enter">
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock%}

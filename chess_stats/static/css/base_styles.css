@@ -150,7 +150,6 @@ footer {
     margin: 0;
     width: 100%;
     font-size: 150px;
-    text-align: center;
     line-height: 1;
 }
 
@@ -270,6 +269,7 @@ footer {
 }
 
 #login-form input {
+    margin-bottom: 0;
     height: 25px;
     width: 52%;
     font-size: 1em;
@@ -283,7 +283,7 @@ footer {
     font-style: normal;
     color: white;
     border: 2px outset #3f3f3f;
-    height: 31px;
+    height: 33px;
 }
 #login-form .submit-button {
     width: 90px;
