@@ -185,8 +185,9 @@ def get_color_dictionary():
 
 
 def perform_analysis(game):
-    with game_analyzer.ChessGameAnalyzer(game) as analyzer:
-        move, uci_move, (best_move, score)
+    analyzer = game_analyzer.ChessGameAnalyzer(game)
+    for move, uci_move, (best_move, score, continuation_string) in analyzer.yield_move_analyses():
+        
 
 def perform_analysis_interactive(game):
     from ChessUtil.playable_game import PlayableChessGame
