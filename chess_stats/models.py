@@ -168,11 +168,24 @@ class ChessDotComGame(db.Model):
         return True
 
 
-# class AnalysisNode(db.Model):
+class GameAnalysis(db.Model):
 
-#     id = db.Column(db.Integer, primary_key=True)
-#     parent_id = db.Column(db.Integer, db.ForeignKey('AnalysisNode'))
-#     uci_moves = db.Column(db.String(length=500), unique=True)
-#     score = db.Column(AnalysisScoreType)
+    id = db.Column(db.Integer, primary_key=True)
 
-#     parent = db.relationship('AnalysisNode', backref='children')
+
+class AnalysisNode(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    parent_id = db.Column(db.Integer, db.ForeignKey('AnalysisNode'))
+    uci_moves = db.Column(db.String(length=500), unique=True)
+    score = db.Column(AnalysisScoreType)
+    best_move = db.Column(db.String(length=5))
+
+    parent = db.relationship('AnalysisNode', backref='children')
+
+    @classmethod
+    def find_from_uci_moves_list(cls, uci_moves):
+        try:
+            return cls.query.filter(cls.uci_moves == ' '.join(uci_moves)).one()
+        except NoResultFound:
+            return None

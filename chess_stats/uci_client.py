@@ -1,19 +1,27 @@
+from collections import namedtuple
 import datetime
 import re
 import select
 import subprocess
 
 
+AnalysisInfo = namedtuple('AnalysisInfo', ["best_move", "centipawn_score", "continuation_string"])
+
+
 class UCIClient(object):
 
     def __init__(self, process_command):
         self._process_command = process_command
-        self._engine = self._start_engine()
-        self._engine.stdin.write("isready\n")
-        while True:
-            # WHAT!? This is shit code:
-            if self._engine.stdout.readline().rstrip() == 'readyok':
-                break
+
+    def __enter__(self):
+        self.start_engine()
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        try:
+            self.quit()
+        except Exception:
+            pass
 
     def set_position_from_moves_list(self, uci_moves_list):
         self._engine.stdin.write(
@@ -35,14 +43,19 @@ class UCIClient(object):
 
         return self._parse_evaluation_lines(evaluation_lines)
 
-    def _start_engine(self):
-        return subprocess.Popen(
+    def start_engine(self):
+        self._engine = subprocess.Popen(
             [self._process_command],
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE
         )
+        self._engine.stdin.write("isready\n")
+        while True:
+            if self._engine.stdout.readline().rstrip() == 'readyok':
+                return
 
     evaluation_line_matcher = re.compile("score cp (-?[0-9]*)")
+    continuation_line_matcher = re.compile("pv ((:?[a-h][1-8][a-h][1-8])(:? [a-h][1-8][a-h][1-8])*)")
     best_move_line_matcher = re.compile("bestmove ([a-z0-9]*)")
 
     def _parse_evaluation_lines(self, evaluation_lines):
@@ -55,10 +68,13 @@ class UCIClient(object):
             match = self.evaluation_line_matcher.search(line)
             if match and match.group(1) != '':
                 centipawn_score = int(match.group(1))
+                continuation_string = self.continuation_line_matcher(line).group(1)
                 break
         if centipawn_score is None:
             import ipdb; ipdb.set_trace()
-        return best_move, centipawn_score
+        return AnalysisInfo(
+            best_move, centipawn_score, continuation_string
+        )
 
     def quit(self):
         self._engine.stdin.write("quit\n")
