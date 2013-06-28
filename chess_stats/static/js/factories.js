@@ -65,4 +65,38 @@ angular.module('ChessStats.factories', []).factory('StatsFetcher', function($htt
       
   }
   return HistoryRequestor;
+}).factory('AnalysisClient', function() {
+  function AnalysisClient(port) {
+    this.port = port;
+    this.messageHandlers = [];
+    this.webSocket = new WebSocket(
+      "ws://{0}:{1}/analysis/".format(document.domain, this.port)
+    );
+    this.webSocket.onmessage = this.handleMessage.bind(this);
+  }
+  AnalysisClient.prototype = {
+    setPosition: function(uciMoves) {
+      this.sendAsJSON({
+        type: 'SET_POSITION',
+        uci_moves: uciMoves
+      });
+    },
+    startAnalysis: function() {
+      this.sendAsJSON({type: 'DO_ANALYSIS'});
+    },
+    sendAsJSON: function(obj) {
+      this.webSocket.send(JSON.stringify(obj));
+    },
+    addMessageHandler: function(handler) {
+      this.messageHandlers.push(handler);
+    },
+    handleMessage: function(messageEvent) {
+      console.log("handling message");
+      var message = JSON.parse(messageEvent.data);
+      _.each(this.messageHandlers, function(handler) {
+        handler(message);
+      });
+    }
+  }
+  return AnalysisClient;
 });

@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block content %}
+<div id="content">
+  <div ng-controller="InteractiveAnalysisCtrl" ng-init="init('<% port %>')">
+    <ng-chess-board chessGame="chessGame"
+                      square-size="55" light-color="white"
+                      dark-color="#A8A3A8"></ng-chess-board>
+    <button ng-click="requestAnalysis()">Analyze!</button>
+  </div>
+</div>
+{% endblock %}

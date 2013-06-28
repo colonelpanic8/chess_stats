@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 import inspect
 import functools
+import time
 import threading
 
 import simplejson
@@ -49,9 +50,9 @@ class MessageHandler(websocket.WebSocketHandler):
             raise UnrecognizedMessage("Message did not have type.")
 
         try:
-            request_function_names = self.request_type_to_function_names_map[
-                request_type
-            ]
+           request_function_names = self.request_type_to_function_names_map[
+              request_type
+           ]
         except KeyError:
             print "The request type was not recognized."
             return
@@ -80,12 +81,18 @@ class GameAnalysisHandler(MessageHandler):
 
     @MessageHandlerRegistrar.register_request_handler_decorator('SET_POSITION')
     def set_position(self, request):
-        import time
         self.uci_client.set_position_from_moves_list(request['uci_moves'])
+
+    @MessageHandlerRegistrar.register_request_handler_decorator('DO_ANALYSIS')
+    def do_analysis(self, request):
         self.uci_client.start_position_evaluation()
         time.sleep(5)
-        self.write_as_json(self.uci_client.maybe_read_evaluation())
-        print "Sent"
+        self.write_as_json(
+            {
+                'type': 'ANALYSIS',
+                'analysis': self.uci_client.maybe_read_evaluation()
+            }
+        )
 
 
 class GameFetchHandler(MessageHandler):
