@@ -37,6 +37,24 @@ function GameBrowseCtrl($scope, HistoryRequestor) {
   }
 }
 
+function InteractiveAnalysisCtrl($scope, AnalysisClient) {
+  $scope.init = function(port) {
+    $scope.port = port;
+    $scope.analysisClient = new AnalysisClient(this.port);
+    $scope.analysisClient.addMessageHandler(this.handleAnalysis);
+  }
+  $scope.chessGame = new ChessGame();
+  $scope.requestAnalysis = function() {
+    $scope.analysisClient.setPosition(_.map(this.chessGame.movesList, function(move) {
+      return move.uci
+    }));
+    $scope.analysisClient.startAnalysis();
+  }
+  $scope.handleAnalysis = function(analysisMessage) {
+    $scope.chessGame.makeMoveFromUCI(analysisMessage.analysis.best_move);
+  }
+}
+
 function MoveStatsCtrl($scope, $http, StatsFetcher, ChessGame) {
   $scope.chessGame = new ChessGame();
   $scope.movesStatsList = [];

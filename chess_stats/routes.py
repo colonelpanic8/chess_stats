@@ -14,6 +14,10 @@ def browse_games(username):
 def browse_user_moves(username):
    return render_template('browse_moves.html', username=username)
 
+@app.route("/interactive_analysis")
+def interactive_analysis():
+   return render_template('interactive_analysis.html', port=app.port)
+
 @app.route("/browse_moves")
 def browse_moves():
    return render_template('browse_moves_all.html', username='')

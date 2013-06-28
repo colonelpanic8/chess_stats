@@ -27,7 +27,6 @@ class UCIClient(object):
         self._engine.stdin.write(
             "position startpos moves %s\n" % ' '.join(uci_moves_list)
         )
-        return self
 
     def start_position_evaluation(self, duration=datetime.timedelta(seconds=5)):
         self._engine.stdin.write(
@@ -78,7 +77,6 @@ class UCIClient(object):
         )
 
     def quit(self):
-        print "quitting"
         self._engine.stdin.write("quit\n")
 
 
@@ -86,6 +84,6 @@ StockfishClient = lambda *args, **kwargs: UCIClient('./stockfish_osx', *args, **
 
 
 if __name__ == '__main__':
-    print __file__
-    uci_client = StockfishClient()
-    import ipdb; ipdb.set_trace()
+    with StockfishClient() as uci_client:
+        import ipdb; ipdb.set_trace()
+        print "1"
