@@ -177,36 +177,3 @@ def build_sorted_game_stats_for_moves_for_all_games(moves):
         models.ChessDotComGame.query.all(),
         moves
     )
-
-
-def get_color_dictionary():
-    with open('chess_stats/config/colors.json') as colors_file:
-        return simplejson.loads(colors_file.read())
-
-
-def perform_analysis(game):
-    analyzer = game_analyzer.ChessGameAnalyzer(game)
-    for move, uci_move, (best_move, score, continuation_string) in analyzer.yield_move_analyses():
-        
-
-def perform_analysis_interactive(game):
-    from ChessUtil.playable_game import PlayableChessGame
-    pg = PlayableChessGame()
-    with game_analyzer.ChessGameAnalyzer(game) as analyzer:
-        for move_num, (move, uci_move, (best_move, score)) in enumerate(
-            analyzer.yield_move_analyses()
-        ):
-            pg.make_move_from_algebraic_and_return_uci(move)
-            white_score = score
-            if not move_num % 2:
-                print move_num/2 + 1
-                print "White to move."
-            else:
-                print "Black to move."
-                white_score *= -1
-            if white_score > 0:
-                print "White Winning"
-            elif white_score < 0:
-                print "Black Winning"
-            print "%4s - %5s, %d" % (move, best_move, score)
-            pg._board.print_board()

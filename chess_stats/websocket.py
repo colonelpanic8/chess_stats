@@ -1,25 +1,27 @@
 from __future__ import absolute_import
 import inspect
 import functools
+import threading
 
 import simplejson
 from tornado import websocket
 
 from . import logic
+from . import uci_client
 
 
-class HandlerRegistrar(type):
+class MessageHandlerRegistrar(type):
 
     def __init__(self, *args, **kwargs):
-        self.request_type_to_funtion_names_map = {}
+        self.request_type_to_function_names_map = {}
         for attr_name, attr in inspect.getmembers(self):
             request_type = getattr(attr, 'request_type', False)
             if request_type:
-                self.request_type_to_funtion_names_map.setdefault(
+                self.request_type_to_function_names_map.setdefault(
                     request_type,
                     []
                 ).append(attr_name)
-        super(HandlerRegistrar, self).__init__(*args, **kwargs)
+        super(MessageHandlerRegistrar, self).__init__(*args, **kwargs)
 
     @classmethod
     def register_request_handler(cls, function, request_type):
@@ -28,28 +30,15 @@ class HandlerRegistrar(type):
 
     @classmethod
     def register_request_handler_decorator(cls, request_type):
-        return functools.partial(
-            cls.register_request_handler,
-            request_type=request_type
-        )
+        return functools.partial(cls.register_request_handler, request_type=request_type)
 
 
-class GameFetchHandler(websocket.WebSocketHandler):
+class UnrecognizedMessage(Exception): pass
 
-    __metaclass__ = HandlerRegistrar
 
-    def __init__(self, *args, **kwargs):
-        self.request_type_to_handler_functions_map = {
-            request_type: [
-                getattr(self, function_name) for function_name in function_names
-            ]
-            for request_type, function_names
-            in self.request_type_to_funtion_names_map.iteritems()
-        }
-        super(GameFetchHandler, self).__init__(*args, **kwargs)
+class MessageHandler(websocket.WebSocketHandler):
 
-    def open(self):
-        self.write_as_json({'type': 'START'})
+    __metaclass__ = MessageHandlerRegistrar
 
     def on_message(self, message):
         request = simplejson.loads(message)
@@ -57,24 +46,51 @@ class GameFetchHandler(websocket.WebSocketHandler):
         try:
             request_type = request['type']
         except KeyError:
-            print "Request did not have type."
-            return
+            raise UnrecognizedMessage("Message did not have type.")
 
         try:
-            request_functions = self.request_type_to_handler_functions_map[
+            request_function_names = self.request_type_to_function_names_map[
                 request_type
             ]
         except KeyError:
             print "The request type was not recognized."
             return
 
-        for function in request_functions:
-            function(request)
+        for function_name in request_function_names:
+            getattr(self, function_name)(request)
 
     def on_close(self):
         pass
 
-    @HandlerRegistrar.register_request_handler_decorator('GET_GAMES')
+    def write_as_json(self, obj):
+        self.write_message(simplejson.dumps(obj))
+
+
+class GameAnalysisHandler(MessageHandler):
+
+    def __init__(self, *args, **kwargs):
+        super(GameAnalysisHandler,self).__init__(*args, **kwargs)
+        self.uci_client = uci_client.StockfishClient()
+        self.engine_manager = self.get_engine_manager()
+        self.engine_manager.next()
+
+    def get_engine_manager(self):
+        with self.uci_client:
+            yield
+
+    @MessageHandlerRegistrar.register_request_handler_decorator('SET_POSITION')
+    def set_position(self, request):
+        import time
+        self.uci_client.set_position_from_moves_list(request['uci_moves'])
+        self.uci_client.start_position_evaluation()
+        time.sleep(5)
+        self.write_as_json(self.uci_client.maybe_read_evaluation())
+        print "Sent"
+
+
+class GameFetchHandler(MessageHandler):
+
+    @MessageHandlerRegistrar.register_request_handler_decorator('GET_GAMES')
     def send_games_one_by_one(self, request):
         for game in logic.yield_scraped_games(request['username']):
             try:
@@ -82,6 +98,3 @@ class GameFetchHandler(websocket.WebSocketHandler):
             except IOError:
                 print "Stopped sending games because connection was closed."
                 return
-
-    def write_as_json(self, obj):
-        self.write_message(simplejson.dumps(obj))

@@ -41,7 +41,8 @@ class UCIClient(object):
             if data is not None:
                 evaluation_lines.append(data)
 
-        return self._parse_evaluation_lines(evaluation_lines)
+        if evaluation_lines:
+            return self._parse_evaluation_lines(evaluation_lines)
 
     def start_engine(self):
         self._engine = subprocess.Popen(
@@ -68,7 +69,7 @@ class UCIClient(object):
             match = self.evaluation_line_matcher.search(line)
             if match and match.group(1) != '':
                 centipawn_score = int(match.group(1))
-                continuation_string = self.continuation_line_matcher(line).group(1)
+                continuation_string = self.continuation_line_matcher.search(line).group(1)
                 break
         if centipawn_score is None:
             import ipdb; ipdb.set_trace()
@@ -77,10 +78,11 @@ class UCIClient(object):
         )
 
     def quit(self):
+        print "quitting"
         self._engine.stdin.write("quit\n")
 
 
-StockfishClient = lambda *args, **kwargs: UCIClient('stockfish_osx', *args, **kwargs)
+StockfishClient = lambda *args, **kwargs: UCIClient('./stockfish_osx', *args, **kwargs)
 
 
 if __name__ == '__main__':
