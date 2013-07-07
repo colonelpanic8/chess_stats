@@ -15,6 +15,7 @@ menu, nav, output, ruby, section, summary, time, mark, audio, video {
     text-decoration: none;
 }
 
+
 table {
     margin-top: 0;
     margin-right: auto;
@@ -30,34 +31,6 @@ table {
 #content i {
     position: relative;
     top: 3px;
-}
-
-#bold {
-    font-weight: 600;
-}
-
-.black {
-    color: black;
-}
-
-.white {
-    color: white;
-}
-
-footer {
-    clear: both;
-    position: relative;
-    font-size: .95em;
-    font-style: italic;
-    padding-top: 2em;
-    margin: 7em auto;
-    text-align: center;
-}
-
-.center {
-    float: none;
-    margin: auto;
-    text-align: center;
 }
 
 #page-header h2 {
@@ -86,6 +59,66 @@ footer {
     font-family: 'Open Sans';
     font-weight: 300;
     font-size: 16px;
+}
+
+#bold {
+    font-weight: 600;
+}
+
+.page-animate-container {
+    position:relative;
+    width: 100%;
+}
+
+.page-animate-container > * {
+  display:block;
+  width:100%;
+  position:absolute; 
+}
+
+.page-leave-active, .page-enter-active {
+    -webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) .5s;
+    -moz-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) .5s;
+    -ms-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) .5s;
+    -o-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) .5s;
+    transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) .5s;
+}
+
+.page-enter {
+    left: 100%;
+}
+
+.page-enter-active {
+    position:absolute;
+    left: 0;
+}
+
+.page-leave-active {
+    left: -100%;
+}
+
+.black {
+    color: black;
+}
+
+.white {
+    color: white;
+}
+
+footer {
+    clear: both;
+    position: relative;
+    font-size: .95em;
+    font-style: italic;
+    padding-top: 2em;
+    margin: 7em auto;
+    text-align: center;
+}
+
+.center {
+    float: none;
+    margin: auto;
+    text-align: center;
 }
 
 .table {
@@ -144,14 +177,6 @@ footer {
 }
 
 /* Navigation styling */
-
-#login-background {
-    position: fixed;
-    margin: 0;
-    width: 100%;
-    font-size: 150px;
-    line-height: 1;
-}
 
 #navigation-background {
     min-height: 100%;
@@ -242,14 +267,21 @@ footer {
 
 }
 
+#login-background {
+    z-index: -1;
+    top: 0;
+    margin: 0;
+    width: 100%;
+    font-size: 150px;
+    line-height: 1;
+}
+
 #login-wrapper {
     width: 577px;
     margin: auto;
     color: white;
     background-color: #ffe000;
-    position: absolute;
-    top: 25%;
-    left: 30%;
+    margin-top: 15%;
     text-align: center;
     box-shadow: 5px 5px 8px #1d1d1d; 
 }
@@ -323,6 +355,7 @@ footer {
     font-size: 3em;
     margin-bottom: 20px;
     padding-bottom: 20px;
+    color: black;
     border-bottom: 2px solid black;
 }
 
