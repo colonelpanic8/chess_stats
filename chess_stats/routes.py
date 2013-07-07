@@ -3,6 +3,7 @@ import simplejson
 
 from . import app
 from . import logic
+from . import models
 from .user_rating_history_fetcher import UserRatingHistoryFetcher
 
 
@@ -21,6 +22,15 @@ def interactive_analysis():
 @app.route("/browse_moves")
 def browse_moves():
    return render_template('browse_moves_all.html', username='')
+
+
+@app.route("/game/<chess_dot_com_id>")
+def get_game_by_chess_dot_com_id(chess_dot_com_id):
+    # TODO: handle missing rows.
+    return simplejson.dumps(
+        models.ChessDotComGame.query.filter_by(chess_dot_com_id=chess_dot_com_id).one().as_dict()
+    )
+
 
 @app.route("/get_stats")
 def get_game_stats():
