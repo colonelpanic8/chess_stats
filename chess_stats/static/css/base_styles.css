@@ -312,6 +312,24 @@ footer {
     text-align: center;
 }
 
+/* Interactive Analysis */
+#interactive-analysis-background {
+    background-color: #ffe000;
+}
+
+#analysis-msg-container {
+    border: 2px solid black;
+}
+
+#analysis-msg {
+    padding: 50px;
+}
+
+#analysis-msg p {
+    text-align: center;
+    font-size: 3em;
+}
+
 /* Browse Moves Styles */
 
 #page-header a, a:visited {
