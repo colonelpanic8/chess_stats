@@ -7,10 +7,6 @@ String.prototype.format = function() {
   return formatted;
 };
 
-function NavigationCtrl($scope) {
-  
-}
-
 function LoginCtrl($scope, $location) {
   $scope.loginUsername = function() {
     window.location = "rating_graph/" + $scope.username;
@@ -37,7 +33,7 @@ function GameBrowseCtrl($scope, HistoryRequestor) {
   }
 }
 
-function InteractiveAnalysisCtrl($scope, AnalysisClient) {
+function InteractiveAnalysisCtrl($scope, AnalysisClient, $route) {
   $scope.init = function(port) {
     $scope.port = port;
     $scope.analysisClient = new AnalysisClient(this.port);

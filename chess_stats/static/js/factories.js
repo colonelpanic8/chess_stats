@@ -28,20 +28,20 @@ angular.module('ChessStats.factories', []).factory('StatsFetcher', function($htt
   
   HistoryRequestor.prototype = {
     requestRefreshGames: function() {
+      that = this;
       this.webSocket = new WebSocket(
         "ws://{0}:{1}/fetch_games/".format(document.domain, this.port)
       );
+      this.webSocket.onopen = function() {
+        this.send(JSON.stringify({
+          "type": "GET_GAMES",
+          "username": that.username
+        }));
+      }
       var boundHandleGame = this.handleGame.bind(this);
       this.webSocket.onmessage = function(messageEvent) {
         var message = JSON.parse(messageEvent.data)
-        if(message.type == "START") {
-          this.webSocket.send(JSON.stringify({
-            "type": "GET_GAMES",
-            "username": this.username
-          }));
-        } else {
-          boundHandleGame(message.game);
-        }
+        boundHandleGame(message.game);
       }.bind(this);
     },
     requestExistingGames: function() {
