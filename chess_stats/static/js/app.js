@@ -20,8 +20,7 @@ var ChessStats = angular.module(
        templateUrl: "/static/js/view_templates/enter_username.html",
        controller: InteractiveAnalysisCtrl
      }).otherwise({
-       redirectTo: "/",
-       templateUrl: "/static/js/view_templates/enter_username.html"
+       redirectTo: "/"
      });
    }
   ]).run(['loadTemplates', function(loadTemplates) {
