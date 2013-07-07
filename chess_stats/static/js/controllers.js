@@ -13,14 +13,10 @@ function LoginCtrl($scope, $location) {
   }
 };
 
-function GameBrowseCtrl($scope, HistoryRequestor) {
-  $scope.init = function(username, port) {
-    $scope.username = username;
-    $scope.port = port;
-    $scope.historyRequestor = new HistoryRequestor($scope.username, $scope.port);
-    $scope.historyRequestor.addGameHandler($scope.addGameToGameHistory);
-    $scope.historyRequestor.requestRefreshGames();
-  }
+function GameHistoryCtrl($scope, HistoryRequestor, $route, $routeParams) {
+  $scope.username = $routeParams.username
+  console.log($scope.username);
+  $scope.port = 8080;  
   $scope.buildChessDotComGameURL = function (id) {
     return "http://www.chess.com/livechess/game?id={0}".format(id)
   }
@@ -31,6 +27,10 @@ function GameBrowseCtrl($scope, HistoryRequestor) {
     }), 0, newGame);
     $scope.$apply()
   }
+
+  $scope.historyRequestor = new HistoryRequestor($scope.username, $scope.port);
+  $scope.historyRequestor.addGameHandler($scope.addGameToGameHistory);
+  $scope.historyRequestor.requestRefreshGames();
 }
 
 function InteractiveAnalysisCtrl($scope, AnalysisClient, $route) {

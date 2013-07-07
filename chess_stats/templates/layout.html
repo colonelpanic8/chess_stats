@@ -40,16 +40,16 @@
           <a href="../"><img src="../static/img/logo_icon2.png"></a>
         </div>
         <div class="links">
-          <navigation-item href="/<% username %>/rating_graph"
+          <navigation-item href="/{{ username }}/rating_graph"
                            title="Rating Histogram" letter="1"
                            class="histogram-link"></navigation-item>
-          <navigation-item href="../browse_games/<% username %>"
+          <navigation-item href="/{{ username }}/game_history"
                            title="Game History" letter="2"
                            class="games-history-link"></navigation-item>
           <navigation-item href="/interactive_analysis"
                            title="Game Analysis" letter="3"
                            class="game-analysis-link"></navigation-item>
-          <navigation-item href="../browse_moves/<% username %>"
+          <navigation-item href="/{{ username }}/moves_analysis"
                            title="Move Statistics" letter="4"
                            class="moves-stats-link"></navigation-item>
         </div>

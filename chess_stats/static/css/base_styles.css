@@ -70,11 +70,11 @@ table {
     width: 100%;
 }
 
-.page-animate-container > * {
-  display:block;
-  width:100%;
-  position:absolute; 
-}
+/* .page-animate-container > * { */
+/*   display:block; */
+/*   width:100%; */
+/*   position:absolute;  */
+/* } */
 
 .page-leave-active, .page-enter-active {
     -webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) .5s;
@@ -94,6 +94,7 @@ table {
 }
 
 .page-leave-active {
+    position:absolute;
     left: -100%;
 }
 

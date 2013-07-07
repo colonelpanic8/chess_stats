@@ -13,14 +13,15 @@ var ChessStats = angular.module(
   ['$routeProvider', '$locationProvider',
    function($routeProvider, $locationProvider) {
      $locationProvider.html5Mode(true);
-     $routeProvider.when('/interactive_analysis', {
+     $routeProvider.when('/:username/game_history', {
+       templateUrl: "/static/js/view_templates/game_history.html",
+       controller: GameHistoryCtrl
+     }).when('/interactive_analysis', {
        templateUrl: "/static/js/view_templates/interactive_analysis.html",
        controller: InteractiveAnalysisCtrl
      }).when('/', {
        templateUrl: "/static/js/view_templates/enter_username.html",
-       controller: InteractiveAnalysisCtrl
-     }).otherwise({
-       redirectTo: "/"
+       controller: LoginCtrl
      });
    }
   ]).run(['loadTemplates', function(loadTemplates) {

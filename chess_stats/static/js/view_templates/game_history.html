@@ -1,0 +1,47 @@
+<div>
+  <div id="page-header" class="span12 center">
+    <h2>
+      <a href="../browse_moves/{{ username }}">{{ username }}</a>
+      / 
+      <span id="page-title"> Game History</span>
+    </h2>
+    <p>
+      <i class="icon-hand-right"></i>
+      Select game id to view game analysis
+    </p>
+  </div>
+  <div class="row span12 center">
+    <table id="game-table" class="game-table table table-striped table-bordered red">
+      <tr>
+        <th>Date Played</th> 
+        <th class="user-column">White Player</th>
+        <th>White Elo</th>
+        <th class="user-column">Black Player</th>
+        <th>Black Elo</th>
+        <th>Game ID</th>
+      </tr>
+      <tr ng-repeat="game in gameHistory" ng:fade="true">
+        <td>{{game.date_played}}</td>
+        <td class="user-column">
+          <a href='{{game.white_username}}'>
+	    <b ng-show="game.result == 'W'">&#9813;</b>
+            {{game.white_username}}
+          </a>
+        </td>
+        <td>{{game.white_elo}}</td>
+        <td class="user-column">
+          <a href='{{game.black_username}}'>
+	    <b ng-show="game.result == 'B'">&#9819;</b>
+            {{game.black_username}}
+          </a>
+        </td>
+        <td>{{game.black_elo}}</td>
+        <td>
+          <a href={{gameLoader.buildChessDotComGameURL(game.id)}} target="_blank">
+            {{game.id}}
+          </a>
+        </td>
+      </tr>
+  </div>
+</div>
+</div>
