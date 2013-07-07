@@ -1,12 +1,38 @@
 {% extends "layout.html" %}
 {% block content %}
-<div id="content">
-  <div ng-controller="InteractiveAnalysisCtrl" ng-init="init('<% port %>')">
-    <ng-chess-board chessGame="chessGame"
-                      square-size="55" light-color="white"
-                      dark-color="#A8A3A8"></ng-chess-board>
-    <button ng-click="requestAnalysis()">Analyze!</button>
-    <ng-move-list class="table table-striped table-bordered blue" id="moves-table"></ng-move-list>
+<div id="interactive-analysis-background">
+  <div id="content">
+    <div ng-controller="InteractiveAnalysisCtrl" ng-init="init('<% port
+                                                          %>')" class="content-container">
+      <div id="page-header" style="text-align:left;">
+        <h2>
+          Interactive Analysis
+          / 
+          <span id="page-title"> Analyze Moves</span>
+        </h2>
+        <p>
+          <i class="icon-hand-right"></i>
+          Press analyze! to display smartest moves
+        </p>
+      </div>
+
+      <div class="board-table-container">
+        <ng-chess-board chessGame="chessGame"
+                        square-size="55" light-color="white"
+                        dark-color="#A8A3A8"></ng-chess-board>
+        <!-- <button ng-click="requestAnalysis()">Analyze!</button> -->
+        <div class="span2">
+          <ng-move-list class="table table-striped table-bordered blue"
+                        id="moves-table"></ng-move-list>
+        </div>
+        <div id="analysis-msg-container" class="span6">
+          <div id="analysis-msg">
+            <p>Score Position</p>
+            <p>(...Qe6, Nf3, Ke2)</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}
