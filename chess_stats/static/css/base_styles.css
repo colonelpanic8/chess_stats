@@ -145,14 +145,6 @@ footer {
 
 /* Navigation styling */
 
-#login-background {
-    position: fixed;
-    margin: 0;
-    width: 100%;
-    font-size: 150px;
-    line-height: 1;
-}
-
 #navigation-background {
     min-height: 100%;
     height: 100%;
@@ -242,14 +234,22 @@ footer {
 
 }
 
+#login-background {
+    z-index: -1;
+    position: fixed;
+    top: 0;
+    margin: 0;
+    width: 100%;
+    font-size: 150px;
+    line-height: 1;
+}
+
 #login-wrapper {
     width: 577px;
     margin: auto;
     color: white;
     background-color: #ffe000;
-    position: absolute;
-    top: 25%;
-    left: 30%;
+    margin-top: 15%;
     text-align: center;
     box-shadow: 5px 5px 8px #1d1d1d; 
 }
@@ -323,6 +323,7 @@ footer {
     font-size: 3em;
     margin-bottom: 20px;
     padding-bottom: 20px;
+    color: black;
     border-bottom: 2px solid black;
 }
 
