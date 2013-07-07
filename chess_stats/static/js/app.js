@@ -10,14 +10,12 @@ var ChessStats = angular.module(
     'ChessGame'
   ]
 ).config(
-  [
-    '$routeProvider',
-    '$locationProvider',
-    function($routeProvider, $locationProvider) {
-      $locationProvider.html5Mode(true);
-    }
-  ]
-);
+  ['$routeProvider', '$locationProvider',
+   function($routeProvider, $locationProvider) {
+     $locationProvider.html5Mode(true);
+   }]).run(['loadTemplates', function(loadTemplates) {
+     loadTemplates("/static/js/lib/ChessBoard/src/templates/");
+   }]);
 
 ChessStats.directive('ngFade', function () {
   return function (scope, element, attrs) {

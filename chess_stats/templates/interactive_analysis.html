@@ -1,9 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
 <div id="content">
-  <div ng-controller="InteractiveAnalysisCtrl" ng-init="init('<% port
-                                                        %>')"
-       class="content-container">
+  <div ng-controller="InteractiveAnalysisCtrl"
+       ng-init="init('<% port %>')" class="content-container">
     <div id="page-header" style="text-align:left;">
       <h2>
         Interactive Analysis
@@ -17,9 +16,9 @@
     </div>
 
     <div class="board-table-container">
-      <ng-chess-board chessGame="chessGame"
-                      square-size="55" light-color="white"
-                      dark-color="#A8A3A8"></ng-chess-board>
+      <chess-board chess-game="chessGame"
+                      square-size="55" light-color="'white'"
+                      dark-color="'#A8A3A8'"></chess-board>
 
       <div id="analysis-msg-container" class="span8">
         <p>Score:<span id="bold"> {{ score }}</span></p>
