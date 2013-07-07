@@ -24,8 +24,10 @@
     <script src=<% get_static_url("js/lib/ChessBoard/src/directives.js")%>></script>
 
 
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600,300">
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,300" type="text/css">
+    <link rel="stylesheet" type="text/css"
+          href="http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600,300">
+    <link rel="stylesheet" type="text/css"
+          href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,300">
     <link rel="stylesheet" href=<% get_static_url("bootstrap/css/bootstrap.min.css") %> type="text/css">
     <link rel="stylesheet" href=<% get_static_url("css/base_styles.css") %> type="text/css"> 
     {% endblock %}
@@ -39,13 +41,13 @@
           <a href="../"><img src="../static/img/logo_icon2.png"></a>
         </div>
         <div class="links">
-          <navigation-item href="../rating_graph/<% username %>"
+          <navigation-item href="/<% username %>/rating_graph"
                            title="Rating Histogram" letter="1"
                            class="histogram-link"></navigation-item>
           <navigation-item href="../browse_games/<% username %>"
                            title="Game History" letter="2"
                            class="games-history-link"></navigation-item>
-          <navigation-item href="../<% username %>"
+          <navigation-item href="/interactive_analysis"
                            title="Game Analysis" letter="3"
                            class="game-analysis-link"></navigation-item>
           <navigation-item href="../browse_moves/<% username %>"

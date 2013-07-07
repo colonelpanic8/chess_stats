@@ -13,9 +13,20 @@ var ChessStats = angular.module(
   ['$routeProvider', '$locationProvider',
    function($routeProvider, $locationProvider) {
      $locationProvider.html5Mode(true);
-   }]).run(['loadTemplates', function(loadTemplates) {
-     loadTemplates("/static/js/lib/ChessBoard/src/templates/");
-   }]);
+     $routeProvider.when('/interactive_analysis', {
+       templateUrl: "/static/js/view_templates/interactive_analysis.html",
+       controller: InteractiveAnalysisCtrl
+     }).when('/', {
+       templateUrl: "/static/js/view_templates/enter_username.html",
+       controller: InteractiveAnalysisCtrl
+     }).otherwise({
+       redirectTo: "/",
+       templateUrl: "/static/js/view_templates/enter_username.html"
+     });
+   }
+  ]).run(['loadTemplates', function(loadTemplates) {
+    loadTemplates("/static/js/lib/ChessBoard/src/templates/");
+  }]);
 
 ChessStats.directive('ngFade', function () {
   return function (scope, element, attrs) {

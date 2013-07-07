@@ -7,23 +7,6 @@ from . import models
 from .user_rating_history_fetcher import UserRatingHistoryFetcher
 
 
-@app.route("/browse_games/<username>")
-def browse_games(username):
-   return render_template('browse_games.html', username=username, port=app.port)
-
-@app.route("/browse_moves/<username>")
-def browse_user_moves(username):
-   return render_template('browse_moves.html', username=username)
-
-@app.route("/interactive_analysis")
-def interactive_analysis():
-   return render_template('interactive_analysis.html', port=app.port)
-
-@app.route("/browse_moves")
-def browse_moves():
-   return render_template('browse_moves_all.html', username='')
-
-
 @app.route("/game/<chess_dot_com_id>")
 def get_game_by_chess_dot_com_id(chess_dot_com_id):
     # TODO: handle missing rows.
@@ -53,19 +36,22 @@ def user_rating_history_json(username):
       UserRatingHistoryFetcher(username).get_user_rating_history()
    )
 
+
 @app.route("/get_game_history/<username>")
 def get_game_history(username):
    return simplejson.dumps(
        [game.as_dict for game in logic.get_games_for_user(username)]
    )
 
-@app.route("/rating_graph/<username>")
-def user_rating_graph(username):
-   return render_template('user_rating_histogram.html', username=username)
+@app.route("/<path:p>")
+def other(*args, **kwargs):
+   return render_template('home.html')
+
 
 @app.route("/")
-def username_login():
-   return render_template('username_login.html')
+def home(*args, **kwargs):
+   return render_template('home.html')
+
 
 if __name__ == "__main__":
    app.run()

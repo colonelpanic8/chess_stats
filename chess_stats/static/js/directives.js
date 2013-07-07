@@ -66,19 +66,19 @@ directives.directive('moveStatsTable', function() {
   }
 });
 
-directives.directive('navigationItem', function() {
+directives.directive('navigationItem', ['$route', '$location', function($route, $location) {
   return {
     restrict: "E",
     replace: true,
     scope: true,
-    template: "<div><p>{{ letter }}</p><div><p>{{ title }}</p></div></div>",
+    template: '<div ng-click="goToRoute()"><p>{{ letter }}</p><div><p>{{ title }}</p></div></div>',
     link: function(scope, element, attrs) {
       scope.title = attrs.title;
       scope.letter = attrs.letter;
       scope.href = attrs.href;
-      $(element).on("click", function() {
-        window.location = scope.href;
-      });
+      scope.goToRoute = function() {
+        $location.path(scope.href);
+      }
       $(element).hover(function() {
         $(element).children('div').stop(true, true).animate({
           left: 70
@@ -90,4 +90,4 @@ directives.directive('navigationItem', function() {
       });
     }
   }
-});
+}]);

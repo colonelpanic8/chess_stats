@@ -1,0 +1,33 @@
+<div class="content-container">
+    <div id="page-header" style="text-align:left;">
+      <h2>
+        Interactive Analysis
+        / 
+        <span id="page-title"> Analyze Moves</span>
+      </h2>
+      <p>
+        <i class="icon-hand-right"></i>
+        Press analyze! to display smartest moves
+      </p>
+    </div>
+
+    <div class="board-table-container">
+      <chess-board chess-game="chessGame"
+                      square-size="55" light-color="'white'"
+                      dark-color="'#A8A3A8'"></chess-board>
+
+      <div id="analysis-msg-container" class="span8">
+        <p>Score:<span id="bold"> {{ score }}</span></p>
+        <p>Best Move:<span id="bold"> {{ bestMove }}</span></p>
+        <p>Next Moves: {{ continuation }}</p>
+        <button ng-click="requestAnalysis()"
+                id="analyze-btn">Analyze</button>
+        <div class="span3">
+          <move-list chess-game="chessGame" class="table table-striped table-bordered blue"
+                        id="moves-table"></move-list>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
