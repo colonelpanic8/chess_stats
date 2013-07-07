@@ -88,6 +88,12 @@ footer {
     font-size: 16px;
 }
 
+.table {
+    color: black;
+    font-family: 'Open Sans';
+    font-size: 14px;
+}
+
 .table a, a:visited {
     color: #0088cd
 }
@@ -95,12 +101,6 @@ footer {
 .table a:hover, a:hover {
     text-decoration: none;
     color: navy;
-}
-
-.table {
-    color: black;
-    font-family: 'Open Sans';
-    font-size: 14px;
 }
 
 .table th {
@@ -277,7 +277,7 @@ footer {
     text-align: center;
 }
 
-#login-form input[type="submit"] {
+#login-form input[type="submit"], #analyze-btn {
     background-color: #1c1c1c;
     padding: 2px 6px 3px;
     font-style: normal;
@@ -313,21 +313,24 @@ footer {
 }
 
 /* Interactive Analysis */
-#interactive-analysis-background {
-    background-color: #ffe000;
-}
 
 #analysis-msg-container {
-    border: 2px solid black;
+    margin-left: 50px;
 }
 
-#analysis-msg {
-    padding: 50px;
-}
-
-#analysis-msg p {
-    text-align: center;
+#analysis-msg-container p {
+    line-height: 1;
     font-size: 3em;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid black;
+}
+
+#analyze-btn {
+    float: left;
+    width: 200px;
+    font-size: 2em;
+    height: 50px;
 }
 
 /* Browse Moves Styles */
@@ -347,6 +350,7 @@ footer {
 .chess-board {
     float: left;
     border: 3px solid black;
+    color: black;
 }
 
 .containing-table {

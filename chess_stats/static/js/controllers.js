@@ -50,8 +50,15 @@ function InteractiveAnalysisCtrl($scope, AnalysisClient) {
     }));
     $scope.analysisClient.startAnalysis();
   }
+  $scope.bestMove = 'N/A';
+  $scope.continuation = 'N/A';
+  $scope.score = 0;
   $scope.handleAnalysis = function(analysisMessage) {
     $scope.chessGame.makeMoveFromUCI(analysisMessage.analysis.best_move);
+    $scope.score = analysisMessage.analysis.centipawn_score / 100;
+    $scope.bestMove = analysisMessage.analysis.best_move;
+    $scope.continuation = analysisMessage.analysis.continuation_string.split(" ").slice(0, 3).join(" ");
+    $scope.$apply();
   }
 }
 
