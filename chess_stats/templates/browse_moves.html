@@ -20,13 +20,13 @@
     </div>
 
     <div class="board-table-container">
-      <ng-chess-board chessGame="chessGame"
-                      square-size="55" light-color="white"
-                      dark-color="#A8A3A8"></ng-chess-board>
+      <chess-board chess-game="chessGame"
+                      square-size="55" light-color="'white'"
+                      dark-color="'#A8A3A8'"></chess-board>
       <table class="containing-table">
         <tr>
           <td class="span2">
-            <ng-move-list class="table table-striped table-bordered blue" id="moves-table"></ng-move-list>
+            <move-list chess-game="chessGame" class="table table-striped table-bordered blue" id="moves-table"></move-list>
           </td>
           <td class="containing-td span7">
             <table class="right table table-striped table-bordered blue">
