@@ -49,7 +49,8 @@ function InteractiveAnalysisCtrl($scope, AnalysisClient, requestGame, $route, $r
   $scope.chessGame = new ChessGame();
 
   $scope.game = null;
-  if($routeParams) {
+  console.log($routeParams.chessDotComID != null);
+  if($routeParams.chessDotComID != null) {
     $scope.game = requestGame($routeParams.chessDotComID);
     _.each($scope.game.moves, function(algebraicMove) {
       $scope.chessGame.makeMoveFromAlgebraic(algebraicMove);
