@@ -35,7 +35,7 @@
         </td>
         <td>{{game.black_elo}}</td>
         <td>
-          <a href={{ gameLoader.buildChessDotComGameURL(game.id) }} target="_blank">
+          <a ng-click="goToAnalysisView(game.id)" target="_blank">
             {{game.id}}
           </a>
         </td>

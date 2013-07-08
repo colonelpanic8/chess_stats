@@ -19,7 +19,7 @@ var ChessStats = angular.module(
      }).when('/:username/rating_graph', {
        templateUrl: "/static/js/view_templates/rating_graph.html",
        controller: RatingGraphCtrl
-     }).when('/interactive_analysis/:chess_dot_com_game_id', {
+     }).when('/interactive_analysis/:chessDotComID', {
        templateUrl: "/static/js/view_templates/interactive_analysis.html",
        controller: InteractiveAnalysisCtrl
      }).when('/:username/moves_analysis', {

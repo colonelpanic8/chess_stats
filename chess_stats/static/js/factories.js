@@ -104,4 +104,15 @@ angular.module('ChessStats.factories', []).factory('StatsFetcher', function($htt
     username: null,
     port: "3030"
   }
+}).factory('requestGame', function($http) {
+  return function(chessDotComID) {
+    var json;
+    $.ajax({
+      method: 'GET',
+      url: '/game/{0}'.format(chessDotComID),
+      success: function(data) {json = data},
+      async: false
+    })
+    return JSON.parse(json);
+  }
 });

@@ -27,8 +27,8 @@ function GameHistoryCtrl($scope, HistoryRequestor, $route, $routeParams, State, 
   $scope.username = $routeParams.username
   State.username = $scope.username;
   console.log($scope.username);
-  $scope.buildChessDotComGameURL = function (id) {
-    return "http://www.chess.com/livechess/game?id={0}".format(id)
+  $scope.goToAnalysisView = function (chessDotComID) {
+    $location.path("/interactive_analysis/{0}".format(chessDotComID))
   }
   $scope.gameHistory = [];
   $scope.addGameToGameHistory = function(newGame) {
@@ -45,8 +45,18 @@ function GameHistoryCtrl($scope, HistoryRequestor, $route, $routeParams, State, 
   $scope.historyRequestor.requestRefreshGames();
 }
 
-function InteractiveAnalysisCtrl($scope, AnalysisClient, $route, State) {
+function InteractiveAnalysisCtrl($scope, AnalysisClient, requestGame, $route, $routeParams) {
   $scope.chessGame = new ChessGame();
+
+  $scope.game = null;
+  if($routeParams) {
+    $scope.game = requestGame($routeParams.chessDotComID);
+    debugger;
+    _.each($scope.game.moves, function(algebraicMove) {
+      $scope.chessGame.makeMoveFromAlgebraic(algebraicMove);
+    });
+  }
+  
   $scope.requestAnalysis = function() {
     $scope.analysisClient.setPosition(_.map(this.chessGame.movesList, function(move) {
       return move.uci

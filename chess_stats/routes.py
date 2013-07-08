@@ -11,7 +11,7 @@ from .user_rating_history_fetcher import UserRatingHistoryFetcher
 def get_game_by_chess_dot_com_id(chess_dot_com_id):
     # TODO: handle missing rows.
     return simplejson.dumps(
-        models.ChessDotComGame.query.filter_by(chess_dot_com_id=chess_dot_com_id).one().as_dict()
+        models.ChessDotComGame.query.filter_by(chess_dot_com_id=chess_dot_com_id).one().as_dict
     )
 
 
