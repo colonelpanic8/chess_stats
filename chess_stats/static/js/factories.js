@@ -102,6 +102,6 @@ angular.module('ChessStats.factories', []).factory('StatsFetcher', function($htt
 }).factory('State', function() {
   return {
     username: null,
-    port: 3030
+    port: "3030"
   }
 });
