@@ -27,7 +27,6 @@ function GameHistoryCtrl($scope, HistoryRequestor, $route, $routeParams, State) 
   $scope.username = $routeParams.username
   State.username = $scope.username;
   console.log($scope.username);
-  $scope.port = 8080;  
   $scope.buildChessDotComGameURL = function (id) {
     return "http://www.chess.com/livechess/game?id={0}".format(id)
   }
@@ -39,17 +38,12 @@ function GameHistoryCtrl($scope, HistoryRequestor, $route, $routeParams, State) 
     $scope.$apply()
   }
 
-  $scope.historyRequestor = new HistoryRequestor($scope.username, $scope.port);
+  $scope.historyRequestor = new HistoryRequestor($scope.username, location.port || "80");
   $scope.historyRequestor.addGameHandler($scope.addGameToGameHistory);
   $scope.historyRequestor.requestRefreshGames();
 }
 
 function InteractiveAnalysisCtrl($scope, AnalysisClient, $route, State) {
-  $scope.init = function(port) {
-    $scope.port = port;
-    $scope.analysisClient = new AnalysisClient(this.port);
-    $scope.analysisClient.addMessageHandler(this.handleAnalysis);
-  }
   $scope.chessGame = new ChessGame();
   $scope.requestAnalysis = function() {
     $scope.analysisClient.setPosition(_.map(this.chessGame.movesList, function(move) {
@@ -67,6 +61,9 @@ function InteractiveAnalysisCtrl($scope, AnalysisClient, $route, State) {
     $scope.continuation = analysisMessage.analysis.continuation_string.split(" ").slice(0, 3).join(" ");
     $scope.$apply();
   }
+
+  $scope.analysisClient = new AnalysisClient(location.port || "80");
+  $scope.analysisClient.addMessageHandler($scope.handleAnalysis);
 }
 
 function MoveAnalysisCtrl($scope, $http, StatsFetcher, ChessGame, $routeParams, State) {
