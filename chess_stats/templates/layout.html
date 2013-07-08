@@ -34,22 +34,22 @@
   <body>
     {% block navigation %}
     <header>
-      <div id="navigation">
+      <div id="navigation" ng-controller="NavigationCtrl">
         <div id="navigation-background"></div>
         <div id="logo-icon">
           <a href="../"><img src="../static/img/logo_icon2.png"></a>
         </div>
         <div class="links">
-          <navigation-item href="/{{ username }}/rating_graph"
+          <navigation-item url-builder="'/rating_graph/' + state.username"
                            title="Rating Histogram" letter="1"
                            class="histogram-link"></navigation-item>
-          <navigation-item href="/{{ username }}/game_history"
+          <navigation-item url-builder="'/game_history/' + state.username"
                            title="Game History" letter="2"
                            class="games-history-link"></navigation-item>
-          <navigation-item href="/interactive_analysis"
+          <navigation-item url-builder="'/interactive_analysis/'"
                            title="Game Analysis" letter="3"
                            class="game-analysis-link"></navigation-item>
-          <navigation-item href="/{{ username }}/moves_analysis"
+          <navigation-item url-builder="'/moves_analysis/' + state.username"
                            title="Move Statistics" letter="4"
                            class="moves-stats-link"></navigation-item>
         </div>

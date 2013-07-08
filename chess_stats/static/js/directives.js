@@ -70,14 +70,16 @@ directives.directive('navigationItem', ['$route', '$location', function($route, 
   return {
     restrict: "E",
     replace: true,
-    scope: true,
+    scope: {
+      constructUrl: "&urlBuilder"
+    },
     template: '<div ng-click="goToRoute()"><p>{{ letter }}</p><div><p>{{ title }}</p></div></div>',
     link: function(scope, element, attrs) {
       scope.title = attrs.title;
       scope.letter = attrs.letter;
       scope.href = attrs.href;
       scope.goToRoute = function() {
-        $location.path(scope.href);
+        $location.path(scope.constructUrl());
       }
       $(element).hover(function() {
         $(element).children('div').stop(true, true).animate({
