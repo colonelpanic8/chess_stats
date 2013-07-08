@@ -21,14 +21,14 @@
       <tr ng-repeat="game in gameHistory" ng:fade="true">
         <td>{{game.date_played}}</td>
         <td class="user-column">
-          <a href='{{game.white_username}}'>
+          <a ng-click="goToUsername(game.white_username)">
 	    <b ng-show="game.result == 'W'">&#9813;</b>
             {{game.white_username}}
           </a>
         </td>
         <td>{{game.white_elo}}</td>
         <td class="user-column">
-          <a href='{{game.black_username}}'>
+          <a ng-click="goToUsername(game.black_username)">
 	    <b ng-show="game.result == 'B'">&#9819;</b>
             {{game.black_username}}
           </a>
