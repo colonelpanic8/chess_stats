@@ -70,12 +70,6 @@ table {
     width: 100%;
 }
 
-/* .page-animate-container > * { */
-/*   display:block; */
-/*   width:100%; */
-/*   position:absolute;  */
-/* } */
-
 .page-leave-active, .page-enter-active {
     -webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;
     -moz-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;
@@ -85,17 +79,25 @@ table {
 }
 
 .page-enter {
-    left: 100%;
+    width:  100%;
+    position: absolute;
+    opacity: 0;
+}
+
+.page-leave {
+    width:  100%;
+    position: absolute;
+    opacity: 1;
 }
 
 .page-enter-active {
-    position:absolute;
-    left: 0;
+    position: absolute;
+    opacity: 1;
 }
 
 .page-leave-active {
-    position:absolute;
-    left: -100%;
+    position: absolute;
+    opacity: 0;
 }
 
 .black {
