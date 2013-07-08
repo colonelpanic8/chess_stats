@@ -99,4 +99,9 @@ angular.module('ChessStats.factories', []).factory('StatsFetcher', function($htt
     }
   }
   return AnalysisClient;
+}).factory('State', function() {
+  return {
+    username: null,
+    port: 3030
+  }
 });

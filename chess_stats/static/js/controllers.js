@@ -7,14 +7,25 @@ String.prototype.format = function() {
   return formatted;
 };
 
+function NavigationCtrl($scope, State) {
+  $scope.state = State;
+}
+
 function LoginCtrl($scope, $location) {
-  $scope.loginUsername = function() {
-    window.location = "rating_graph/" + $scope.username;
+  $scope.login = function(username) {
+    $location.path("/game_history/" + $scope.username);
   }
 };
 
-function GameHistoryCtrl($scope, HistoryRequestor, $route, $routeParams) {
+function RatingGraphCtrl($scope, $location, $routeParams, State) {
+  $scope.username = $routeParams.username;
+  State.username = $scope.username;
+  console.log($scope.username);
+}
+
+function GameHistoryCtrl($scope, HistoryRequestor, $route, $routeParams, State) {
   $scope.username = $routeParams.username
+  State.username = $scope.username;
   console.log($scope.username);
   $scope.port = 8080;  
   $scope.buildChessDotComGameURL = function (id) {
@@ -33,7 +44,7 @@ function GameHistoryCtrl($scope, HistoryRequestor, $route, $routeParams) {
   $scope.historyRequestor.requestRefreshGames();
 }
 
-function InteractiveAnalysisCtrl($scope, AnalysisClient, $route) {
+function InteractiveAnalysisCtrl($scope, AnalysisClient, $route, State) {
   $scope.init = function(port) {
     $scope.port = port;
     $scope.analysisClient = new AnalysisClient(this.port);
@@ -58,7 +69,9 @@ function InteractiveAnalysisCtrl($scope, AnalysisClient, $route) {
   }
 }
 
-function MoveStatsCtrl($scope, $http, StatsFetcher, ChessGame) {
+function MoveAnalysisCtrl($scope, $http, StatsFetcher, ChessGame, $routeParams, State) {
+  $scope.username = $routeParams.username;
+  State.username = $scope.username;
   $scope.chessGame = new ChessGame();
   $scope.movesStatsList = [];
   $scope.refreshMoveStatsList = function() {

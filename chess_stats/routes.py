@@ -44,7 +44,7 @@ def get_game_history(username):
    )
 
 @app.route("/<path:p>")
-def other(*args, **kwargs):
+def any(*args, **kwargs):
    return render_template('home.html')
 
 
