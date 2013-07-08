@@ -12,17 +12,17 @@ var ChessStats = angular.module(
 ).config(
   ['$routeProvider', '$locationProvider',
    function($routeProvider, $locationProvider) {
-     $locationProvider.html5Mode(true);
-     $routeProvider.when('/game_history/:username', {
+     //$locationProvider.html5Mode(true);
+     $routeProvider.when('/:username/game_history', {
        templateUrl: "/static/js/view_templates/game_history.html",
        controller: GameHistoryCtrl
-     }).when('/rating_graph/:username', {
+     }).when('/:username/rating_graph', {
        templateUrl: "/static/js/view_templates/rating_graph.html",
        controller: RatingGraphCtrl
      }).when('/interactive_analysis/:chess_dot_com_game_id', {
        templateUrl: "/static/js/view_templates/interactive_analysis.html",
        controller: InteractiveAnalysisCtrl
-     }).when('/moves_analysis/:username', {
+     }).when('/:username/moves_analysis', {
        templateUrl: "/static/js/view_templates/moves_analysis.html",
        controller: MoveAnalysisCtrl
      }).when('/', {

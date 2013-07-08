@@ -66,7 +66,7 @@ directives.directive('moveStatsTable', function() {
   }
 });
 
-directives.directive('navigationItem', ['$route', '$location', function($route, $location) {
+directives.directive('navigationItem', ['$route', '$location', 'State', function($route, $location, State) {
   return {
     restrict: "E",
     replace: true,
@@ -79,7 +79,7 @@ directives.directive('navigationItem', ['$route', '$location', function($route, 
       scope.letter = attrs.letter;
       scope.href = attrs.href;
       scope.goToRoute = function() {
-        $location.path(scope.constructUrl());
+        if(State.username) $location.path(scope.constructUrl());
       }
       $(element).hover(function() {
         $(element).children('div').stop(true, true).animate({

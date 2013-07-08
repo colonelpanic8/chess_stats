@@ -13,7 +13,7 @@ function NavigationCtrl($scope, State) {
 
 function LoginCtrl($scope, $location) {
   $scope.login = function(username) {
-    $location.path("/game_history/" + $scope.username);
+    $location.path("/" + $scope.username + "/rating_graph/");
   }
 };
 
