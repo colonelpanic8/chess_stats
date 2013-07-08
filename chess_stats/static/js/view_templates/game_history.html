@@ -1,9 +1,7 @@
 <div>
   <div id="page-header" class="span12 center">
     <h2>
-      <a href="../browse_moves/{{ username }}">{{ username }}</a>
-      / 
-      <span id="page-title"> Game History</span>
+      {{ username }} / <span id="page-title"> Game History</span>
     </h2>
     <p>
       <i class="icon-hand-right"></i>
@@ -37,11 +35,10 @@
         </td>
         <td>{{game.black_elo}}</td>
         <td>
-          <a href={{gameLoader.buildChessDotComGameURL(game.id)}} target="_blank">
+          <a href={{ gameLoader.buildChessDotComGameURL(game.id) }} target="_blank">
             {{game.id}}
           </a>
         </td>
       </tr>
   </div>
 </div>
-
