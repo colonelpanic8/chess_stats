@@ -51,7 +51,6 @@ function InteractiveAnalysisCtrl($scope, AnalysisClient, requestGame, $route, $r
   $scope.game = null;
   if($routeParams) {
     $scope.game = requestGame($routeParams.chessDotComID);
-    debugger;
     _.each($scope.game.moves, function(algebraicMove) {
       $scope.chessGame.makeMoveFromAlgebraic(algebraicMove);
     });
@@ -67,10 +66,16 @@ function InteractiveAnalysisCtrl($scope, AnalysisClient, requestGame, $route, $r
   $scope.continuation = 'N/A';
   $scope.score = 0;
   $scope.handleAnalysis = function(analysisMessage) {
-    $scope.chessGame.makeMoveFromUCI(analysisMessage.analysis.best_move);
+    var move = $scope.chessGame.notationProcessor.parseUCIMove(analysisMessage.analysis.best_move);
+    $scope.squareSet.setNewHighlight(move.sourceIndex, "red");
+    $scope.squareSet.setHighlight(move.destIndex, "blue");
     $scope.score = analysisMessage.analysis.centipawn_score / 100;
     $scope.bestMove = analysisMessage.analysis.best_move;
     $scope.continuation = analysisMessage.analysis.continuation_string.split(" ").slice(0, 3).join(" ");
+
+    $scope.chessGame.addListener(function() {
+      $scope.squareSet.clearHighlights();
+    });
     $scope.$apply();
   }
 

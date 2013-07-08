@@ -8,14 +8,15 @@
       </h2>
       <p>
         <i class="icon-hand-right"></i>
-        Press analyze! to display smartest moves
+        Press analyze!
       </p>
     </div>
 
     <div class="board-table-container">
       <chess-board chess-game="chessGame"
                    square-size="55" light-color="'white'"
-                   dark-color="'#A8A3A8'"></chess-board>
+                   dark-color="'#A8A3A8'"
+                   square-set="squareSet"></chess-board>
 
       <div id="analysis-msg-container" class="span8">
         <p>Score:<span id="bold"> {{ score }}</span></p>
