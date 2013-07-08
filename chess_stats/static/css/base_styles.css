@@ -272,6 +272,7 @@ footer {
 
 #login-background {
     z-index: -1;
+    position: fixed;
     top: 0;
     margin: 0;
     width: 100%;
@@ -516,9 +517,13 @@ svg {
 }
 
 #rating-graph-background { 
+    position: fixed;
     z-index: -1;
     height: 100%;
-    position:absolute;
     width: 100%;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
     background-color: #213540;
 }
