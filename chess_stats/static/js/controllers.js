@@ -23,7 +23,7 @@ function RatingGraphCtrl($scope, $location, $routeParams, State) {
   console.log($scope.username);
 }
 
-function GameHistoryCtrl($scope, HistoryRequestor, $route, $routeParams, State) {
+function GameHistoryCtrl($scope, HistoryRequestor, $route, $routeParams, State, $location) {
   $scope.username = $routeParams.username
   State.username = $scope.username;
   console.log($scope.username);
@@ -37,7 +37,9 @@ function GameHistoryCtrl($scope, HistoryRequestor, $route, $routeParams, State) 
     }), 0, newGame);
     $scope.$apply()
   }
-
+  $scope.goToUsername = function(username) {
+    $location.path("/" + username + "/game_history")
+  }
   $scope.historyRequestor = new HistoryRequestor($scope.username, location.port || "80");
   $scope.historyRequestor.addGameHandler($scope.addGameToGameHistory);
   $scope.historyRequestor.requestRefreshGames();
@@ -85,9 +87,10 @@ function MoveAnalysisCtrl($scope, $http, StatsFetcher, ChessGame, $routeParams, 
   $scope.chessGame.addListener($scope.refreshMoveStatsList);
   $scope.chessGame.addMoveChecker(function(move, isUndo) {
     if(isUndo) return true;
-    var algebraicMoves = _.map($scope.moveStatsList, function(moveStats) {
-      return moveStats.move
-    });
-    return !(algebraicMoves.indexOf(move.algebraic) < 0);
+      var algebraicMoves = _.map($scope.moveStatsList, function(moveStats) {
+        return moveStats.move
+      });
+      return !(algebraicMoves.indexOf(move.algebraic) < 0);
   });
 }
+
