@@ -75,6 +75,12 @@ class GameAnalysisHandler(MessageHandler):
         self.engine_manager = self.get_engine_manager()
         self.engine_manager.next()
 
+    def on_close(self):
+        try:
+            self.engine_manager.next()
+        except Exception:
+            pass
+
     def get_engine_manager(self):
         with self.uci_client:
             yield
