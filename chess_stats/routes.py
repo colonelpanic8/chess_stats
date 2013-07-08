@@ -43,11 +43,6 @@ def get_game_history(username):
        [game.as_dict for game in logic.get_games_for_user(username)]
    )
 
-@app.route("/<path:p>")
-def any(*args, **kwargs):
-   return render_template('home.html')
-
-
 @app.route("/")
 def home(*args, **kwargs):
    return render_template('home.html')
