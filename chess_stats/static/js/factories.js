@@ -41,7 +41,7 @@ angular.module('ChessStats.factories', []).factory('StatsFetcher', function($htt
       var boundHandleGame = this.handleGame.bind(this);
       this.webSocket.onmessage = function(messageEvent) {
         var message = JSON.parse(messageEvent.data)
-        boundHandleGame(message.game);
+        boundHandleGame(message.games);
       }.bind(this);
     },
     requestExistingGames: function() {

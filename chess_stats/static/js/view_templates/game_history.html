@@ -18,7 +18,7 @@
         <th>Black Elo</th>
         <th>Game ID</th>
       </tr>
-      <tr ng-repeat="game in gameHistory" ng:fade="true">
+      <tr ng-repeat="game in gameHistory" ng-animate="{enter: 'game-enter'}">
         <td>{{ game.date_played }}</td>
         <td class="user-column">
           <a ng-click="goToUsername(game.white_username)">

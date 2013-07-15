@@ -103,11 +103,27 @@ class GameAnalysisHandler(MessageHandler):
 
 class GameFetchHandler(MessageHandler):
 
+    def send_game(self, game):
+        try:
+            self.write_as_json({'type': "GAME", 'games': game.as_dict})
+        except IOError:
+            print "Stopped sending games because connection was closed."
+            return
+
     @MessageHandlerRegistrar.register_request_handler_decorator('GET_GAMES')
     def send_games_one_by_one(self, request):
+        scraped_game_ids = set()
         for game in logic.yield_scraped_games(request['username']):
-            try:
-                self.write_as_json({'type': "GAME", 'game': game.as_dict})
-            except IOError:
-                print "Stopped sending games because connection was closed."
-                return
+            scraped_game_ids.add(game.chess_dot_com_id)
+            self.send_game(game)
+
+        games = filter(
+            lambda game: game.chess_dot_com_id not in scraped_game_ids,
+            logic.get_games_for_user(request['username'])
+        )
+        self.write_as_json(
+            {
+                'type': 'GAMES',
+                'games': [game.as_dict for game in games]
+            }
+        )

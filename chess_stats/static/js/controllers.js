@@ -39,7 +39,17 @@ function GameHistoryCtrl($scope, HistoryRequestor, $route, $routeParams, State, 
   }
   $scope.goToUsername = goToUsername;
   $scope.historyRequestor = new HistoryRequestor($scope.username, location.port || "80");
-  $scope.historyRequestor.addGameHandler($scope.addGameToGameHistory);
+  $scope.historyRequestor.addGameHandler(function(data) {
+    if(data instanceof Array) {
+      $scope.gameHistory.push.apply($scope.gameHistory, data);
+      $scope.gameHistory.sort(function(left, right) {
+        return left.chess_dot_com_id < right.chess_dot_com_id;
+      });
+      $scope.$apply();
+      return;
+    }
+    $scope.addGameToGameHistory(data);
+  });
   $scope.historyRequestor.requestRefreshGames();
 }
 

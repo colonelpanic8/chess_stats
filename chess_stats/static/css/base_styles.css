@@ -68,6 +68,18 @@ table {
     font-weight: 600;
 }
 
+.game-enter {
+  -webkit-transition: 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) opacity;
+  -moz-transition: 1s linear opacity;
+  -o-transition: 1s linear opacity;
+  transition: 1s linear opacity;
+  opacity: 0;
+}
+
+.game-enter-active {
+  opacity: 1;
+}
+ 
 .page-animate-container {
     position:relative;
     width: 100%;
