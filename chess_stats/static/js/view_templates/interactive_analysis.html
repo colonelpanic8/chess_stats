@@ -4,30 +4,50 @@
       <h2>
         Interactive Analysis
         / 
-        <span id="page-title"> Analyze Moves</span>
+        <span id="page-title">{{ game.black_username }} vs. {{
+        game.white_username }}</span>
       </h2>
-      <p>
-        <i class="icon-hand-right"></i>
-        Press analyze!
-      </p>
     </div>
 
-    <div class="board-table-container">
-      <chess-board chess-game="chessGame"
-                   square-size="55" light-color="'white'"
-                   dark-color="'#A8A3A8'"
-                   square-set="squareSet"></chess-board>
+    <div>
+      <div id="board-container">
+        <span class="player-info">
+          <a ng-click="goToUsername(game.black_username)">
+            {{ game.black_username }}
+          </a>
+          &#9823; {{ game.black_elo }}
+        </span>
+        <chess-board chess-game="chessGame"
+                     square-size="55" light-color="'white'"
+                     dark-color="'#A8A3A8'"
+                     square-set="squareSet"></chess-board>
+        <span class="player-info">
+          <a ng-click="goToUsername(game.white_username)">
+            {{ game.white_username }}
+          </a>
+          &#9817; {{ game.white_elo }}
+        </span>
+      </div>
 
-      <div id="analysis-msg-container" class="span8">
-        <p>Score:<span id="bold"> {{ score }}</span></p>
-        <p>Best Move:<span id="bold"> {{ bestMove }}</span></p>
-        <p>Next Moves: {{ continuation }}</p>
-        <button ng-click="requestAnalysis()"
-                id="analyze-btn">Analyze</button>
-        <div class="span3">
-          <move-list chess-game="chessGame" class="table table-striped table-bordered blue"
-                     id="moves-table"></move-list>
-          
+      <div id="analysis-msg-container">
+        <div id="analysis-msg-inner">
+          <div id="analysis-msg">
+            <!-- <button ng-click="requestAnalysis()" -->
+            <!--         id="analyze-btn">Analyze</button> -->
+
+            <p>Score:<span id="bold"> {{ score }}</span></p>
+            <p>Best Move:<span id="bold"> {{ bestMove }}</span></p>
+            <p>Next Moves:<span id="bold"> {{ continuation }}</span></p>
+            <input type="checkbox" name="REPLACE"
+            value="REPLACE"> Perform Analysis
+
+          </div>
+          <div id="analysis-moves-table">
+            <move-list chess-game="chessGame" class="table
+                       table-striped yellow"
+                       id="moves-table"></move-list>
+            
+          </div>
         </div>
       </div>
     </div>

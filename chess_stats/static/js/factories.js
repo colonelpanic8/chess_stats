@@ -115,4 +115,8 @@ angular.module('ChessStats.factories', []).factory('StatsFetcher', function($htt
     })
     return JSON.parse(json);
   }
+}).factory('goToUsername', function($location) {
+  return function(username) {
+    $location.path("/" + username + "/game_history")
+  }
 });

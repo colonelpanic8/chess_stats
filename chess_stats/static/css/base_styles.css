@@ -15,6 +15,9 @@ menu, nav, output, ruby, section, summary, time, mark, audio, video {
     text-decoration: none;
 }
 
+a {
+    cursor: pointer;
+}
 
 table {
     margin-top: 0;
@@ -350,26 +353,71 @@ footer {
 
 /* Interactive Analysis */
 
-#analysis-msg-container {
-    margin-left: 50px;
+#board-container {
+    float: left;
+    width: 40%;
 }
 
-#analysis-msg-container p {
-    line-height: 1;
-    font-size: 3em;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
+#board-container .player-info {
+    width: 100%;
+    margin-bottom: 10px;
+    font-weight: 600;
+    display: block;
+    text-align: left;
+}
+
+#analysis-msg-container {
+    box-shadow: 5px 5px 8px #333333;
+    background-color: #ffe000;
+    float: left;
+    margin-top: 32px;
+    margin-left: 2%;
+    width: 57%;
+}
+
+#analysis-msg-inner {
+    padding: 30px;
+}
+
+#analysis-msg {
+    float: left;
+    width: 50%;
     color: black;
-    border-bottom: 2px solid black;
+}
+
+#analysis-msg p {
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+#analysis-msg input[type="checkbox"] {
+    margin: 0;
+}
+
+#analysis-moves-table {
+    width: 49%;
+    overflow: auto;
+    height: 300px;
 }
 
 #analyze-btn {
-    float: left;
-    width: 200px;
     font-size: 2em;
+    width: 80%;
     height: 50px;
+    margin-bottom: 20px;
 }
 
+.yellow tbody>tr:nth-child(odd)>td {
+    background-color: white; 
+}
+
+.yellow tbody>tr:nth-child(even)>td {
+    background-color: rgba(255, 255, 255, .8);
+}
+
+#analysis-moves-table .table td {
+    border-top: none;
+}
 /* Browse Moves Styles */
 
 #page-header a, a:visited {
@@ -385,6 +433,7 @@ footer {
     background-color: white;
 }
 .chess-board {
+    margin-bottom: 10px;
     float: left;
     border: 3px solid black;
     color: black;

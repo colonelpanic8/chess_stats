@@ -23,7 +23,7 @@ function RatingGraphCtrl($scope, $location, $routeParams, State) {
   console.log($scope.username);
 }
 
-function GameHistoryCtrl($scope, HistoryRequestor, $route, $routeParams, State, $location) {
+function GameHistoryCtrl($scope, HistoryRequestor, $route, $routeParams, State, $location, goToUsername) {
   $scope.username = $routeParams.username
   State.username = $scope.username;
   console.log($scope.username);
@@ -37,15 +37,14 @@ function GameHistoryCtrl($scope, HistoryRequestor, $route, $routeParams, State, 
     }), 0, newGame);
     $scope.$apply()
   }
-  $scope.goToUsername = function(username) {
-    $location.path("/" + username + "/game_history")
-  }
+  $scope.goToUsername = goToUsername;
   $scope.historyRequestor = new HistoryRequestor($scope.username, location.port || "80");
   $scope.historyRequestor.addGameHandler($scope.addGameToGameHistory);
   $scope.historyRequestor.requestRefreshGames();
 }
 
-function InteractiveAnalysisCtrl($scope, AnalysisClient, requestGame, $route, $routeParams) {
+function InteractiveAnalysisCtrl($scope, AnalysisClient, requestGame, $route, $routeParams, goToUsername) {
+  $scope.goToUsername = goToUsername;
   $scope.chessGame = new ChessGame();
 
   $scope.game = null;
