@@ -359,10 +359,10 @@ footer {
 }
 
 #board-container .player-info {
+    clear: both;
     width: 100%;
     margin-bottom: 10px;
     font-weight: 600;
-    display: block;
     text-align: left;
 }
 
@@ -433,6 +433,7 @@ footer {
     background-color: white;
 }
 .chess-board {
+    width: 100%;
     margin-bottom: 10px;
     float: left;
     border: 3px solid black;

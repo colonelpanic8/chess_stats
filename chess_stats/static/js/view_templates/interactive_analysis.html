@@ -11,22 +11,22 @@
 
     <div>
       <div id="board-container">
-        <span class="player-info">
+        <div class="player-info">
           <a ng-click="goToUsername(game.black_username)">
             {{ game.black_username }}
           </a>
           &#9823; {{ game.black_elo }}
-        </span>
+        </div>
         <chess-board chess-game="chessGame"
                      square-size="55" light-color="'white'"
                      dark-color="'#A8A3A8'"
                      square-set="squareSet"></chess-board>
-        <span class="player-info">
+        <div class="player-info">
           <a ng-click="goToUsername(game.white_username)">
             {{ game.white_username }}
           </a>
           &#9817; {{ game.white_elo }}
-        </span>
+        </div>
       </div>
 
       <div id="analysis-msg-container">
