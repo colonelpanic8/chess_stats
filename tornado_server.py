@@ -6,16 +6,15 @@ from tornado import options
 from util import parse_host_and_port
 from chess_stats import tornado
 
+
 def start_tornado_server(host, port):
-	http_server = HTTPServer(tornado.application)
-	http_server.listen(port)
-	IOLoop.instance().start()
+    http_server = HTTPServer(tornado.application)
+    http_server.listen(port)
+    IOLoop.instance().start()
+
 
 if __name__ == '__main__':
-	#host, port = parse_host_and_port()
-	tornado.app.port = 3030
-        options.parse_command_line()
-	start_tornado_server("0.0.0.0", 3030)
-        http_server = HTTPServer(tornado.application)
-	http_server.listen(3030)
-	IOLoop.instance().start()
+    host, port = parse_host_and_port()
+    tornado.app.port = port
+    options.parse_command_line()
+    start_tornado_server(host, port)

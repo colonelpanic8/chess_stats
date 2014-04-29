@@ -1,11 +1,13 @@
 from contextlib import closing
-import itertools
+from urllib import urlopen
 import glob
+import itertools
+import logging
 import os
 import re
-from urllib import urlopen
 
 from BeautifulSoup import BeautifulSoup
+
 
 
 class ChessDotComScraper(object):
@@ -28,44 +30,38 @@ class ChessDotComScraper(object):
         GAME_TYPE_ONLINE: "echess"
     }
 
-    def __init__(self, game_type, member, log_function=None):
+    def __init__(self, game_type, member, logger=None):
         self.member = member
         self.game_ids = []
         self.soup = None
         self.game_type = game_type
         self.done = False
-        if log_function is None:
-            def log(string):
-                print string
-            log_function = log
-        self.log_function = log_function
+        self.logger = logger or logging.getLogger(__name__)
+        self.logger.setLevel(10)
 
     def scrape(self, stop_at_id=None):
-        with closing(
-                urlopen(
-                    self.BASE_URL + self.ARCHIVE_BASE_PAGE_FORMAT.format(
-                        member=self.member,
-                        game_type=self.GAME_TYPES_SHOW[self.game_type]
-                    )
-                )
-        ) as html:
+        with closing(urlopen(
+                self.BASE_URL + self.ARCHIVE_BASE_PAGE_FORMAT.format(
+                    member=self.member,
+                    game_type=self.GAME_TYPES_SHOW[self.game_type]))) as html:
             self.soup = BeautifulSoup(html.read())
             while not self.done:
                 for game_id in self.parse_page(stop_at_id=stop_at_id):
                     yield game_id
-                    self.done = not self.find_next_page()
+                self.done = not self.find_next_page()
 
     def parse_page(self, stop_at_id=None):
         """Parse a single page of a game archive from chess.com. Returns true if
         stop_at_id was encountered."""
         for row in itertools.count():
+            self.logger.debug("Getting row {0}".format(row))
             game_id = self.get_game_id(row)
             if game_id is None:
-                self.log_function("No more games found on page.")
-                raise StopIteration()
+                self.logger.debug("No more games found on page.")
+                break
             elif game_id == stop_at_id:
                 self.done = True
-                raise StopIteration()
+                break
             else:
                 self.game_ids.append(game_id)
                 yield game_id
@@ -74,7 +70,6 @@ class ChessDotComScraper(object):
         """Find the next page from the html of the current page. Returns True on
         success and False on failure.
         """
-
         pagination_find = self.soup.find(
             name="ul",
             attrs={"class" : "pagination"}
@@ -83,13 +78,19 @@ class ChessDotComScraper(object):
             links = pagination_find.findAll(name = "a")
             for link in links:
                 if re.match('^Next', link.contents[0]):
+                    self.logger.debug(
+                        'Now at {new_url}.'.format(new_url=link['href'])
+                    )
                     with closing(urlopen(self.BASE_URL + link['href'])) as html:
+                        self.logger.debug(
+                            'Now at {new_url}.'.format(new_url=link['href'])
+                        )
                         self.soup = BeautifulSoup(html.read())
                         return True
-                        self.log_function('Could not find a "Next" link.')
+                        self.logger.debug('Could not find a "Next" link.')
                         return False
         else:
-            self.log_function("Could not find pagination.")
+            self.logger.debug("Could not find pagination.")
             return False
 
     def get_game_id(self, row):
@@ -114,7 +115,7 @@ class ChessDotComScraper(object):
         if match:
             game_id = int(match.group(1))
         else:
-            self.log_function("Could not match game link string")
+            self.logger.debug("Could not match game link string")
             return None
 
         return game_id

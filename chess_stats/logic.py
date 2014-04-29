@@ -30,10 +30,8 @@ def fetch_games_for_user(username, stop_at_latest_id=True, stop_at_id=None):
 
     scraper = ChessDotComScraper(ChessDotComScraper.GAME_TYPE_LIVE, username)
 
-    games = [
-        ChessDotComGameETL(game_id).execute()
-        for game_id in scraper.scrape(stop_at_id=stop_at_id)
-    ]
+    games = [ChessDotComGameETL(game_id).execute()
+             for game_id in scraper.scrape(stop_at_id=stop_at_id)]
 
     models.db.session.add_all(games)
     models.db.session.commit()
