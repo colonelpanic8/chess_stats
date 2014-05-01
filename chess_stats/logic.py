@@ -1,10 +1,8 @@
 from __future__ import division
 import os
 import re
-import simplejson
 
 from . import models
-from . import game_analyzer
 from .chess_dot_com_etl import ChessDotComGameETL
 from .chess_dot_com_etl import ChessDotComGameFileETL
 from .legacy_etl import LegacyGameETL
