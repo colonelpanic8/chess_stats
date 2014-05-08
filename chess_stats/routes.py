@@ -19,15 +19,17 @@ def get_game_by_chess_dot_com_id(chess_dot_com_id):
 def get_game_stats():
    username = request.args.get('username', None)
    white = request.args.get('color', 'white').lower() == 'white'
-   moves = simplejson.loads(request.args.get('moves', '[]'))
+   uci_moves_string = request.args.get('moves', '')
    if username:
       move_stats = logic.build_sorted_game_stats_for_moves_by_username(
          username,
-         moves,
+         uci_moves_string,
          white=white
       )
    else:
-      move_stats = logic.build_sorted_game_stats_for_moves_for_all_games(moves)
+      move_stats = logic.build_sorted_game_stats_for_moves_for_all_games(
+          uci_moves_string
+        )
    return simplejson.dumps(move_stats)
 
 

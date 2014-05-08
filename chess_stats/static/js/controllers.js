@@ -114,7 +114,7 @@ function MoveAnalysisCtrl($scope, $http, StatsFetcher, ChessGame, $routeParams, 
       var algebraicMoves = _.map($scope.moveStatsList, function(moveStats) {
         return moveStats.move
       });
-      return !(algebraicMoves.indexOf(move.algebraic) < 0);
+      return !(algebraicMoves.indexOf(move.uci) < 0);
   });
 }
 

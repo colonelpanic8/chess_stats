@@ -3,6 +3,8 @@ from datetime import datetime
 from urllib import urlopen
 import re
 
+from ChessUtil.playable_game import PlayableChessGame
+
 from . import common
 from . import etl
 from . import models
@@ -73,6 +75,14 @@ class MovesTransformer(etl.Transformer):
             moves.append(move_match.group(1))
 
         return moves
+
+
+class UCITransformer(etl.Transformer):
+
+    def transform(self, algebraic_moves):
+        game = PlayableChessGame()
+        return [game.make_move_from_algebraic_and_return_uci(move)
+                for move in algebraic_moves]
 
 
 class MetaDataTransformer(etl.Transformer):
@@ -154,7 +164,7 @@ class ChessDotComGameETL(etl.ETL):
     extractor = ChessDotComGameExtractor()
 
     transformers = {
-        'moves': MovesTransformer(),
+        'moves': etl.ComposeTransformer(MovesTransformer(), UCITransformer()),
         'white_user_id': ChessDotComUserTransformer('White'),
         'black_user_id': ChessDotComUserTransformer('Black'),
         'white_elo': IntegerTransformer('WhiteElo'),
@@ -173,7 +183,8 @@ class ChessDotComGameETL(etl.ETL):
     def execute(self):
         try:
             game = models.ChessDotComGame.query.filter(
-                models.ChessDotComGame.chess_dot_com_id == self.transformed['chess_dot_com_id']
+                models.ChessDotComGame.chess_dot_com_id ==
+                self.transformed['chess_dot_com_id']
             ).one()
         except models.NoResultFound:
             # The game doesn't exist so we need to load it.

@@ -57,7 +57,6 @@ class ChessGameAnalyzer(object):
             )
 
     def analyze_move(self):
-        analysis_node = models.AnalysisNode.find_from_uci_moves_list(self.manager.uci_moves)
         if analysis_node: return analysis_node
         self.uci_client.set_position_from_moves_list(self.manager.uci_moves)
         analysis_info = self.uci_client.evaluate_position()

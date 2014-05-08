@@ -2,6 +2,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 import simplejson
 from sqlalchemy.types import INTEGER, TypeDecorator, VARCHAR
 from sqlalchemy.orm.exc import NoResultFound
+from ChessUtil.playable_game import PlayableChessGame, parse_long_uci_string
 
 from . import app
 from . import common
@@ -9,6 +10,27 @@ from . import common
 
 db = SQLAlchemy(app)
 db.Model.itercolumns = classmethod(lambda cls: cls.__table__.columns._data.iterkeys())
+
+
+class UCIBackedMovesType(TypeDecorator):
+
+    # Type that exposes Move objects instead of the underlying uci move string
+    # Was far too slow in practice
+
+    impl = VARCHAR
+
+    def process_result_value(self, uci_moves_string, dialect):
+        if isinstance(uci_moves_string, basestring):
+            playable_game = PlayableChessGame()
+            return playable_game.make_moves_from_long_uci_string(uci_moves_string)
+        return uci_moves_string
+
+    def process_bind_param(self, moves, dialect):
+        if isinstance(moves, basestring):
+            return moves
+        if isinstance(moves[0], basestring):
+            return ''.join(moves)
+        return ''.join(move.uci for move in moves)
 
 
 class JSONType(TypeDecorator):
@@ -106,7 +128,7 @@ class ChessDotComGame(db.Model):
     black_elo = db.Column(db.Integer)
     black_user_id = db.Column(db.Integer, db.ForeignKey(ChessDotComUser.id))
 
-    moves = db.Column(JSONType(1500))
+    moves = db.Column(db.String)
     result = db.Column(
         db.Enum(
             common.WHITE_VICTORY,
@@ -115,6 +137,14 @@ class ChessDotComGame(db.Model):
             name='Result'
         )
     )
+
+    @classmethod
+    def username_games_filter(cls, username):
+        cls.ChessDotComUser.username == username
+
+    @classmethod
+    def uci_moves_string_filter(cls, uci_moves_string):
+        return cls.moves.like('{0}%'.format(uci_moves_string))
 
     def __unicode__(self):
         return ' '.join(
@@ -127,6 +157,14 @@ class ChessDotComGame(db.Model):
                 str(self.chess_dot_com_id),
             ]
         )
+
+    @property
+    def moves_list(self):
+        return PlayableChessGame().make_moves_from_long_uci_string(self.moves)
+
+    @property
+    def uci_moves_list(self):
+        return parse_long_uci_string(self.moves)
 
     @property
     def result_as_int(self):
@@ -146,6 +184,7 @@ class ChessDotComGame(db.Model):
 
     @property
     def as_dict(self):
+        print self.moves
         return {
             'id': self.chess_dot_com_id,
             'date_played': str(self.date_played),
@@ -153,7 +192,7 @@ class ChessDotComGame(db.Model):
             'black_username': self.black_username,
             'white_elo': self.white_elo,
             'black_elo': self.black_elo,
-            'moves': self.moves,
+            'moves': self.uci_moves_list,
             'result': self.result
         }
 
@@ -170,4 +209,6 @@ class ChessDotComGame(db.Model):
 
 class GameAnalysis(db.Model):
 
+    
+    
     id = db.Column(db.Integer, primary_key=True)

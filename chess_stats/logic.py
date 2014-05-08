@@ -2,6 +2,8 @@ from __future__ import division
 import os
 import re
 
+from ChessUtil.playable_game import parse_long_uci_string
+
 from . import models
 from .chess_dot_com_etl import ChessDotComGameETL
 from .chess_dot_com_etl import ChessDotComGameFileETL
@@ -79,26 +81,16 @@ def load_games_from_legacy_xml(filename, username):
     return games
 
 
-def filter_games_by_moves(games, moves):
-    return [game for game in games if game.matches_moves(moves)]
-
-
-def build_next_move_map_for_moves(games, moves):
-    """Given a move list `moves` and a set of games `games`, construct a mapping
-    from single moves following the moves from move list and games that
-    feature that move.
+def build_next_move_map_at_move_index(games, move_index):
+    """Given a move index `move_index` and a set of games `games`,
+    construct a mapping from single moves at the move index to games
+    featuring that move.
     """
-    games = filter_games_by_moves(games, moves)
     moves_map = {}
-    move_number = len(moves)
     for game in games:
-        if not len(game.moves) > move_number:
+        if len(game.uci_moves_list) <= move_index:
             continue
-        games_with_same_next_move = moves_map.setdefault(
-            game.moves[move_number],
-            []
-        )
-        games_with_same_next_move.append(game)
+        moves_map.setdefault(game.uci_moves_list[move_index], []).append(game)
 
     return moves_map
 
@@ -145,13 +137,13 @@ def build_stats_for_games_and_add_move(games, move):
     return stats
 
 
-def build_sorted_game_stats_for_moves(games, moves):
+def build_sorted_game_stats_at_move_index(games, move_index):
     return sorted(
         (
             build_stats_for_games_and_add_move(game_list, move)
-            for move, game_list in build_next_move_map_for_moves(
+            for move, game_list in build_next_move_map_at_move_index(
                 games,
-                moves
+                move_index
             ).iteritems()
         ),
         key=lambda item: item['game_count'],
@@ -162,14 +154,15 @@ def build_sorted_game_stats_for_moves(games, moves):
 def build_sorted_game_stats_for_moves_by_username(username, moves, white=True):
     user = models.ChessDotComUser.find_user_by_username(username)
     games = user.white_games if white else user.black_games
-    return build_sorted_game_stats_for_moves(
+    games = games.filter(models.ChessDotComGame.uci_moves_string_filter(moves))
+    return build_sorted_game_stats_at_move_index(
         games.all(),
-        moves
+        len(parse_long_uci_string(moves))
     )
 
 
 def build_sorted_game_stats_for_moves_for_all_games(moves):
-    return build_sorted_game_stats_for_moves(
+    return build_sorted_game_stats_at_move_index(
         models.ChessDotComGame.query.all(),
-        moves
+        len(parse_long_uci_string(moves))
     )

@@ -55,6 +55,16 @@ class ETL(object):
         return self.loader.load(self.transformed)
 
 
+class ComposeTransformer(Transformer):
+
+    def __init__(self, *transformers):
+        self.transformers = transformers
+
+    def transform(self, incoming):
+        return reduce(lambda incoming, transformer: transformer.transform(incoming),
+                      self.transformers, incoming)
+
+
 class ModelLoader(Loader):
 
     def __init__(self, model_class):

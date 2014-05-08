@@ -10,7 +10,9 @@ angular.module('ChessStats.factories', []).factory('StatsFetcher', function($htt
       'method': 'GET',
       'url': '/get_stats',
       'params': {
-        'moves': JSON.stringify(_.map(moves, function(move) { return move.algebraic })),
+        'moves': _.reduce(moves, function(uciString, move) {
+          return uciString.concat(move.uci);
+        }, ''),
         'username': this.username,
         'color': this.color
       }
