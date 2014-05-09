@@ -3,7 +3,7 @@ from datetime import datetime
 from urllib import urlopen
 import re
 
-from ChessUtil.playable_game import PlayableChessGame
+from chess_game import ChessGame
 
 from . import common
 from . import etl
@@ -80,7 +80,7 @@ class MovesTransformer(etl.Transformer):
 class UCITransformer(etl.Transformer):
 
     def transform(self, algebraic_moves):
-        game = PlayableChessGame()
+        game = ChessGame()
         return ''.join(game.make_move_from_algebraic_and_return_uci(move)
                        for move in algebraic_moves)
 

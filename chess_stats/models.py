@@ -2,7 +2,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 import simplejson
 from sqlalchemy.types import INTEGER, TypeDecorator, VARCHAR
 from sqlalchemy.orm.exc import NoResultFound
-from ChessUtil.playable_game import PlayableChessGame, parse_long_uci_string
+from chess_game import ChessGame, parse_long_uci_string
 
 from . import app
 from . import common
@@ -21,7 +21,7 @@ class UCIBackedMovesType(TypeDecorator):
 
     def process_result_value(self, uci_moves_string, dialect):
         if isinstance(uci_moves_string, basestring):
-            playable_game = PlayableChessGame()
+            playable_game = ChessGame()
             return playable_game.make_moves_from_long_uci_string(uci_moves_string)
         return uci_moves_string
 
@@ -160,7 +160,7 @@ class ChessDotComGame(db.Model):
 
     @property
     def moves_list(self):
-        return PlayableChessGame().make_moves_from_long_uci_string(self.moves)
+        return ChessGame().make_moves_from_long_uci_string(self.moves)
 
     @property
     def uci_moves_list(self):
@@ -184,7 +184,6 @@ class ChessDotComGame(db.Model):
 
     @property
     def as_dict(self):
-        print self.moves
         return {
             'id': self.chess_dot_com_id,
             'date_played': str(self.date_played),
@@ -205,10 +204,3 @@ class ChessDotComGame(db.Model):
             if game_move != match_move:
                 return False
         return True
-
-
-class GameAnalysis(db.Model):
-
-    
-    
-    id = db.Column(db.Integer, primary_key=True)

@@ -2,7 +2,7 @@ from __future__ import division
 import os
 import re
 
-from ChessUtil.playable_game import parse_long_uci_string
+from chess_game import parse_long_uci_string
 
 from . import models
 from .chess_dot_com_etl import ChessDotComGameETL

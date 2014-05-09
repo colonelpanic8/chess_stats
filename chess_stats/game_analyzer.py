@@ -1,6 +1,6 @@
 import math
 
-from ChessUtil.playable_game import PlayableChessGame
+from chess_game import ChessGame
 from .uci_client import StockfishClient
 from . import models
 
@@ -9,7 +9,7 @@ class ChessGameManager(object):
 
     def __init__(self, game):
         self.game_model = game
-        self.playable_game = PlayableChessGame()
+        self.playable_game = ChessGame()
         self.move_iterator = iter(self.game_model.moves)
         self.uci_moves = []
 

@@ -2,10 +2,14 @@ BeautifulSoup==3.2.1
 Flask==0.9
 Flask-SQLAlchemy==0.16
 Jinja2==2.6
+PyYAML==3.11
 SQLAlchemy==0.8.0b2
 Werkzeug==0.8.3
+-e git://github.com/IvanMalison/chessutil.git@e18aa33ee852b0e3f4e0b470818fd8e6b62f5e45#egg=chessutil-master
 ipdb==0.7
 ipython==0.13.1
+mock==1.0.1
+readline==6.2.4.1
 requests==2.2.1
 simplejson==3.0.8
 tornado==2.4.1
