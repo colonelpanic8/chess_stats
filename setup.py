@@ -7,7 +7,7 @@ setup(
     author_email='IvanMalison@gmail.com',
     packages=['chess_stats'],
     license='LICENSE.txt',
-    description='Useful towel-related stuff.',
+    description='Website that interfaces with chess.com to provide satatistics.',
     long_description=open('README.txt').read(),
     install_requires=[],
 )
