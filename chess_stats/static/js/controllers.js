@@ -20,13 +20,11 @@ function LoginCtrl($scope, $location) {
 function RatingGraphCtrl($scope, $location, $routeParams, State) {
   $scope.username = $routeParams.username;
   State.username = $scope.username;
-  console.log($scope.username);
 }
 
 function GameHistoryCtrl($scope, HistoryRequestor, $route, $routeParams, State, $location, goToUsername) {
   $scope.username = $routeParams.username
   State.username = $scope.username;
-  console.log($scope.username);
   $scope.goToAnalysisView = function (chessDotComID) {
     $location.path("/interactive_analysis/{0}".format(chessDotComID))
   }

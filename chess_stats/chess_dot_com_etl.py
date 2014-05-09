@@ -81,8 +81,8 @@ class UCITransformer(etl.Transformer):
 
     def transform(self, algebraic_moves):
         game = PlayableChessGame()
-        return [game.make_move_from_algebraic_and_return_uci(move)
-                for move in algebraic_moves]
+        return ''.join(game.make_move_from_algebraic_and_return_uci(move)
+                       for move in algebraic_moves)
 
 
 class MetaDataTransformer(etl.Transformer):

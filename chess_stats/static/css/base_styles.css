@@ -444,12 +444,25 @@ footer {
     color: black;
     background-color: white;
 }
+
 .chess-board {
     width: 100%;
     margin-bottom: 10px;
     float: left;
     border: 3px solid black;
     color: black;
+}
+
+.chess-board .light-square {
+    background-color: white;
+}
+
+.chess-board .dark-square {
+    background-color: #A8A3A8;
+}
+
+.chess-board .legal-move {
+    background-color: black;
 }
 
 .containing-table {
@@ -493,7 +506,6 @@ table .containing-table a, a:visited {
 .blue tbody>tr:nth-child(odd)>td {
     background-color: #CDFBFF;
 } 
-
 
 .blue, .blue td, .blue th {
     border: 1px solid #A4EFFA;

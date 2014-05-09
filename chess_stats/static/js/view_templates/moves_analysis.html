@@ -17,9 +17,7 @@
 
   <div class="board-table-container">
     <chess-board chess-game="chessGame"
-                 square-size="55" light-color="'white'"
-                 dark-color="'#A8A3A8'"
-                 square-set="squareSet"></chess-board>
+                 square-size="55" css-class="chess-board"></chess-board>
     <table class="containing-table">
       <tr>
         <td class="span2">
@@ -37,7 +35,7 @@
               <td>
                 <span id="bold">
                   <a ng-click="chessGame.makeMoveFromUCI(moveStats.move)">
-                    {{ moveStats.move }}
+                    {{ chessGame.buildUCIMove(moveStats.move).algebraic }}
                   </a>
                 </span>
               </td>
