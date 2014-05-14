@@ -58,8 +58,8 @@ function InteractiveAnalysisCtrl($scope, AnalysisClient, requestGame, $route, $r
   $scope.game = null;
   if($routeParams.chessDotComID) {
     $scope.game = requestGame($routeParams.chessDotComID);
-    _.each($scope.game.moves, function(algebraicMove) {
-      $scope.chessGame.makeMoveFromAlgebraic(algebraicMove);
+    _.each($scope.game.moves, function(uciMove) {
+      $scope.chessGame.makeMoveFromUCI(uciMove);
     });
   }
   
