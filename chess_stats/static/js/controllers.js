@@ -116,6 +116,12 @@ function MoveAnalysisCtrl($scope, $http, StatsFetcher, ChessGame, $routeParams, 
       $scope.moveStatsList = moveStatsList;
     }
   );
+  $scope.swapColor = function() {
+    if($scope.chessGame.chessBoard.moves.length > 0)
+      $scope.chessGame.undoToMove($scope.chessGame.chessBoard.moves[0]);
+    $scope.statsFetcher.color =  $scope.statsFetcher.color == 'white' ? 'black' : 'white';
+    $scope.refreshMoveStatsList();
+  }
   $scope.refreshMoveStatsList();
   $scope.chessGame.addListener($scope.refreshMoveStatsList);
   $scope.chessGame.addMoveChecker(function(move, isUndo) {
