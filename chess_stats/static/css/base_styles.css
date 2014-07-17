@@ -548,7 +548,18 @@ svg {
 
 .graph-line {
     stroke-width: 1.5px;
+}
+
+.average {
     stroke: #FF7300;
+}
+
+.bod {
+    stroke: #FFFFFF;
+}
+
+.eod{
+    stroke: #000000;
 }
 
 .graph-circle {

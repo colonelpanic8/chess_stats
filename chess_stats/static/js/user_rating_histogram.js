@@ -5,25 +5,42 @@ function buildDate(date) {
 
 function averageEloByDate(userRatingElements) {
   var aggregateElo = 0;
+  var maxId = 0;
+  var maxIdElo = null;
+  var minID = 0;
+  var minIdElo = null;
   var numberOfElosInDay = 0;
   var previousDate = userRatingElements[0].date;
   var averageRatingByDate = [];
   _.each(userRatingElements, function(ratingElement) {
     if (ratingElement.date.valueOf() === previousDate.valueOf()) {
+      if (ratingElement.chess_dot_com_id > maxId) {
+        maxId = ratingElement.chess_dot_com_id;
+        maxIdElo = ratingElement.elo;
+      }
+      if (ratingElement.chess_dot_com_id < maxId) {
+        minId = ratingElement.chess_dot_com_id;
+        minIdElo = ratingElement.elo;
+      }
       numberOfElosInDay += 1;
       aggregateElo = aggregateElo + ratingElement.elo;
     } else {
-      averageRatingByDate.push({elo: aggregateElo/numberOfElosInDay, date: previousDate})
+      averageRatingByDate.push({averageElo: aggregateElo/numberOfElosInDay, date: previousDate, eodElo: maxIdElo, bodElo: minIdElo})
+      minId = ratingElement.chess_dot_com_id;
+      minIdElo = ratingElement.elo;
+      maxId = ratingElement.chess_dot_com_id;
+      maxIdElo = ratingElement.elo;
       aggregateElo = ratingElement.elo;
       previousDate = ratingElement.date;
       numberOfElosInDay = 1;
     }
   });
   if(numberOfElosInDay > 0) averageRatingByDate.push(
-    {elo: aggregateElo/numberOfElosInDay, date: previousDate}
+    {averageElo: aggregateElo/numberOfElosInDay, date: previousDate, eodElo: maxIdElo, bodElo:minIdElo}
   );
   return averageRatingByDate;
 }
+
 
 // define dimensions of graph
 var m = [80, 10, 80, 100]; // margins
@@ -55,12 +72,26 @@ angular.module('ChessStats.directives').directive('userRatingHistogram', functio
         x.tickFormat(d3.time.format("%Y-%m-%d"));
         var y = d3.scale.linear().domain([minY, maxY]).range([h, 0]);
         
-        var line = d3.svg.line()
+        var averageLine = d3.svg.line()
             .x(function(ratingElement, index) {
               return x(ratingElement.date); 
             })
             .y(function(ratingElement) { 
-              return y(ratingElement.elo);
+              return y(ratingElement.averageElo);
+            })
+        var eodLine = d3.svg.line()
+            .x(function(ratingElement, index) {
+              return x(ratingElement.date); 
+            })
+            .y(function(ratingElement) { 
+              return y(ratingElement.eodElo);
+            })
+        var bodLine = d3.svg.line()
+            .x(function(ratingElement, index) {
+              return x(ratingElement.date); 
+            })
+            .y(function(ratingElement) { 
+              return y(ratingElement.bodElo);
             })
 
         // Add an SVG element with the desired dimensions and
@@ -108,7 +139,9 @@ angular.module('ChessStats.directives').directive('userRatingHistogram', functio
             .attr("class", "tooltip")               
             .style("opacity", 0);
 
-        graph.append("svg:path").attr("d", line(averagedEloByDate)).attr("class", "graph-line");
+        graph.append("svg:path").attr("d", averageLine(averagedEloByDate)).attr("class", "graph-line").attr("class", "average");
+        graph.append("svg:path").attr("d", eodLine(averagedEloByDate)).attr("class", "graph-line").attr("class", "eod");
+        graph.append("svg:path").attr("d", bodLine(averagedEloByDate)).attr("class", "graph-line").attr("class", "bod");
         graph.selectAll("circle")
           .data(userRatingElements)
           .enter()
