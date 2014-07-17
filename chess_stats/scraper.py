@@ -1,7 +1,5 @@
-import glob
 import itertools
 import logging
-import os
 import re
 
 from BeautifulSoup import BeautifulSoup
@@ -65,12 +63,24 @@ class ChessDotComPageScraper(object):
 
         return game_id
 
+    @staticmethod
+    def intable(value):
+        try:
+            int(value)
+        except:
+            return False
+        else:
+            return True
+
     @property
     def max_page_number(self):
         pagination_find = self.soup.find(name="ul", attrs={"class" : "pagination"})
         if pagination_find:
-            return int([item.text
-                        for item in pagination_find.findAll(name="a")][-2])
+            page_numbers = [int(item.text)
+                            for item in pagination_find.findAll(name="a") if self.intable(item.text)]
+            if page_numbers:
+                return max(page_numbers)
+            return 0
         else:
             self.logger.debug("Could not find pagination.")
             self.logger.debug("Max pagination was.")
@@ -124,49 +134,3 @@ class ChessDotComScraper(object):
             self.logger.debug("Non 200 response from chess.com.")
             raise Exception
         return request.text
-
-
-class ChessComPGNFileFinder(object):
-
-    filename_matcher = re.compile('.*\.pgn')
-
-    def get_matching_files(self, directory='.'):
-        for directory_path, directory_names, filenames in os.walk(directory):
-            for filename in filenames:
-                if self.filename_matcher(filename):
-                    yield os.path.join(directory_path, filename)
-
-    def load(self, load_path=None, multi_game_pgns=False):
-        if not load_path:
-            load_path = self.DEFAULT_LOAD_PATH
-            if not os.path.exists(load_path):
-                raise ValueError("load_path does not exist")
-
-        filenames = glob.glob(os.path.join(load_path, '*'))
-        filenames = (filename for filename in filenames if re.match(".*\.pgn", filename))
-
-        for filename in filenames:
-            with open(filename) as pgn_file:
-                yield pgn_file.read()
-
-def find_max_pagination(self, soup):
-    """Find the next page from the html of the current page. Returns True on
-    success and False on failure.
-    """
-    pagination_find = soup.find(
-        name="ul",
-        attrs={"class" : "pagination"}
-    )
-    if pagination_find:
-        links = pagination_find.findAll(name = "a")
-        for link in links:
-            if re.match('^Next', link.contents[0]):
-                self.logger.debug(
-                    'Now at {new_url}.'.format(new_url=link['href'])
-                )
-                return link['href']
-        self.logger.warning("Could not find a next link.")
-        return None
-    else:
-        self.logger.debug("Could not find pagination.")
-        return False

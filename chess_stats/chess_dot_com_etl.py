@@ -80,6 +80,7 @@ class MovesTransformer(etl.Transformer):
 class UCITransformer(etl.Transformer):
 
     def transform(self, algebraic_moves):
+        print algebraic_moves
         game = ChessGame()
         return ''.join(game.make_move_from_algebraic_and_return_uci(move)
                        for move in algebraic_moves)

@@ -30,11 +30,7 @@ def fetch_games_for_user(username, stop_at_latest_id=True, stop_at_id=None):
 
     scraper = ChessDotComScraper(ChessDotComScraper.GAME_TYPE_LIVE, username)
 
-    games = [ChessDotComGameETL(game_id).execute()
-             for game_id in scraper.scrape(stop_at_id=stop_at_id)]
-
-    models.db.session.add_all(games)
-    models.db.session.commit()
+    games = save_games_by_ids(scraper.scrape(stop_at_id=stop_at_id))
 
     user = models.ChessDotComUser.find_user_by_username(username)
     if games:
@@ -44,6 +40,13 @@ def fetch_games_for_user(username, stop_at_latest_id=True, stop_at_id=None):
         ).chess_dot_com_id
 
     return user.all_games.all()
+
+
+def save_games_by_ids(game_ids):
+    games = [ChessDotComGameETL(game_id).execute() for game_id in game_ids]
+    models.db.session.add_all(games)
+    models.db.session.commit()
+    return games
 
 
 def yield_scraped_games(username):

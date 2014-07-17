@@ -1,7 +1,8 @@
 from flask.ext.sqlalchemy import SQLAlchemy
 import simplejson
-from sqlalchemy.types import INTEGER, TypeDecorator, VARCHAR
+from sqlalchemy.types import TypeDecorator, VARCHAR
 from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.orm import composite
 from chess_game import ChessGame, parse_long_uci_string
 
 from . import app
@@ -48,30 +49,6 @@ class JSONType(TypeDecorator):
         return value
 
 
-class AnalysisScore(object):
-
-    def __init__(self, value, is_mate_in_n=False):
-        self.value = value
-        self.is_mate_in_n = is_mate_in_n
-
-
-class AnalysisScoreType(TypeDecorator):
-
-    impl = INTEGER
-
-    def process_bind_param(self, value, dialect):
-        if value is not None:
-            value = value.score * 2
-            if value.is_mate_in_n:
-                value += 1
-        return value
-
-    def process_result_value(self, value, dialect):
-        if value is not None:
-            value = AnalysisScore(value / 2, bool(value & 1))
-        return value
-
-
 class ChessDotComUser(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
@@ -114,6 +91,32 @@ class ChessDotComUser(db.Model):
     def all_games(self):
         return self.white_games.union(self.black_games)
 
+    def __repr__(self):
+        return '<ChessDotComUser(\'{0}\')'.format(self.username)
+
+
+class TimeControl(object):
+
+    def __init__(self, starting_time, move_time_bonus, *args):
+        self.starting_time = starting_time
+        self.move_time_bonus = move_time_bonus
+
+    @property
+    def estimated_game_minutes(self):
+        return self.starting_time + (float(40 * self.move_bonus)/60)
+
+    def __composite_values__(self):
+        self.starting_time, self.move_time_bonus, self.time_control_type
+
+    @property
+    def time_control_type(self):
+        if self.estimated_game_minutes <= 3:
+            return 'bullet'
+        elif self.estimated_game_minutes < 15:
+            return 'blitz'
+        else:
+            return 'standard'
+
 
 class ChessDotComGame(db.Model):
 
@@ -137,6 +140,13 @@ class ChessDotComGame(db.Model):
             name='Result'
         )
     )
+
+    starting_time = db.Column(db.Integer)
+    move_time_bonus = db.Column(db.Integer)
+    time_control_type = db.Column(db.Enum('blitz', 'bullet', 'standard'))
+
+    time_control = composite(TimeControl, starting_time,
+                             move_time_bonus, time_control_type)
 
     @classmethod
     def username_games_filter(cls, username):
@@ -204,3 +214,9 @@ class ChessDotComGame(db.Model):
             if game_move != match_move:
                 return False
         return True
+
+    def __repr__(self):
+        return '<ChessDotComGame(\'{0}\' v \'{1}\')'.format(
+            self.white_username,
+            self.black_username
+        )

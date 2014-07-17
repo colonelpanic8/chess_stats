@@ -18,9 +18,7 @@
           &#9823; {{ game.black_elo }}
         </div>
         <chess-board chess-game="chessGame"
-                     square-size="55" light-color="'white'"
-                     dark-color="'#A8A3A8'"
-                     square-set="squareSet"></chess-board>
+                     square-size="55"></chess-board>
         <div class="player-info">
           <a ng-click="goToUsername(game.white_username)">
             {{ game.white_username }}
@@ -38,8 +36,7 @@
             <p>Score:<span id="bold"> {{ score }}</span></p>
             <p>Best Move:<span id="bold"> {{ bestMove }}</span></p>
             <p>Next Moves:<span id="bold"> {{ continuation }}</span></p>
-            <input type="checkbox" name="REPLACE"
-            value="REPLACE"> Perform Analysis
+            <input type="checkbox" ng-model="performAnalysis" ng-change="update()"> Perform Analysis
 
           </div>
           <div id="analysis-moves-table">

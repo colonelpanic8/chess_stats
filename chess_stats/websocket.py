@@ -2,7 +2,6 @@ from __future__ import absolute_import
 import inspect
 import functools
 import time
-import threading
 
 import simplejson
 from tornado import websocket
@@ -108,14 +107,17 @@ class GameFetchHandler(MessageHandler):
             self.write_as_json({'type': "GAME", 'games': game.as_dict})
         except IOError:
             print "Stopped sending games because connection was closed."
-            return
+            return False
+        else:
+            return True
 
     @MessageHandlerRegistrar.register_request_handler_decorator('GET_GAMES')
     def send_games_one_by_one(self, request):
         scraped_game_ids = set()
         for game in logic.yield_scraped_games(request['username']):
             scraped_game_ids.add(game.chess_dot_com_id)
-            self.send_game(game)
+            if not self.send_game(game):
+                break
 
         games = filter(
             lambda game: game.chess_dot_com_id not in scraped_game_ids,

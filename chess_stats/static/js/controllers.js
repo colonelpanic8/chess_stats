@@ -62,6 +62,17 @@ function InteractiveAnalysisCtrl($scope, AnalysisClient, requestGame, $route, $r
       $scope.chessGame.makeMoveFromUCI(uciMove);
     });
   }
+
+  $scope.update = function() {
+    if($scope.performAnalysis) {
+      console.log("Doing stuff.");
+      $scope.requestAnalysis()
+    } else {
+      $scope.bestMove = 'N/A';
+      $scope.continuation = 'N/A';
+      $scope.score = 0;
+    }
+  }
   
   $scope.requestAnalysis = function() {
     $scope.analysisClient.setPosition(_.map(this.chessGame.movesList, function(move) {
@@ -74,14 +85,14 @@ function InteractiveAnalysisCtrl($scope, AnalysisClient, requestGame, $route, $r
   $scope.score = 0;
   $scope.handleAnalysis = function(analysisMessage) {
     var move = $scope.chessGame.notationProcessor.parseUCIMove(analysisMessage.analysis.best_move);
-    $scope.squareSet.setNewHighlight(move.sourceIndex, "red");
-    $scope.squareSet.setHighlight(move.destIndex, "blue");
+    // $scope.squareSet.setNewHighlight(move.sourceIndex, "red");
+    // $scope.squareSet.setHighlight(move.destIndex, "blue");
     $scope.score = analysisMessage.analysis.centipawn_score / 100;
     $scope.bestMove = analysisMessage.analysis.best_move;
     $scope.continuation = analysisMessage.analysis.continuation_string.split(" ").slice(0, 3).join(" ");
 
     $scope.chessGame.addListener(function() {
-      $scope.squareSet.clearHighlights();
+      $scope.update();
     });
     $scope.$apply();
   }
@@ -115,4 +126,7 @@ function MoveAnalysisCtrl($scope, $http, StatsFetcher, ChessGame, $routeParams, 
       return !(algebraicMoves.indexOf(move.uci) < 0);
   });
 }
+
+
+
 
