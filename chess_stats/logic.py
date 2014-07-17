@@ -11,6 +11,12 @@ from .legacy_etl import LegacyGameETL
 from .scraper import ChessDotComScraper
 
 
+def refresh_games(games):
+    refreshed_games = [ChessDotComGameETL(game.chess_dot_com_id).execute(force_refresh=True) for game in games]
+    models.db.session.commit()
+    return refreshed_games
+
+
 def get_games_for_user(username):
     try:
         user = models.ChessDotComUser.find_user_by_username(username)

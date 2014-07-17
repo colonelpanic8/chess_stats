@@ -35,7 +35,6 @@ class ChessDotComGameExtractor(etl.Extractor):
 class MovesTransformer(etl.Transformer):
 
     transform_arguments = set(['moves_string'])
-    return_names = set(['moves'])
 
     moves_matcher = re.compile(
         "[0-9]*?\.(.*?) (.*?) (.*)",
@@ -80,7 +79,6 @@ class MovesTransformer(etl.Transformer):
 class UCITransformer(etl.Transformer):
 
     def transform(self, algebraic_moves):
-        print algebraic_moves
         game = ChessGame()
         return ''.join(game.make_move_from_algebraic_and_return_uci(move)
                        for move in algebraic_moves)
@@ -127,13 +125,12 @@ class IntegerTransformer(MetaDataTransformer):
 class TimeControlTransformer(MetaDataTransformer):
 
     transform_arguments = set(['time_control_string'])
-    return_names = set(['time_control'])
 
     def _transform(self, time_control_string):
         match = re.search('(.*)\|(.*)', time_control_string)
 
         if match:
-            return (int(match.group(1)), int(match.group(2)))
+            return models.TimeControl(int(match.group(1)), int(match.group(2)))
             raise DataError()
 
 
@@ -160,6 +157,21 @@ class ResultTransformer(MetaDataTransformer):
             return common.DRAW
 
 
+class ChessDotComGameLoader(object):
+
+    @classmethod
+    def load(cls, transformed):
+        game = models.ChessDotComGame.query.filter(
+            models.ChessDotComGame.chess_dot_com_id == transformed['chess_dot_com_id']
+        ).first()
+        if not game:
+            game = models.ChessDotComGame(**transformed)
+        else:
+            for key, value in transformed.items():
+                setattr(game, key, value)
+        return game
+
+
 class ChessDotComGameETL(etl.ETL):
 
     extractor = ChessDotComGameExtractor()
@@ -175,13 +187,15 @@ class ChessDotComGameETL(etl.ETL):
         'result': ResultTransformer('Result')
     }
 
-    loader = etl.ModelLoader(models.ChessDotComGame)
+    loader = ChessDotComGameLoader
 
     def __init__(self, identifier):
         super(ChessDotComGameETL, self).__init__(identifier)
         self.transformed['chess_dot_com_id'] = identifier
 
-    def execute(self):
+    def execute(self, force_refresh=False):
+        if force_refresh:
+            return super(ChessDotComGameETL, self).execute()
         try:
             game = models.ChessDotComGame.query.filter(
                 models.ChessDotComGame.chess_dot_com_id ==

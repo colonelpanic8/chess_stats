@@ -71,11 +71,4 @@ class ModelLoader(Loader):
         self.model_class = model_class
 
     def load(self, transformed):
-        model_columns = set(self.model_class.itercolumns())
-        transformed_attributes = set(transformed.keys())
-        creation_attributes = model_columns & transformed_attributes
-        model_creation_arguments = {
-            attribute_name: transformed[attribute_name]
-            for attribute_name in creation_attributes
-        }
-        return self.model_class(**model_creation_arguments)
+        return self.model_class(**transformed)

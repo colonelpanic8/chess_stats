@@ -103,10 +103,10 @@ class TimeControl(object):
 
     @property
     def estimated_game_minutes(self):
-        return self.starting_time + (float(40 * self.move_bonus)/60)
+        return self.starting_time + (float(40 * self.move_time_bonus)/60)
 
     def __composite_values__(self):
-        self.starting_time, self.move_time_bonus, self.time_control_type
+        return self.starting_time, self.move_time_bonus, self.time_control_type
 
     @property
     def time_control_type(self):

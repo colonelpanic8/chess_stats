@@ -1,14 +1,18 @@
+import datetime
 from . import models
 
 
 class UserRatingHistoryFetcher(object):
 
-    def __init__(self, username):
+    def __init__(self, username, time_control_type='blitz'):
         self.username = username
+        self.time_control_type = time_control_type
         self.user = models.ChessDotComUser.find_user_by_username(self.username)
 
     def get_user_rating_history(self):
-        user_games = self.user.all_games.order_by('chess_dot_com_game_id').all()
+        user_games = self.user.all_games.filter(
+            models.ChessDotComGame.time_control_type == self.time_control_type
+        ).order_by('chess_dot_com_game_id').all()
         return [self.build_user_game_data_from_game(game) for game in user_games]
 
     def build_user_game_data_from_game(self, game):
