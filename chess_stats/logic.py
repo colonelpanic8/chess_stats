@@ -209,3 +209,36 @@ def build_sorted_game_stats_for_moves_for_all_games(moves):
         models.ChessDotComGame.query.all(),
         len(parse_long_uci_string(moves))
     )
+
+class PartitionByOpponentRating(object):
+    def __init__(self, username, granularity=10, bucket_min=20):
+        self.granularity = granularity
+        self.bucket_min = bucket_min
+        self.user = models.ChessDotComUser.find_user_by_username(username)
+
+    def game_elo(self, game):
+        return game.white_elo if game.white_user_id == self.user.id else game.black_elo
+
+    def partition(self, games=None):
+        games = games or self.user.all_games.all()
+        sorted_games = sorted(games, key=self.game_elo)
+        keys = [self.game_elo(game) for game in sorted_games]
+        game_buckets = []
+        last_bucket_max = keys[0]
+        last_index = 0
+        while len(sorted_games) > last_index + 1:
+            target_max = max(last_bucket_max + self.granularity - 1, keys[last_index + self.bucket_min])
+            max_index = bisect.bisect_right(keys, target_max)
+            bucket = sorted_games[last_index:max_index]
+            game_buckets.append(bucket)
+            last_index = max_index
+            last_bucket_max = target_max
+        return game_buckets
+
+    def partition_and_build_stats(self, games=None):
+        bucketed_stats = []
+        for game_bucket in self.partition(games):
+            min_elo = self.game_elo(game_bucket[0])
+            max_elo = self.game_elo(game_bucket[-1])
+            bucketed_stats.append(((min_elo, max_elo), build_stats_for_user_games(game_bucket, self.user)))
+        return bucketed_stats

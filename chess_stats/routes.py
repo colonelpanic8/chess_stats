@@ -40,6 +40,13 @@ def user_rating_history_json(username):
    )
 
 
+@app.route("/game_stats_by_opp_elo/<username>")
+def game_stats_by_opp_elo(username):
+    return simplejson.dumps(
+        logic.PartitionByOpponentRating(username).partition_and_build_stats()
+    )
+
+
 @app.route("/get_game_history/<username>")
 def get_game_history(username):
    return simplejson.dumps(
