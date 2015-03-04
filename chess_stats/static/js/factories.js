@@ -17,7 +17,7 @@ angular.module('ChessStats.factories', []).factory('StatsFetcher', function($htt
         'color': this.color
       }
     }).success(this.successCallback);
-  }
+  };
   return StatsFetcher;
 }).factory('HistoryRequestor', function($http) {
 
@@ -39,33 +39,34 @@ angular.module('ChessStats.factories', []).factory('StatsFetcher', function($htt
           "type": "GET_GAMES",
           "username": that.username
         }));
-      }
-      var boundHandleGame = this.handleGame.bind(this);
+      };
+      var boundHandleGame = this.handleGames.bind(this);
       this.webSocket.onmessage = function(messageEvent) {
-        var message = JSON.parse(messageEvent.data)
+        var message = JSON.parse(messageEvent.data);
         boundHandleGame(message.games);
       }.bind(this);
     },
     requestExistingGames: function() {
       $http({
         'method': 'GET',
-        'url': '/get_game_history/' + this.username,
+        'url': '/get_game_history/' + this.username
       }).success(function(gameHistory) {
         _.each(gameHistory, function(game) {
-          this.handleGame(game)
+          this.handleGame(game);
         }, this);
       }.bind(this));
     },
     addGameHandler: function(handler) {
       this.gameHandlers.push(handler);
     },
-    handleGame: function(game) {
-      _.each(this.gameHandlers, function(handler) {
-        handler(game);
-      });
-    },
-      
-  }
+    handleGames: function(games) {
+      _.each(games, function(game) {
+        _.each(this.gameHandlers, function(handler) {
+          handler(game);
+        });f
+      }, this);
+    }
+  };
   return HistoryRequestor;
 }).factory('AnalysisClient', function() {
   function AnalysisClient(port) {
@@ -99,26 +100,26 @@ angular.module('ChessStats.factories', []).factory('StatsFetcher', function($htt
         handler(message);
       });
     }
-  }
+  };
   return AnalysisClient;
 }).factory('State', function() {
   return {
     username: null,
     port: "3030"
-  }
+  };
 }).factory('requestGame', function($http) {
   return function(chessDotComID) {
     var json;
     $.ajax({
       method: 'GET',
       url: '/game/{0}'.format(chessDotComID),
-      success: function(data) {json = data},
+      success: function(data) {json = data;},
       async: false
-    })
+    });
     return JSON.parse(json);
-  }
+  };
 }).factory('goToUsername', function($location) {
   return function(username) {
-    $location.path("/" + username + "/game_history")
-  }
+    $location.path("/" + username + "/game_history");
+  };
 });
