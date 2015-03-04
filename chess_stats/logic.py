@@ -1,6 +1,8 @@
 from __future__ import division
+import bisect
 import os
 import re
+import logging
 
 from chess_game import parse_long_uci_string
 
@@ -9,6 +11,8 @@ from .chess_dot_com_etl import ChessDotComGameETL
 from .chess_dot_com_etl import ChessDotComGameFileETL
 from .legacy_etl import LegacyGameETL
 from .scraper import ChessDotComScraper
+
+log = logging.getLogger(__name__)
 
 
 def refresh_games(games):
@@ -25,7 +29,7 @@ def get_games_for_user(username):
     return user.all_games.all()
 
 
-def fetch_games_for_user(username, stop_at_latest_id=True, stop_at_id=None):
+def fetch_games_for_user(username, stop_at_latest_id=True, stop_at_id=None, return_all=True):
     if stop_at_latest_id:
         try:
             user = models.ChessDotComUser.find_user_by_username(username)
@@ -45,7 +49,10 @@ def fetch_games_for_user(username, stop_at_latest_id=True, stop_at_id=None):
             key=lambda game: game.chess_dot_com_id
         ).chess_dot_com_id
 
-    return user.all_games.all()
+    if return_all:
+        return user.all_games.all()
+    else:
+        return games
 
 
 def save_games_by_ids(game_ids):
@@ -210,7 +217,19 @@ def build_sorted_game_stats_for_moves_for_all_games(moves):
         len(parse_long_uci_string(moves))
     )
 
+def refresh_games_for_usernames(usernames):
+    for username in usernames:
+        fetch_games_for_user(username)
+
+def refresh_all_users_games():
+    for user in models.ChessDotComUser.query.all():
+        log.info("Refreshing games for {0}".format(user.username))
+        print "Refreshing games for {0}".format(user.username)
+        print "Refreshed %d games" % len(fetch_games_for_user(user.username, return_all=False))
+
+
 class PartitionByOpponentRating(object):
+
     def __init__(self, username, granularity=10, bucket_min=20):
         self.granularity = granularity
         self.bucket_min = bucket_min
