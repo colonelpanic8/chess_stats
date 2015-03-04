@@ -1,16 +1,13 @@
-'use strict';
-
-/* Directives */
-var directives = angular.module('ChessStats.directives', [])
+var directives = angular.module('ChessStats.directives', []);
 
 directives.directive(
   'jqAnimate',
   function(jQueryExpression, templateElement){ 
     return function(instanceElement){
       instanceElement.show('slow'); 
-    } 
+    }; 
   }
-)
+);
 
 directives.directive('moveStatsTable', function() {
   function moveStatsController($scope, $attrs, StatsFetcher) {
@@ -19,41 +16,39 @@ directives.directive('moveStatsTable', function() {
       if(this.refreshLock) {
         return
       }
-      this.refreshLock = true
-      this.moves = []
-      this.isWhite = isWhite
+      this.refreshLock = true;
+      this.moves = [];
+      this.isWhite = isWhite;
       this.refreshMoveStatsList();
-    }
+    };
 
     moveControl.setUsername = function(username) {
       this.username = username;
       this.moves = [];
       this.refreshMoveStatsList();
-    }
+    };
 
     moveControl.removeLastNMoves = function(numMovesToRemove) {
-      if(this.refreshLock) {
-        return
-      }
-      this.refreshLock = true
+      if(this.refreshLock) return;
+      this.refreshLock = true;
       this.moves = this.moves.slice(0, numMovesToRemove*-1);
       this.refreshMoveStatsList();
-    }
+    };
 
     moveControl.truncateMovesTo = function(lastIndex) {
-      if(lastIndex >= this.moves.length) return
+    if(lastIndex >= this.moves.length) return;
       if(this.refreshLock) {
         return
       }
-      this.refreshLock = true
+      this.refreshLock = true;
       this.moves = this.moves.slice(0, lastIndex);
       this.refreshMoveStatsList();
-    }
+      };
 
     $scope.init = function(username) {
       moveControl.username = username;
-      moveControl.refreshMoveStatsList()
-    }
+      moveControl.refreshMoveStatsList();
+    };
   }
   return {
     restrict: 'E', // this directive can only be used as the element
@@ -63,7 +58,7 @@ directives.directive('moveStatsTable', function() {
     // HTML tag
     templateUrl: 'directive_templates/move_stats_table.html',
     controller: moveStatsController
-  }
+  };
 });
 
 directives.directive('navigationItem', ['$route', '$location', 'State', function($route, $location, State) {
@@ -73,14 +68,14 @@ directives.directive('navigationItem', ['$route', '$location', 'State', function
     scope: {
       constructUrl: "&urlBuilder"
     },
-    template: '<div ng-click="goToRoute()"><p>{{ letter }}</p><div><p>{{ title }}</p></div></div>',
+    template: '<div ng-click="goToRoute()"><p>{{ letter }}</p><div><p>{{ title }}}</p></div></div>',
     link: function(scope, element, attrs) {
       scope.title = attrs.title;
       scope.letter = attrs.letter;
       scope.href = attrs.href;
       scope.goToRoute = function() {
         if(State.username) $location.path(scope.constructUrl());
-      }
+      };
       $(element).hover(function() {
         $(element).children('div').stop(true, true).animate({
           left: 70
@@ -91,5 +86,5 @@ directives.directive('navigationItem', ['$route', '$location', 'State', function
         }, 300);
       });
     }
-  }
+  };
 }]);

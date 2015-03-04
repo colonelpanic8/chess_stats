@@ -124,11 +124,14 @@ function MoveAnalysisCtrl($scope, $http, StatsFetcher, ChessGame, $routeParams, 
   }
   $scope.refreshMoveStatsList();
   $scope.chessGame.addListener($scope.refreshMoveStatsList);
-  $scope.chessGame.addMoveChecker(function(move, isUndo) {
-    if(isUndo) return true;
+    $scope.chessGame.addMoveChecker(function(move, isUndo) {
+      console.log("Is undo is");
+      console.log(isUndo);
+      if(isUndo) return true;
       var algebraicMoves = _.map($scope.moveStatsList, function(moveStats) {
-        return moveStats.move
-      });
+	  return moveStats.move;
+	  });
+      console.log(algebraicMoves)
       return !(algebraicMoves.indexOf(move.uci) < 0);
   });
 }
