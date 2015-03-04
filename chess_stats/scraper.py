@@ -74,7 +74,7 @@ class ChessDotComPageScraper(object):
 
     @property
     def max_page_number(self):
-        pagination_find = self.soup.find(name="ul", attrs={"class" : "pagination"})
+        pagination_find = self.soup.find(name="ul", attrs={"class": "pagination"})
         if pagination_find:
             page_numbers = [int(item.text)
                             for item in pagination_find.findAll(name="a") if self.intable(item.text)]
@@ -107,7 +107,7 @@ class ChessDotComScraper(object):
         self.logger.setLevel(10)
 
     def scrape(self, stop_at_id=None):
-        for page_number in itertools.count():
+        for page_number in itertools.count(1):
             self.logger.debug("Getting Page {0}".format(page_number))
             page_scraper = ChessDotComPageScraper(self.get_page(page_number),
                                                   self.game_type,
@@ -134,3 +134,6 @@ class ChessDotComScraper(object):
             self.logger.debug("Non 200 response from chess.com.")
             raise Exception
         return request.text
+
+
+
