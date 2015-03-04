@@ -140,6 +140,40 @@ def build_stats_for_games(games):
     )
 
 
+def build_stats_for_user_games(games, user):
+    user_wins = []
+    opp_wins = []
+    draws = []
+    for game in games:
+        if game.result_as_int > 0:
+            if game.white_user_id == user.id:
+                user_wins.append(game)
+            else:
+                opp_wins.append(game)
+        elif game.result_as_int < 0:
+            if game.black_user_id == user.id:
+                user_wins.append(game)
+            else:
+                opp_wins.append(game)
+        else:
+            draws.append(game)
+
+    game_count = len(games)
+    user_win_count = len(user_wins)
+    opp_win_count = len(opp_wins)
+    draw_count = len(draws)
+
+    return dict(
+        game_count=game_count,
+        user_wins=user_win_count,
+        opp_wins=opp_win_count,
+        draws=draw_count,
+        user_win_pct=float(user_win_count)/game_count,
+        opp_win_pct=float(opp_win_count)/game_count,
+        draw_pct=float(draw_count)/game_count,
+    )
+
+
 def build_stats_for_games_and_add_move(games, move):
     stats = build_stats_for_games(games)
     stats['move'] = move
