@@ -46,5 +46,5 @@ ChessStats.directive('ngFade', function () {
         element.fadeOut(100);
       }
     });
-  }
+  };
 });
