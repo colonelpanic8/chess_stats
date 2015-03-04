@@ -7,7 +7,7 @@ function averageEloByDate(userRatingElements) {
   var aggregateElo = 0;
   var maxId = 0;
   var maxIdElo = null;
-  var minID = 0;
+  var minId = Infinity;
   var minIdElo = null;
   var numberOfElosInDay = 0;
   var previousDate = userRatingElements[0].date;
@@ -18,7 +18,7 @@ function averageEloByDate(userRatingElements) {
         maxId = ratingElement.chess_dot_com_id;
         maxIdElo = ratingElement.elo;
       }
-      if (ratingElement.chess_dot_com_id < maxId) {
+      if (ratingElement.chess_dot_com_id < minId) {
         minId = ratingElement.chess_dot_com_id;
         minIdElo = ratingElement.elo;
       }
