@@ -27,6 +27,7 @@
             <th>Draws <span>(# games)</span></th>
             <th>White Avg <span>(Elo)</span></th>
             <th>Black Avg <span>(Elo)</span></th>
+	    <th>Centipawn Score</th>
             <tr class="row-stats" ng-repeat="moveStats in moveStatsList">
               <td>
                 <span id="bold">
@@ -40,6 +41,7 @@
               <td>{{ moveStats.draw_pct.toFixed(2) * 100 | number:0 }}% ({{moveStats.draws}})</td>
               <td>{{ moveStats.white_average_elo.toFixed(0) }}</td>
               <td>{{ moveStats.black_average_elo.toFixed(0) }}</td>
+	      <td>{{ moveStats.analysis }}</td>
             </tr>
           </table>
         </td>

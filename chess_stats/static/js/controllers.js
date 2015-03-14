@@ -135,7 +135,3 @@ function MoveAnalysisCtrl($scope, $http, StatsFetcher, ChessGame, $routeParams, 
       return !(algebraicMoves.indexOf(move.uci) < 0);
   });
 }
-
-
-
-

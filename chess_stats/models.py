@@ -150,7 +150,7 @@ class ChessDotComGame(db.Model):
     black_elo = db.Column(db.Integer)
     black_user_id = db.Column(db.Integer, db.ForeignKey(ChessDotComUser.id))
 
-    moves = db.Column(db.String)
+    moves = db.Column(db.String, index=True)
     result = db.Column(
         db.Enum(
             common.WHITE_VICTORY,
@@ -184,6 +184,10 @@ class ChessDotComGame(db.Model):
     @classmethod
     def username_games_filter(cls, username):
         cls.ChessDotComUser.username == username
+
+    @classmethod
+    def uci_moves_list_filter(cls, uci_moves_list):
+        return cls.uci_moves_string_filter(''.join(uci_moves_list))
 
     @classmethod
     def uci_moves_string_filter(cls, uci_moves_string):
@@ -249,7 +253,7 @@ class ChessDotComGame(db.Model):
         return True
 
     def __repr__(self):
-        return '<ChessDotComGame(\'{0}\' v \'{1}\')'.format(
+        return '<ChessDotComGame(\'{0}\' v \'{1}\')>'.format(
             self.white_username,
             self.black_username
         )

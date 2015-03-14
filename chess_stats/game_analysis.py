@@ -1,30 +1,13 @@
 from collections import namedtuple
-import math
+import logging
 
-from chess_game import ChessGame
 from .uci_client import StockfishClient
 from . import models
 from . import logic
 
 
-class ChessGameManager(object):
-
-    def __init__(self, game):
-        self.game_model = game
-        self.playable_game = ChessGame()
-        self.move_iterator = iter(self.game_model.moves)
-        self.uci_moves = []
-
-    def next(self):
-        move = self.move_iterator.next()
-        uci_move = self.playable_game.make_move_from_algebraic_and_return_uci(move)
-        self.uci_moves.append(uci_move)
-        return uci_move, move
-
-    def __iter__(self): return self
-
-
 TheoreticalWeakness = namedtuple('TheoreticalWeakness', ["line", "optimal", "played", "times_played"])
+log = logging.getLogger(__name__)
 
 
 class TheoreticalHistoryAnalyzer(object):
@@ -78,55 +61,37 @@ class TheoreticalHistoryAnalyzer(object):
                 print "Suboptimal move, but not weakness"
 
 
+class AnalysisAdder(object):
 
-class ChessGameAnalyzer(object):
+    @staticmethod
+    def at_least_n(n):
+        def at_least(uci_moves_list):
+            return models.ChessDotComGame.query.filter(
+                models.ChessDotComGame.uci_moves_list_filter(uci_moves_list)
+            ).count() < n
+        return at_least
 
-    def __init__(self, game, cp_continuation_threshold=100):
-        self.game = game
-        self.cp_continuation_threshold = cp_continuation_threshold
-        self.manager = ChessGameManager(self.game)
-        self.analysis_nodes = []
-        self.continuation_nodes = []
-        self.last_analysis_info = None
+    def __init__(self, termination_condition=None):
+        self.termination_condition = termination_condition or self.at_least_n(10)
+        self.uci_client = StockfishClient()
 
-    @property
-    def last_node(self):
-        if self.analysis_nodes:
-            return self.analysis_nodes[-1]
+    def build_analysis_nodes(self, game):
+        with self.uci_client:
+            uci_moves = []
+            for uci_move in game.uci_moves_list:
+                uci_moves.append(uci_move)
+                if self.termination_condition(uci_moves):
+                    break
+                self._build_or_find_analysis_node(uci_moves)
 
-    def execute(self):
-        with StockfishClient() as self.uci_client:
-            for uci_move, move in self.manager:
-                self.analysis_nodes.append(self.analyze_move())
-                yield self.last_node
-
-    def build_continuation_nodes(self, analysis_info):
-        last_parent = self.last_node
-        moves_list = self.manager.uci_moves[:]
-        continuations = analysis_info.continuation_string.split(' ')[:4]
-        for index, uci_move in enumerate(continuations):
-            moves_list.append(uci_move)
-            last_parent = models.AnalysisNode(
-                parent=last_parent,
-                uci_moves=' '.join(moves_list),
-                score=last_parent.score * -1,
-                best_move=continuations[index + 1]
-            )
-
-    def analyze_move(self):
-        if analysis_node: return analysis_node
-        self.uci_client.set_position_from_moves_list(self.manager.uci_moves)
-        analysis_info = self.uci_client.evaluate_position()
-        self.analysis_nodes.append(
-            models.AnalysisNode(
-                parent=self.last_node,
-                score=models.AnalysisScore(analysis_info.centipawn_score),
-                uci_moves=' '.join(self.manager.uci_moves),
-                best_move=analysis_info.best_move
-            )
-        )
-        if math.fabs(
-            self.last_analysis_info.centipawn_score + analysis_info.centipawn_score
-        ) < self.cp_continuation_threshold:
-            self.build_continuation_nodes(analysis_info)
-        return
+    def _build_or_find_analysis_node(self, uci_moves):
+        if models.PositionAnalysis.query.filter(
+            models.PositionAnalysis.uci_moves_list_filter(uci_moves)
+        ).count() == 0:
+            log.debug("Adding node for {0}".format(uci_moves))
+            evaluation = self.uci_client.evaluate_position_for(uci_moves, duration=6.5)
+            position_analysis = models.PositionAnalysis(moves=''.join(uci_moves),
+                                                        centipawn_score=evaluation.centipawn_score,
+                                                        best_move_uci=evaluation.best_move)
+            models.db.session.add(position_analysis)
+            models.db.session.commit()
