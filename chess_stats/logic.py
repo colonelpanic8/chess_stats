@@ -107,7 +107,6 @@ def build_next_move_map_at_move_index(games, move_index):
         if len(game.uci_moves_list) <= move_index:
             continue
         moves_map.setdefault(game.uci_moves_list[move_index], []).append(game)
-
     return moves_map
 
 
@@ -181,16 +180,26 @@ def build_stats_for_user_games(games, user):
     )
 
 
-def build_stats_for_games_and_add_move(games, move):
+def build_stats_for_games_and_add_move(games, move, base_moves_string):
     stats = build_stats_for_games(games)
     stats['move'] = move
+    try:
+        analysis = models.PositionAnalysis.query.filter(models.PositionAnalysis.uci_moves_list_filter(base_moves_string+move)).one()
+    except models.NoResultFound:
+        stats['analysis'] = 'N/A'
+    else:
+        stats['analysis'] = analysis.centipawn_score
     return stats
 
 
 def build_sorted_game_stats_at_move_index(games, move_index):
+    base_moves_string = ''
+    if games:
+        base_moves_string = ''.join(games[0].uci_moves_list[:move_index])
     return sorted(
         (
-            build_stats_for_games_and_add_move(game_list, move)
+            build_stats_for_games_and_add_move(game_list, move,
+                                               base_moves_string)
             for move, game_list in build_next_move_map_at_move_index(
                 games,
                 move_index
@@ -228,25 +237,35 @@ def refresh_all_users_games():
         print "Refreshed %d games" % len(fetch_games_for_user(user.username, return_all=False))
 
 
-class PartitionByOpponentRating(object):
+def game_length(self, game):
+    return len(game.uci_moves_list)
 
-    def __init__(self, username, granularity=10, bucket_min=20):
+
+class PartitionGames(object):
+
+    def __init__(self, username, granularity=10, bucket_min=20,
+                 min_key='min_elo', max_key='max_elo', sort_function=None):
         self.granularity = granularity
         self.bucket_min = bucket_min
         self.user = models.ChessDotComUser.find_user_by_username(username)
+        self.min_key = min_key
+        self.max_key = max_key
+        self.sort_function = sort_function.__get__(self, type(self)) or self.game_elo
 
     def game_elo(self, game):
-        return game.white_elo if game.white_user_id == self.user.id else game.black_elo
+        return game.black_elo if game.white_user_id == self.user.id \
+            else game.white_elo
 
     def partition(self, games=None):
-        games = games or self.user.all_games.all()
-        sorted_games = sorted(games, key=self.game_elo)
-        keys = [self.game_elo(game) for game in sorted_games]
+        games = games or self.user.all_games.filter(models.ChessDotComGame.time_control_type == 'blitz').all()
+        sorted_games = sorted(games, key=self.sort_function)
+        keys = [self.sort_function(game) for game in sorted_games]
         game_buckets = []
         last_bucket_max = keys[0]
         last_index = 0
         while len(sorted_games) > last_index + 1:
-            target_max = max(last_bucket_max + self.granularity - 1, keys[last_index + self.bucket_min])
+            target_max = max(last_bucket_max + self.granularity - 1,
+                             keys[min(last_index + self.bucket_min, len(sorted_games) - 1)])
             max_index = bisect.bisect_right(keys, target_max)
             bucket = sorted_games[last_index:max_index]
             game_buckets.append(bucket)
@@ -257,7 +276,10 @@ class PartitionByOpponentRating(object):
     def partition_and_build_stats(self, games=None):
         bucketed_stats = []
         for game_bucket in self.partition(games):
-            min_elo = self.game_elo(game_bucket[0])
-            max_elo = self.game_elo(game_bucket[-1])
-            bucketed_stats.append(((min_elo, max_elo), build_stats_for_user_games(game_bucket, self.user)))
+            min_val = self.sort_function(game_bucket[0])
+            max_val = self.sort_function(game_bucket[-1])
+            bucketed_stats.append(
+                {self.min_key: min_val, self.max_key: max_val,
+                 "stats": build_stats_for_user_games(game_bucket, self.user)}
+            )
         return bucketed_stats

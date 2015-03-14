@@ -25,7 +25,7 @@ function averageEloByDate(userRatingElements) {
       numberOfElosInDay += 1;
       aggregateElo = aggregateElo + ratingElement.elo;
     } else {
-      averageRatingByDate.push({averageElo: aggregateElo/numberOfElosInDay, date: previousDate, eodElo: maxIdElo, bodElo: minIdElo})
+      averageRatingByDate.push({averageElo: aggregateElo/numberOfElosInDay, date: previousDate, eodElo: maxIdElo, bodElo: minIdElo});
       minId = ratingElement.chess_dot_com_id;
       minIdElo = ratingElement.elo;
       maxId = ratingElement.chess_dot_com_id;
@@ -63,10 +63,10 @@ angular.module('ChessStats.directives').directive('userRatingHistogram', functio
         var data = _.map(userRatingElements, function(ratingElement) {
           return [ratingElement.date, ratingElement.elo];
         });
-        var startTime = _.min(data, function(item) { return item[0] })[0];
-        var endTime = _.max(data, function(item) { return item[0] })[0];
-        var minY = _.min(data, function(item) { return item[1] })[1];
-        var maxY = _.max(data, function(item) { return item[1] })[1];
+        var startTime = _.min(data, function(item) { return item[0]; })[0];
+        var endTime = _.max(data, function(item) { return item[0]; })[0];
+        var minY = _.min(data, function(item) { return item[1]; })[1];
+        var maxY = _.max(data, function(item) { return item[1]; })[1];
         
         var x = d3.time.scale().domain([startTime, endTime]).range([0, w]);
         x.tickFormat(d3.time.format("%Y-%m-%d"));
@@ -78,21 +78,21 @@ angular.module('ChessStats.directives').directive('userRatingHistogram', functio
             })
             .y(function(ratingElement) { 
               return y(ratingElement.averageElo);
-            })
+            });
         var eodLine = d3.svg.line()
             .x(function(ratingElement, index) {
               return x(ratingElement.date); 
             })
             .y(function(ratingElement) { 
               return y(ratingElement.eodElo);
-            })
+            });
         var bodLine = d3.svg.line()
             .x(function(ratingElement, index) {
               return x(ratingElement.date); 
             })
             .y(function(ratingElement) { 
               return y(ratingElement.bodElo);
-            })
+            });
 
         // Add an SVG element with the desired dimensions and
         // margin.
@@ -170,9 +170,9 @@ angular.module('ChessStats.directives').directive('userRatingHistogram', functio
           })
           .on('click', function (ratingElement) {
             window.location = 'http://www.chess.com/livechess/game?id=' +
-              ratingElement.chess_dot_com_id.toString()
+              ratingElement.chess_dot_com_id.toString();
           });
       }
     });
-  }
+  };
 });

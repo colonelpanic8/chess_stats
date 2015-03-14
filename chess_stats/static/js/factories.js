@@ -63,7 +63,7 @@ angular.module('ChessStats.factories', []).factory('StatsFetcher', function($htt
       _.each(games, function(game) {
         _.each(this.gameHandlers, function(handler) {
           handler(game);
-        });f
+        });
       }, this);
     }
   };
@@ -121,5 +121,14 @@ angular.module('ChessStats.factories', []).factory('StatsFetcher', function($htt
 }).factory('goToUsername', function($location) {
   return function(username) {
     $location.path("/" + username + "/game_history");
+  };
+}).factory('performanceByOppEloFetcher', function($http) {
+  return function(username, success) {
+    var json;
+    $.ajax({
+      method: 'GET',
+      url: '/game_stats_by_opp_elo/{0}'.format(username),
+      success: function(data) { return success(JSON.parse(data)); }
+    });
   };
 });

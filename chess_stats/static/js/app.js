@@ -25,6 +25,9 @@ var ChessStats = angular.module(
      }).when('/:username/moves_analysis', {
        templateUrl: "/static/js/view_templates/moves_analysis.html",
        controller: MoveAnalysisCtrl
+     }).when('/:username/performance_by_opp_elo', {
+       templateUrl: "/static/js/view_templates/performance_by_opp_elo.html",
+       controller: RatingGraphCtrl
      }).when('/', {
        templateUrl: "/static/js/view_templates/enter_username.html",
        controller: LoginCtrl
