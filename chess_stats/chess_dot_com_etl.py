@@ -157,6 +157,37 @@ class ResultTransformer(MetaDataTransformer):
             return common.DRAW
 
 
+class TerminationTransformer(MetaDataTransformer):
+
+    termination_matcher = re.compile('.*? won (?:on|by|-) (.*)')
+    termination_draw_matcher = re.compile('Game drawn (.*)')
+
+    termination_to_enum = {
+        'resignation': common.RESIGNATION,
+        'checkmate': common.CHECKMATE,
+        'time': common.TIME,
+        'agreement': common.AGREEMENT,
+        'insufficient': common.INSUFFICIENT_MATERIAL,
+        'stalemate': common.STALEMATE,
+        'abandoned': common.ABANDONED,
+        'repetition': common.REPETITION,
+        '50-move': common.FIFTY_MOVE
+    }
+
+    def _transform(self, termination_string):
+        match = self.termination_matcher.match(termination_string)
+        if not match:
+            match = self.termination_draw_matcher.match(termination_string)
+        if not match:
+            import ipdb; ipdb.set_trace()
+        termination = match.group(1).lower()
+        for string, enum in self.termination_to_enum.items():
+            if string in termination:
+                return enum
+        raise Exception("Could not interpret match string {0}".format(termination_string))
+
+
+
 class ChessDotComGameLoader(object):
 
     @classmethod
@@ -184,7 +215,8 @@ class ChessDotComGameETL(etl.ETL):
         'black_elo': IntegerTransformer('BlackElo'),
         'date_played': DateTransformer('Date'),
         'time_control': TimeControlTransformer('TimeControl'),
-        'result': ResultTransformer('Result')
+        'result': ResultTransformer('Result'),
+        'termination': TerminationTransformer('Termination')
     }
 
     loader = ChessDotComGameLoader

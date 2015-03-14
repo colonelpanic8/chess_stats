@@ -159,6 +159,20 @@ class ChessDotComGame(db.Model):
             name='Result'
         )
     )
+    termination = db.Column(
+        db.Enum(
+            common.CHECKMATE,
+            common.TIME,
+            common.RESIGNATION,
+            common.AGREEMENT,
+            common.INSUFFICIENT_MATERIAL,
+            common.STALEMATE,
+            common.ABANDONED,
+            common.REPETITION,
+            common.FIFTY_MOVE
+        ),
+        name='Termination'
+    )
 
     starting_time = db.Column(db.Integer)
     move_time_bonus = db.Column(db.Integer)
