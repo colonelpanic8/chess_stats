@@ -118,6 +118,25 @@ class TimeControl(object):
             return 'standard'
 
 
+class PositionAnalysis(db.Model):
+
+    moves = db.Column(db.String, unique=True, index=True, primary_key=True)
+    centipawn_score = db.Column(db.Integer)
+    best_move_uci = db.Column(db.String)
+
+    @property
+    def uci_moves_list(self):
+        return parse_long_uci_string(self.moves)
+
+    @classmethod
+    def uci_moves_string_filter(cls, uci_moves_string):
+        return cls.moves == uci_moves_string
+
+    @classmethod
+    def uci_moves_list_filter(cls, uci_moves_list):
+        return cls.uci_moves_string_filter(''.join(uci_moves_list))
+
+
 class ChessDotComGame(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
